@@ -1,0 +1,14 @@
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.AssemblyInfoInputs.cache
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.AssemblyInfo.cs
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.csproj.CoreCompileInputs.cache
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\bin\Debug\net6.0\CLI.exe
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\bin\Debug\net6.0\CLI.deps.json
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\bin\Debug\net6.0\CLI.runtimeconfig.json
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\bin\Debug\net6.0\CLI.dll
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\bin\Debug\net6.0\CLI.pdb
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.dll
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\refint\CLI.dll
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.pdb
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.genruntimeconfig.cache
+C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\ref\CLI.dll

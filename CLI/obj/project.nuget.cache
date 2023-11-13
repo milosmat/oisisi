@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "Spc/Dy9Myg9C4JsGC8mOpZlp1htNTud3vTzfw7yvksmKPERPYD+1ef3zWIWUK56ZzvrL/CXGGD1rk291qAL+qw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\shomi\\OneDrive\\Desktop\\New folder\\oisisi-2023-group-8-team-7-main\\oisisi-2023-group-8-team-7-main\\CLI\\CLI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\shomi\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.24\\microsoft.netcore.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\shomi\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.24\\microsoft.windowsdesktop.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\shomi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.24\\microsoft.aspnetcore.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\shomi\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.24\\microsoft.netcore.app.host.win-x64.6.0.24.nupkg.sha512"
+  ],
+  "logs": []
+}
