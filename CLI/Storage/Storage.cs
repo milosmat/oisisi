@@ -1,6 +1,6 @@
-using SerializationExample.Serialization;
+using StudentskaSluzba.Serialization;
 
-namespace SerializationExample.Storage;
+namespace StudentskaSluzba.Storage;
 
 public class Storage<T> where T : ISerializable, new()
 {
@@ -14,8 +14,6 @@ public class Storage<T> where T : ISerializable, new()
 
     public List<T> Load()
     {
-        // ukoliko fajl ne postoji napravi novi fajl i
-        // zatvori stream za pisanje u fajl
         if (!File.Exists(_filePath))
         {
             FileStream fs = File.Create(_filePath);

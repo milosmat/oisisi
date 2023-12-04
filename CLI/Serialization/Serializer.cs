@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace SerializationExample.Serialization;
+namespace StudentskaSluzba.Serialization;
 
 class Serializer<T> where T : ISerializable, new()
 {

@@ -1,4 +1,4 @@
-﻿namespace SerializationExample.Serialization;
+﻿namespace StudentskaSluzba.Serialization;
 
 public interface ISerializable
 {
