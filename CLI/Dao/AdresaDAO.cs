@@ -63,31 +63,4 @@ class AdresaDAO
         return adrese;
     }
 
-  /*  public List<Vehicle> GetAllVehicles(int page, int pageSize, string sortCriteria, SortDirection sortDirection)
-    {
-        IEnumerable<Vehicle> vehicles = _vehicles;
-
-        // sortiraj vehicles ukoliko je sortCriteria naveden
-        switch (sortCriteria)
-        {
-            case "Id":
-                vehicles = _vehicles.OrderBy(x => x.Id);
-                break;
-            case "Name":
-                vehicles = _vehicles.OrderBy(x => x.Name);
-                break;
-            case "NumberOfWheels":
-                vehicles = _vehicles.OrderBy(x => x.NumberOfWheels);
-                break;
-        }
-
-        // promeni redosled ukoliko ima potrebe za tim
-        if (sortDirection == SortDirection.Descending)
-            vehicles = vehicles.Reverse();
-
-        // paginacija
-        vehicles = vehicles.Skip((page - 1) * pageSize).Take(pageSize);
-
-        return vehicles.ToList();
-    }*/
 }

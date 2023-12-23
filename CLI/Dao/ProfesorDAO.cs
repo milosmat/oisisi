@@ -56,7 +56,7 @@ class ProfesorDAO
         return profesor;
     }
 
-    private Profesor? UzmiProfesoraPoID(int id)
+    public Profesor? UzmiProfesoraPoID(int id)
     {
         return profesori.Find(p => p.Id == id);
     }

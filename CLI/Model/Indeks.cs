@@ -8,20 +8,12 @@ namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
 public class Indeks : ISerializable
 {
-    public int Id { get; set; }
     public string OznakaSmera {get; set;}
     public int BrojUpisa {get; set;}
     public int GodinaUpisa {get; set;}
 
     public Indeks()
     { 
-    }
-    public Indeks(int id, string oznaka, int brojUpisa, int godina)
-    {
-        Id = id;
-        OznakaSmera = oznaka;
-        BrojUpisa = brojUpisa;
-        GodinaUpisa = godina;
     }
     public Indeks(string oznaka, int brojUpisa, int godina)
     {
@@ -32,13 +24,12 @@ public class Indeks : ISerializable
 
     public override string ToString()
     {
-        return $"ID: {Id} | Oznaka smera: {OznakaSmera} | Broj upisa: {BrojUpisa} | Godina upisa: {GodinaUpisa}";
+        return $"Oznaka smera: {OznakaSmera} | Broj upisa: {BrojUpisa} | Godina upisa: {GodinaUpisa}";
     }
     public string[] ToCSV()
     {
         string[] csvValues =
        {
-            Id.ToString(),
             OznakaSmera,
             BrojUpisa.ToString(),
             GodinaUpisa.ToString()
@@ -48,10 +39,31 @@ public class Indeks : ISerializable
 
     public void FromCSV(string[] values)
     {
-        Id = int.Parse(values[0]);
-        OznakaSmera = values[1];
-        BrojUpisa = int.Parse(values[2]);
-        GodinaUpisa = int.Parse(values[3]);
+        OznakaSmera = values[0];
+        BrojUpisa = int.Parse(values[1]);
+        GodinaUpisa = int.Parse(values[2]);
+    }
+
+    public Indeks unesiIndeks()
+    {
+        System.Console.WriteLine("Unesite oznaku smera: ");
+        string oznakaSmera = System.Console.ReadLine() ?? string.Empty;
+
+        System.Console.WriteLine("Unesite broj upisa: ");
+        int brojUpisa;
+        while (!int.TryParse(System.Console.ReadLine(), out brojUpisa))
+        {
+            System.Console.WriteLine("Neispravan unos. Molimo unesite broj upisa ponovo: ");
+        }
+
+        System.Console.WriteLine("Unesite godinu upisa: ");
+        int godinaUpisa;
+        while (!int.TryParse(System.Console.ReadLine(), out godinaUpisa))
+        {
+            System.Console.WriteLine("Neispravan unos. Molimo unesite godinu upisa ponovo: ");
+        }
+
+        return new Indeks(oznakaSmera, brojUpisa, godinaUpisa);
     }
 
 }

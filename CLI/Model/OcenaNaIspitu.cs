@@ -28,7 +28,7 @@ public class OcenaNaIspitu : ISerializable
 
     public override string ToString()
     {
-        return $"Student: {StudentKojiJePolozio.ToString()} | Predmet: {Predmet.ToString()} | Ocena: {BrojcanaVrednostOcene} | Datum polaganja: {DatumPolaganjaIspita.ToString("yyyy-MM-dd")}";
+        return $"ID {StudentKojiJePolozio.Id} | Student: {StudentKojiJePolozio.ToString()} | Predmet: {Predmet.ToString()} | Ocena: {BrojcanaVrednostOcene} | Datum polaganja: {DatumPolaganjaIspita.ToString("yyyy-MM-dd")}";
     }
     public string[] ToCSV()
     {

@@ -13,7 +13,7 @@ Spisak predmeta na kojima je profesor
 
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
-
+using CLI.DAO;
 
 public class Profesor : ISerializable
 {
@@ -27,9 +27,10 @@ public class Profesor : ISerializable
     public string BrojLicneKarte {get; set;}
     public string Zvanje {get; set;}
     public int GodineStaza {get; set;}
-    public List<string> SpisakPredmeta {get; set;}
+    public List<Predmet> SpisakPredmeta {get; set;}
     public Profesor()
     {
+        SpisakPredmeta = new List<Predmet>();
     }
     public Profesor(int id,string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, string licna, string zvanje, int staz)
     {
@@ -43,7 +44,7 @@ public class Profesor : ISerializable
         BrojLicneKarte = licna;
         Zvanje = zvanje;
         GodineStaza = staz;
-        SpisakPredmeta = new List<string>();
+        SpisakPredmeta = new List<Predmet>();
     }
 
     public Profesor(string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, string licna, string zvanje, int staz)
@@ -57,30 +58,44 @@ public class Profesor : ISerializable
         BrojLicneKarte = licna;
         Zvanje = zvanje;
         GodineStaza = staz;
-        SpisakPredmeta = new List<string>();
+        SpisakPredmeta = new List<Predmet>();
     }
 
     public override string ToString()
     {
-        return $"ID: {Id,5} | Prezime: {Prezime,-20} | Ime: {Ime,-20} | Zvanje: {Zvanje,-15} | Godine staza: {GodineStaza,3} |";
+        string predmetiInfo = "";
+
+        if (SpisakPredmeta.Count == 0)
+        {
+            predmetiInfo = "Nema predmeta";
+        }
+        else
+        {
+            predmetiInfo = string.Join(", ", SpisakPredmeta.Select(predmet => predmet.NazivPredmeta));
+        }
+
+        return $"ID: {Id} | Prezime: {Prezime} | Ime: {Ime} | Datum rodjenja: {DatumRodjenja} | Adresa stanovanja: {AdresaStanovanja} | Kontakt telefon {KontaktTelefon} | Email adresa {EmailAdresa} | Broj licne karte: {BrojLicneKarte} | Zvanje: {Zvanje} | Godine staza: {GodineStaza} | Spisak predmeta: {predmetiInfo} |";
     }
 
     public string[] ToCSV()
     {
+        string predmetiInfo = string.Join(";", SpisakPredmeta.Select(predmet => predmet.SifraPredmeta));
+
         string[] csvValues =
         {
-            Id.ToString(),
-            Prezime,
-            Ime,
-            DatumRodjenja.ToString("yyyy-MM-dd"),
-            AdresaStanovanja.ToString(),
-            KontaktTelefon,
-            EmailAdresa,
-            BrojLicneKarte,
-            Zvanje,
-            GodineStaza.ToString(),
-            string.Join(",", SpisakPredmeta)
+        Id.ToString(),
+        Prezime,
+        Ime,
+        DatumRodjenja.ToString("yyyy-MM-dd"),
+        AdresaStanovanja.ToString(),
+        KontaktTelefon,
+        EmailAdresa,
+        BrojLicneKarte,
+        Zvanje,
+        GodineStaza.ToString(),
+        predmetiInfo
         };
+
         return csvValues;
     }
 
@@ -93,7 +108,7 @@ public class Profesor : ISerializable
         AdresaStanovanja = new Adresa
         {
             Ulica = values[4],
-            Broj = values[5],
+            Broj = int.Parse(values[5]),
             Grad = values[6],
             Drzava = values[7]
         };
@@ -103,19 +118,28 @@ public class Profesor : ISerializable
         Zvanje = values[11];
         GodineStaza = int.Parse(values[12]);
 
-        SpisakPredmeta = values[13].Split(',').ToList();
+        // Konvertujte šifre predmeta u objekte klase Predmet
+        SpisakPredmeta = values[13].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
+
     }
 
     public void UnesiPredmete()
     {
-        System.Console.WriteLine("Unesite predmete koje profesor predaje (završite unos praznim redom):");
+        System.Console.WriteLine("Unesite predmete koje profesor predaje (završite unos enterom):");
         string unosPredmeta;
         while (!string.IsNullOrWhiteSpace(unosPredmeta = System.Console.ReadLine()))
         {
             // Ovde možete dodati proveru da li predmet već postoji negde
-            if (!SpisakPredmeta.Contains(unosPredmeta))
+            if (!SpisakPredmeta.Any(predmet => predmet.SifraPredmeta == unosPredmeta))
             {
-                SpisakPredmeta.Add(unosPredmeta);
+                // Kreirajte novi Predmet na osnovu šifre
+                Predmet noviPredmet = new Predmet { SifraPredmeta = unosPredmeta };
+
+                // Dodajte novi predmet u listu
+                SpisakPredmeta.Add(noviPredmet);
+
+                // Dodajte novi predmet i profesora u bazu ili na drugo odgovarajuće mesto
+
                 DodajNoviPredmet();
                 System.Console.WriteLine($"Predmet '{unosPredmeta}' dodat profesoru.");
             }
@@ -126,10 +150,18 @@ public class Profesor : ISerializable
         }
     }
 
+
     public void DodajNoviPredmet()
     {
         System.Console.WriteLine("Unesite šifru predmeta: ");
         string sifra = System.Console.ReadLine();
+
+        // Provera da li predmet već postoji
+        if (SpisakPredmeta.Any(p => p.SifraPredmeta == sifra))
+        {
+            System.Console.WriteLine($"Predmet sa šifrom '{sifra}' već postoji u spisku profesora.");
+            return;
+        }
 
         System.Console.WriteLine("Unesite naziv predmeta: ");
         string naziv = System.Console.ReadLine();
@@ -145,16 +177,9 @@ public class Profesor : ISerializable
             int bodovi = Convert.ToInt32(System.Console.ReadLine());
 
             // Ovde možete dodati proveru da li predmet već postoji negde
-            if (!SpisakPredmeta.Contains(sifra))
-            {
-                Predmet noviPredmet = new Predmet(sifra, naziv, semestar, godinaStudija, this, bodovi);
-                SpisakPredmeta.Add(sifra);
-                System.Console.WriteLine($"Novi predmet '{naziv}' dodat profesoru.");
-            }
-            else
-            {
-                System.Console.WriteLine($"Predmet sa šifrom '{sifra}' već postoji u spisku profesora.");
-            }
+            Predmet noviPredmet = new Predmet(sifra, naziv, semestar, godinaStudija, this, bodovi);
+            SpisakPredmeta.Add(noviPredmet);
+            System.Console.WriteLine($"Novi predmet '{naziv}' dodat profesoru.");
         }
         else
         {
@@ -162,4 +187,8 @@ public class Profesor : ISerializable
         }
     }
 
+    public string imePrezimeToString()
+    {
+        return $"{Ime} {Prezime}";
+    } 
 }

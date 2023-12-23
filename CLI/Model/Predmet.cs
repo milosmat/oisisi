@@ -9,6 +9,8 @@ Spisak studenata koji su položili predmet
 Spisak studenata koji nisu položili predmet
 */
 namespace StudentskaSluzba.Model;
+
+using CLI.DAO;
 using StudentskaSluzba.Serialization;
 public enum SemestarEnum {Letnji, Zimski}
 public class Predmet : ISerializable
@@ -19,11 +21,13 @@ public class Predmet : ISerializable
     public int GodinaStudija {get; set;}
     public Profesor PredmetniProfesor {get; set;}
     public int BrojESPB {get; set;}
-    public List<string> SpisakStudenataPolozili {get; set;}
-    public List<string> SpisakStudenataNisuPolozili {get; set;}
+    public List<Student> SpisakStudenataPolozili {get; set;}
+    public List<Student> SpisakStudenataNisuPolozili {get; set;}
 
     public Predmet()
-    { 
+    {
+        SpisakStudenataPolozili = new List<Student>();
+        SpisakStudenataNisuPolozili = new List<Student>();
     }
     public Predmet(string sifra, string naziv, SemestarEnum semestar, int godina, Profesor prof, int bodovi)
     {
@@ -33,32 +37,32 @@ public class Predmet : ISerializable
         GodinaStudija = godina;
         PredmetniProfesor = prof;
         BrojESPB = bodovi;
-        SpisakStudenataPolozili = new List<string>();
-        SpisakStudenataNisuPolozili = new List<string>();
+        SpisakStudenataPolozili = new List<Student>();
+        SpisakStudenataNisuPolozili = new List<Student>();
     }
 
     public override string ToString()
     {
-        string profesorImePrezime = (PredmetniProfesor != null) ? $"{PredmetniProfesor.Ime} {PredmetniProfesor.Prezime}" : "N/A";
+        string profesorImePrezime = (PredmetniProfesor != null) ? PredmetniProfesor.imePrezimeToString() : "N/A";
 
         return $"Sifra: {SifraPredmeta} | Naziv: {NazivPredmeta} | Semestar: {Semestar} | Godina studija: {GodinaStudija} | Predmetni profesor: {profesorImePrezime} | Broj ESPB: {BrojESPB}";
     }
 
     public string[] ToCSV()
     {
-        string profesorId = (PredmetniProfesor != null) ? PredmetniProfesor.Id.ToString() : "N/A";
+        string profesorInfo = (PredmetniProfesor != null) ? PredmetniProfesor.Id.ToString() : "-1";
 
         string[] csvValues =
         {
-            SifraPredmeta,
-            NazivPredmeta,
-            Semestar.ToString(),
-            GodinaStudija.ToString(),
-            profesorId,
-            BrojESPB.ToString(),
-            string.Join(",", SpisakStudenataPolozili),
-            string.Join(",", SpisakStudenataNisuPolozili)
-        };
+        SifraPredmeta,
+        NazivPredmeta,
+        Semestar.ToString(),
+        GodinaStudija.ToString(),
+        profesorInfo,
+        BrojESPB.ToString(),
+        string.Join(",", SpisakStudenataPolozili),
+        string.Join(",", SpisakStudenataNisuPolozili)
+    };
 
         return csvValues;
     }
@@ -82,10 +86,8 @@ public class Predmet : ISerializable
         }
 
         BrojESPB = int.Parse(values[5]);
-        SpisakStudenataPolozili = values[6].Split(',').ToList();
-        SpisakStudenataNisuPolozili = values[7].Split(',').ToList();
+        SpisakStudenataPolozili = values[6].Split(',').Select(id => new Student() { Id = int.Parse(id) }).ToList();
+        SpisakStudenataNisuPolozili = values[7].Split(',').Select(id => new Student() { Id = int.Parse(id) }).ToList();
     }
-
-
 
 }

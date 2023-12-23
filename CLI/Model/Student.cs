@@ -12,17 +12,19 @@ public class Student : ISerializable
     public Adresa AdresaStanovanja {get; set;}
     public string KontaktTelefon {get; set;}
     public string EmailAdresa {get; set;}
-    public string BrojIndeksa{get; set;}
+    public Indeks BrojIndeksa{get; set;}
     public int TrenutnaGodinaStudija {get; set;}
     public StatusEnum Status {get; set;}
     public double ProsecnaOcena {get; set;}
-    public List<int> SpisakPolozenihIspita {get; set;}
-    public List<string> SpisakNepolozenihPredmeta {get; set;}
+    public List<Predmet> SpisakPolozenihIspita {get; set;}
+    public List<Predmet> SpisakNepolozenihPredmeta {get; set;}
 
     public Student()
     {
+        SpisakPolozenihIspita = new List<Predmet>();
+        SpisakNepolozenihPredmeta = new List<Predmet>();
     }
-    public Student(int id, string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, string brIndeksa, int trGodina, StatusEnum status, double prosek)
+    public Student(int id, string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, Indeks brIndeksa, int trGodina, StatusEnum status, double prosek)
     {
         Id = id;
         Prezime = prezime;
@@ -35,11 +37,11 @@ public class Student : ISerializable
         TrenutnaGodinaStudija = trGodina;
         Status = status;
         ProsecnaOcena = prosek;
-        SpisakPolozenihIspita = new List<int>();
-        SpisakNepolozenihPredmeta = new List<string>();
+        SpisakPolozenihIspita = new List<Predmet>();
+        SpisakNepolozenihPredmeta = new List<Predmet>();
     }
 
-    public Student(string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, string brIndeksa, int trGodina, StatusEnum status, double prosek)
+    public Student(string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, Indeks brIndeksa, int trGodina, StatusEnum status, double prosek)
     {
         Prezime = prezime;
         Ime = ime;
@@ -51,8 +53,8 @@ public class Student : ISerializable
         TrenutnaGodinaStudija = trGodina;
         Status = status;
         ProsecnaOcena = prosek;
-        SpisakPolozenihIspita = new List<int>();
-        SpisakNepolozenihPredmeta = new List<string>();
+        SpisakPolozenihIspita = new List<Predmet>();
+        SpisakNepolozenihPredmeta = new List<Predmet>();
     }
 
     public override string ToString()
@@ -71,12 +73,12 @@ public class Student : ISerializable
             AdresaStanovanja.ToString(),
             KontaktTelefon,
             EmailAdresa,
-            BrojIndeksa,
+            BrojIndeksa.ToString(),
             TrenutnaGodinaStudija.ToString(),
             Status.ToString(),
             ProsecnaOcena.ToString("F2"),
-            string.Join(",", SpisakPolozenihIspita),
-            string.Join(",", SpisakNepolozenihPredmeta)
+            string.Join(";", SpisakPolozenihIspita),
+            string.Join(";", SpisakNepolozenihPredmeta)
         };
         return csvValues;
     }
@@ -90,18 +92,23 @@ public class Student : ISerializable
         AdresaStanovanja = new Adresa
         {
             Ulica = values[4],
-            Broj = values[5],
+            Broj = int.Parse(values[5]),
             Grad = values[6],
             Drzava = values[7]
         };
         KontaktTelefon = values[8];
         EmailAdresa = values[9];
-        BrojIndeksa = values[10];
-        TrenutnaGodinaStudija = int.Parse(values[11]);
-        Status = (StatusEnum)Enum.Parse(typeof(StatusEnum), values[12]);
-        ProsecnaOcena = double.Parse(values[13], null);
+        BrojIndeksa = new Indeks
+        {
+            OznakaSmera = values[11],
+            BrojUpisa = int.Parse(values[12]),
+            GodinaUpisa = int.Parse(values[13])
+        };
+        TrenutnaGodinaStudija = int.Parse(values[14]);
+        Status = (StatusEnum)Enum.Parse(typeof(StatusEnum), values[15]);
+        ProsecnaOcena = double.Parse(values[16], null);
 
-        SpisakPolozenihIspita = values[14].Split(',').Select(int.Parse).ToList();
-        SpisakNepolozenihPredmeta = values[15].Split(',').ToList();
+        SpisakPolozenihIspita = values[17].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
+        SpisakNepolozenihPredmeta = values[18].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
     }
 }

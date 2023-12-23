@@ -1,1 +1,1 @@
-0,milos,mat,1294-02-12,ID: 0 | Ulica:  | Broj:  | Grad:  | Drzava:  |,024124,samfiasm@mgial.com,01240120,dekan,10,matematika,1
+1,Smith,John,1980-05-20,Main Street,123,City,Country,123-456,smith@example.com,ABC123,Professor,10,Math;Physics;Chemistry
