@@ -5,8 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{DynamicResource AppTitle}" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/StringResources.en.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-
+        <Menu VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <MenuItem Header="{DynamicResource File}" />
+            <MenuItem Header="{DynamicResource Edit}" />
+            <MenuItem Header="{DynamicResource Help}" />
+        </Menu>
+        <ComboBox HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,30,10,0"
+                  SelectionChanged="LanguageSelectionChanged">
+            <ComboBoxItem Content="English" Tag="en"/>
+            <ComboBoxItem Content="Srpski" Tag="sr"/>
+        </ComboBox>
+        <TabControl Margin="10,30,10,10">
+            <TabItem Header="{DynamicResource Students}">
+                <Grid>
+                    <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{DynamicResource Index}" Binding="{Binding Indeks}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource FirstName}" Binding="{Binding Ime}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource LastName}" Binding="{Binding Prezime}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource YearOfStudy}" Binding="{Binding GodinaStudija}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource Status}" Binding="{Binding Status}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource GPA}" Binding="{Binding Prosek}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource Professors}">
+            </TabItem>
+            <TabItem Header="{DynamicResource Courses}">
+            </TabItem>
+        </TabControl>
+        <StatusBar VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+            <StatusBarItem Content="{DynamicResource StatusText}"/>
+            <StatusBarItem HorizontalAlignment="Right" Content="12:30 26.10.2020."/>
+        </StatusBar>
     </Grid>
 </Window>
