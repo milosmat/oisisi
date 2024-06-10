@@ -15,4 +15,5 @@
     <sys:String x:Key="GPA">Prosek</sys:String>
     <sys:String x:Key="AppTitle">Studentska služba</sys:String>
     <sys:String x:Key="StatusText">Studentska služba</sys:String>
+    <sys:String x:Key="ToolbarButton">Toolbar Dugme</sys:String>
 </ResourceDictionary>

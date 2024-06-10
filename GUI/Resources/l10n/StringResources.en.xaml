@@ -15,4 +15,5 @@
     <sys:String x:Key="GPA">GPA</sys:String>
     <sys:String x:Key="AppTitle">Student Service</sys:String>
     <sys:String x:Key="StatusText">Student Service</sys:String>
+    <sys:String x:Key="ToolbarButton">Toolbar Button</sys:String>
 </ResourceDictionary>

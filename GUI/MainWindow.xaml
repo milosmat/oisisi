@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="{DynamicResource AppTitle}" Height="450" Width="800">
+        Title="{DynamicResource AppTitle}" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/StringResources.en.xaml"/>
+                <local:LocalizedResourceDictionary/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -19,11 +21,15 @@
             <MenuItem Header="{DynamicResource Edit}" />
             <MenuItem Header="{DynamicResource Help}" />
         </Menu>
-        <ComboBox HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Margin="0,30,10,0"
-                  SelectionChanged="LanguageSelectionChanged">
-            <ComboBoxItem Content="English" Tag="en"/>
-            <ComboBoxItem Content="Srpski" Tag="sr"/>
-        </ComboBox>
+        <ToolBarTray VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
+            <ToolBar>
+                <Button Content="{DynamicResource ToolbarButton}" />
+                <ComboBox Width="100" SelectionChanged="LanguageSelectionChanged">
+                    <ComboBoxItem Content="English" Tag="en"/>
+                    <ComboBoxItem Content="Srpski" Tag="sr"/>
+                </ComboBox>
+            </ToolBar>
+        </ToolBarTray>
         <TabControl Margin="10,30,10,10">
             <TabItem Header="{DynamicResource Students}">
                 <Grid>

@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GUI
 {
@@ -33,14 +23,10 @@ namespace GUI
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
 
-            var dict = new ResourceDictionary
-            {
-                Source = cultureCode switch
-                {
-                    "sr" => new Uri("Resources/StringResources.srb.xaml", UriKind.Relative),
-                    _ => new Uri("Resources/StringResources.en.xaml", UriKind.Relative)
-                }
-            };
+            var dict = new ResourceDictionary();
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var resourcesPath = Path.Combine(baseDirectory, "Resources", $"StringResources.{cultureCode}.xaml");
+            dict.Source = new Uri(resourcesPath, UriKind.Absolute);
 
             this.Resources.MergedDictionaries[0] = dict;
         }
@@ -50,6 +36,13 @@ namespace GUI
             if (e.AddedItems.Count <= 0) return;
             var selectedLanguage = (e.AddedItems[0] as ComboBoxItem)?.Tag.ToString();
             SwitchLanguage(selectedLanguage);
+        }
+        
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Width = SystemParameters.PrimaryScreenWidth * 0.75;
+            this.Height = SystemParameters.PrimaryScreenHeight * 0.75;
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
     }
 }
