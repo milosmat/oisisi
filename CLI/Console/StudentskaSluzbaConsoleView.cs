@@ -1,6 +1,5 @@
 ﻿using CLI.DAO;
 using StudentskaSluzba.Model;
-using System.Collections.Generic;
 
 namespace StudentskaSluzba.Console;
 
@@ -184,7 +183,7 @@ class StudentskaSluzbaConsoleView
         Profesor prof = InputProf();
         prof.Id = IDProf;
         Profesor azuriranProf = _profesorDao.AzurirajProfesora(prof);
-        if(azuriranProf == null) 
+        if (azuriranProf == null)
         {
             System.Console.WriteLine("Profesor nije pronadjen!");
             return;
@@ -195,7 +194,7 @@ class StudentskaSluzbaConsoleView
     {
         int idProf = inputIdProf();
         Profesor? obrisanProf = _profesorDao.IzbrisiProfesora(idProf);
-        if(obrisanProf == null)
+        if (obrisanProf == null)
         {
             System.Console.WriteLine("Profesor nije pronadjen!");
             return;
@@ -312,11 +311,10 @@ class StudentskaSluzbaConsoleView
         Student noviStudent = new Student(ime, prezime, datumRodjenja, adr, telefon, email, brojIndeksa, trenutnaGodina, status, prosecnaOcena);
         //GRESKE SA UNOSOM
         System.Console.WriteLine("Unesite položene ispite studenta (odvojene tačkom-zarez, završite unos enterom): ");
-        noviStudent.SpisakPolozenihIspita.
 
-        System.Console.WriteLine("Unesite nepoložene predmete studenta (odvojene tačkom-zarez, završite unos enterom): ");
+        //System.Console.WriteLine("Unesite nepoložene predmete studenta (odvojene tačkom-zarez, završite unos enterom): ");
         string unosNepolozenih = System.Console.ReadLine();
-        noviStudent.SpisakNepolozenihPredmeta.AddRange(unosNepolozenih.Split(';'));
+        //noviStudent.SpisakNepolozenihPredmeta.AddRange(unosNepolozenih.Split(';'));
 
 
         return noviStudent;
@@ -454,13 +452,13 @@ class StudentskaSluzbaConsoleView
 
         PrikaziSveStud();
         System.Console.WriteLine("Unesite studente koji su položili predmet (odvojene tačkom-zarez, završite unos enterom): ");
-      
+
         string unosPolozenih = System.Console.ReadLine();
-        noviPredmet.SpisakStudenataPolozili.AddRange(unosPolozenih.Split(';'));
+        //noviPredmet.SpisakStudenataPolozili.AddRange(unosPolozenih.Split(';'));
 
         System.Console.WriteLine("Unesite studente koji nisu položili predmet (odvojene tačkom-zarez, završite unos enterom): ");
         string unosNepolozenih = System.Console.ReadLine();
-        noviPredmet.SpisakStudenataNisuPolozili.AddRange(unosNepolozenih.Split(';'));
+        //noviPredmet.SpisakStudenataNisuPolozili.AddRange(unosNepolozenih.Split(';'));
 
         return noviPredmet;
     }

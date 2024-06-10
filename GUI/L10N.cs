@@ -6,7 +6,7 @@ using System.Windows.Markup;
 
 namespace GUI;
 
-public class LocalizedResourceDictionary : MarkupExtension 
+public class LocalizedResourceDictionary : MarkupExtension
 {
     //public string Source { get; set; }
 
@@ -14,7 +14,7 @@ public class LocalizedResourceDictionary : MarkupExtension
     {
         var cultureCode = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        var resourcePath = baseDirectory + "Resources" + Path.DirectorySeparatorChar + $"StringResources.{cultureCode}.xaml";
+        var resourcePath = Path.Combine(baseDirectory, "..", "..", "..", "Resources", "l10n", $"StringResources.{cultureCode}.xaml");
 
         var dictionary = new ResourceDictionary
         {

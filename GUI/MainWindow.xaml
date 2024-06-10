@@ -21,7 +21,7 @@
             <MenuItem Header="{DynamicResource Edit}" />
             <MenuItem Header="{DynamicResource Help}" />
         </Menu>
-        <ToolBarTray VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
+        <ToolBarTray Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
             <ToolBar>
                 <Button Content="{DynamicResource ToolbarButton}" />
                 <ComboBox Width="100" SelectionChanged="LanguageSelectionChanged">
@@ -30,17 +30,26 @@
                 </ComboBox>
             </ToolBar>
         </ToolBarTray>
-        <TabControl Margin="10,30,10,10">
+        <TabControl Grid.Row="2" Margin="10,60,10,10">
             <TabItem Header="{DynamicResource Students}">
                 <Grid>
-                    <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Students}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{DynamicResource Index}" Binding="{Binding Indeks}" Width="*"/>
-                            <DataGridTextColumn Header="{DynamicResource FirstName}" Binding="{Binding Ime}" Width="*"/>
-                            <DataGridTextColumn Header="{DynamicResource LastName}" Binding="{Binding Prezime}" Width="*"/>
-                            <DataGridTextColumn Header="{DynamicResource YearOfStudy}" Binding="{Binding GodinaStudija}" Width="*"/>
-                            <DataGridTextColumn Header="{DynamicResource Status}" Binding="{Binding Status}" Width="*"/>
-                            <DataGridTextColumn Header="{DynamicResource GPA}" Binding="{Binding Prosek}" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Ime}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource FirstName}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Prezime}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource LastName}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Status}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource Status}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

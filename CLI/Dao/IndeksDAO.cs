@@ -1,5 +1,5 @@
-﻿using StudentskaSluzba.Storage;
-using StudentskaSluzba.Model;
+﻿using StudentskaSluzba.Model;
+using StudentskaSluzba.Storage;
 namespace CLI.DAO;
 class IndeksDAO
 {
@@ -15,12 +15,12 @@ class IndeksDAO
     private int GenerateId()
     {
         if (indeksi.Count == 0) return 0;
-        return indeksi[^1].Id + 1;
+        return indeksi[^1].BrojUpisa + 1;
     }
 
     public Indeks dodajIndeks(Indeks indeks)
     {
-        indeks.Id = GenerateId();
+        indeks.BrojUpisa = GenerateId();
         indeksi.Add(indeks);
         skladiste.Save(indeksi);
         return indeks;
@@ -52,7 +52,7 @@ class IndeksDAO
 
     private Indeks? UzmiIndeksPoID(int id)
     {
-        return indeksi.Find(i => i.Id == id);
+        return indeksi.Find(i => i.BrojUpisa == id);
     }
 
     public List<Indeks> UzmiSveIndekse()
