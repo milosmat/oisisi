@@ -25,12 +25,16 @@ namespace GUI
             set => students = value;
         }
 
+        private TabItem? selected;
+        
         public MainWindow()
         {
             InitializeComponent();
             Students = students;
             DataContext = this;
             SetMenuIcons();
+            selected = Tabs1.SelectedItem as TabItem;
+            StatusBarText.Content += " - " + selected?.Header.ToString();
         }
         
         private void SetMenuIcons()
@@ -87,6 +91,14 @@ namespace GUI
             this.Width = SystemParameters.PrimaryScreenWidth * 0.75;
             this.Height = SystemParameters.PrimaryScreenHeight * 0.75;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        }
+
+        private void Tabs1_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selected = Tabs1.SelectedItem as TabItem;
+            var text = StatusBarText.Content as String;
+            text = text?[..text.LastIndexOf('-')];
+            StatusBarText.Content += "- " + selected?.Header.ToString();
         }
     }
 }

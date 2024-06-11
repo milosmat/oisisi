@@ -51,14 +51,41 @@
         </Menu>
         <ToolBarTray VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
             <ToolBar>
-                <Button Content="{DynamicResource ToolbarButton}" />
+                <Button x:Name="BtnNew" Command="New" />
+                <Button x:Name="BtnEdit" Command="Properties" />
+                <Button x:Name="BtnDelete" Command="Delete" />
                 <ComboBox Width="100" SelectionChanged="LanguageSelectionChanged">
                     <ComboBoxItem Content="English" Tag="en"/>
                     <ComboBoxItem Content="Srpski" Tag="sr"/>
                 </ComboBox>
+                <TextBox x:Name="TxtSearch">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                            <Style.Resources>
+                                <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                    <VisualBrush.Visual>
+                                        <Label Content="{DynamicResource Search}" Foreground="LightGray" />
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Style.Resources>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="Text" Value="{x:Null}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Background" Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Button x:Name="BtnSearch" Command="Search" />
             </ToolBar>
         </ToolBarTray>
-        <TabControl Margin="10,60,10,10">
+        <TabControl x:Name="Tabs1" Margin="10,60,10,10" SelectionChanged="Tabs1_OnSelectionChanged">
             <TabItem Header="{DynamicResource Students}">
                 <Grid>
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Students}">
@@ -88,7 +115,7 @@
             </TabItem>
         </TabControl>
         <StatusBar VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
-            <StatusBarItem Content="{DynamicResource StatusText}"/>
+            <StatusBarItem x:Name="StatusBarText" Content="{DynamicResource StatusText}"/>
             <StatusBarItem HorizontalAlignment="Right" Content="12:30 26.10.2020."/>
         </StatusBar>
     </Grid>
