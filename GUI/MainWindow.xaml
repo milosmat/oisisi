@@ -15,13 +15,69 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="New"/>
+        <CommandBinding Command="Save"/>
+        <CommandBinding Command="Open"/>
+        <CommandBinding Command="Close"/>
+        <CommandBinding Command="Properties"/>
+        <CommandBinding Command="Delete"/>
+        <CommandBinding Command="Help"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" Command="Save"/>
+        <KeyBinding Key="N" Modifiers="Control" Command="New"/>
+        <KeyBinding Key="O" Modifiers="Control" Command="Open"/>
+        <KeyBinding Key="E" Modifiers="Control" Command="Close"/>
+        <KeyBinding Key="P" Modifiers="Control" Command="Properties"/>
+        <KeyBinding Key="D" Modifiers="Control" Command="Delete"/>
+        <KeyBinding Key="H" Modifiers="Control" Command="Help"/>
+    </Window.InputBindings>
     <Grid>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Stretch">
-            <MenuItem Header="{DynamicResource File}" />
-            <MenuItem Header="{DynamicResource Edit}" />
-            <MenuItem Header="{DynamicResource Help}" />
+            <MenuItem Header="{DynamicResource File}">
+                <MenuItem Header="{DynamicResource New}" InputGestureText="Ctrl+N">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/images/add.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource Save}" InputGestureText="Ctrl+S">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/images/diskette.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource Open}" InputGestureText="Ctrl+O">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/images/folder.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource Close}" InputGestureText="Ctrl+E">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/images/close.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="{DynamicResource Edit}" >
+                <MenuItem Header="{DynamicResource Edit}" InputGestureText="Ctrl+P">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/images/edit.png" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource Delete}" InputGestureText="Ctrl+D">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/images/delete.png" />
+                    </MenuItem.Icon>
+                </MenuItem>        
+            </MenuItem>
+            <MenuItem Header="{DynamicResource Help}">
+                <MenuItem Header="{DynamicResource About}" InputGestureText="Ctrl+H">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/images/info.png" />
+                    </MenuItem.Icon>
+                </MenuItem>        
+            </MenuItem>
         </Menu>
-        <ToolBarTray Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
+        <ToolBarTray VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
             <ToolBar>
                 <Button Content="{DynamicResource ToolbarButton}" />
                 <ComboBox Width="100" SelectionChanged="LanguageSelectionChanged">
@@ -30,7 +86,7 @@
                 </ComboBox>
             </ToolBar>
         </ToolBarTray>
-        <TabControl Grid.Row="2" Margin="10,60,10,10">
+        <TabControl Margin="10,60,10,10">
             <TabItem Header="{DynamicResource Students}">
                 <Grid>
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Students}">

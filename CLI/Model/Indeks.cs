@@ -24,7 +24,7 @@ public class Indeks : ISerializable
 
     public override string ToString()
     {
-        return $"Oznaka smera: {OznakaSmera} | Broj upisa: {BrojUpisa} | Godina upisa: {GodinaUpisa}";
+        return $"{OznakaSmera} {BrojUpisa}/{GodinaUpisa}";
     }
     public string[] ToCSV()
     {
