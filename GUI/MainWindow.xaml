@@ -16,7 +16,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.CommandBindings>
-        <CommandBinding Command="New"/>
+        <CommandBinding Command="New" Executed="NewEntityBinding_Executed"/>
         <CommandBinding Command="Save"/>
         <CommandBinding Command="Open"/>
         <CommandBinding Command="Close"/>

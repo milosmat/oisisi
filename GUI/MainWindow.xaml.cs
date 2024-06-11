@@ -6,7 +6,9 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using GUI.View;
 
 namespace GUI
 {
@@ -100,6 +102,12 @@ namespace GUI
             var text = StatusBarText.Content as String;
             text = text?[..text.LastIndexOf('-')];
             StatusBarText.Content += text + "- " + selected?.Header;
+        }
+
+        private void NewEntityBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            DodajStudentaView dsv = new DodajStudentaView();
+            dsv.Show();
         }
     }
 }

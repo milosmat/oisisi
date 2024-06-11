@@ -1,0 +1,91 @@
+<Window x:Class="GUI.View.DodajStudentaView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        xmlns:cli="clr-namespace:StudentskaSluzba.Model;"
+        xmlns:model="clr-namespace:StudentskaSluzba.Model;assembly=CLI"
+        Title="{DynamicResource AppTitleDStud}" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <local:LocalizedResourceDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource FirstName}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtIme" Grid.Row="0" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource LastName}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtPrezime" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource BirthDate}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtDatumRodjenja" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Address}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtAdresaStanovanja" Grid.Row="3" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource PhoneNumber}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtBrojTelefona" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Email}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtEmailAdresa" Grid.Row="5" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource IndexLabel}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtBrojIndeksa" Grid.Row="6" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource EnrollmentYear}" VerticalAlignment="Center" Margin="5"/>
+        <TextBox x:Name="TxtGodinaUpisa" Grid.Row="7" Grid.Column="1" Margin="5"/>
+
+        <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource CurrentYear}" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox x:Name="CmbTrenutnaGodinaStudija" Grid.Row="8" Grid.Column="1" Margin="5">
+            <ComboBoxItem Content="I (prva)" Tag="1"/>
+            <ComboBoxItem Content="II (druga)" Tag="2"/>
+            <ComboBoxItem Content="III (treća)" Tag="3"/>
+            <ComboBoxItem Content="IV (četvrta)" Tag="4"/>
+        </ComboBox>
+
+        <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource FinancingMethod}" VerticalAlignment="Center" Margin="5"/>
+        <ComboBox x:Name="CmbNacinFinansiranja" Grid.Row="9" Grid.Column="1" Margin="5">
+            <ComboBoxItem Content="{DynamicResource Budget}">
+                <ComboBoxItem.Tag>
+                    <model:StatusEnum>Budzet</model:StatusEnum>
+                </ComboBoxItem.Tag>
+            </ComboBoxItem>
+            <ComboBoxItem Content="{DynamicResource SelfFinancing}">
+                <ComboBoxItem.Tag>
+                    <model:StatusEnum>Samofinansiranje</model:StatusEnum>
+                </ComboBoxItem.Tag>
+            </ComboBoxItem>
+        </ComboBox>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button Content="{DynamicResource Confirm}" Width="100" Margin="5" Click="BtnPotvrdi_Action"/>
+            <Button Content="{DynamicResource Cancel}" Width="100" Margin="5" Click="BtnOdustani_Action"/>
+        </StackPanel>
+    </Grid>
+</Window>

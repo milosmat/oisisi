@@ -3,7 +3,7 @@ using StudentskaSluzba.Storage;
 using StudentskaSluzba.Model;
 
 namespace CLI.DAO;
-class AdresaDAO
+public class AdresaDAO
 {
     private readonly List<Adresa> adrese;
     private readonly Storage<Adresa> skladiste;
