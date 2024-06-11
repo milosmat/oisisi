@@ -29,5 +29,20 @@
     <sys:String x:Key="SubjName">Subject name</sys:String>
     <sys:String x:Key="SubjESPB">ECTS</sys:String>
     <sys:String x:Key="SubjYear">Year</sys:String>
-    <sys:String x:Key="SubjSem">Semestar</sys:String>
+    <sys:String x:Key="SubjSem">Semester</sys:String>
+        
+    <!-- DodavanjeStudenta -->
+    <sys:String x:Key="AppTitleDStud">Add student</sys:String>
+    <sys:String x:Key="BirthDate">Birth Date*</sys:String>
+    <sys:String x:Key="Address">Address*</sys:String>
+    <sys:String x:Key="PhoneNumber">Phone number*</sys:String>
+    <sys:String x:Key="EmailAdr">E-mail*</sys:String>
+    <sys:String x:Key="IndexLabel">Index label*</sys:String>
+    <sys:String x:Key="EnrollmentYear">Enrollment Year*</sys:String>
+    <sys:String x:Key="CurrentYear">Current year*</sys:String>
+    <sys:String x:Key="FinancingMethod">Financing Method*</sys:String>
+    <sys:String x:Key="Budget">Budget</sys:String>
+    <sys:String x:Key="SelfFinancing">Self Financing</sys:String>
+    <sys:String x:Key="Confirm">Confirm</sys:String>
+    <sys:String x:Key="Cancel">Cancel</sys:String>
 </ResourceDictionary>

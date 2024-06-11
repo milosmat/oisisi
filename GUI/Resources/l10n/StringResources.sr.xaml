@@ -30,4 +30,19 @@
     <sys:String x:Key="SubjESPB">Broj ESPB bodova</sys:String>
     <sys:String x:Key="SubjYear">Godina</sys:String>
     <sys:String x:Key="SubjSem">Semestar</sys:String>
+    
+    <!-- DodavanjeStudenta -->
+    <sys:String x:Key="AppTitleDStud">Dodaj Studenta</sys:String>
+    <sys:String x:Key="BirthDate">Datum rođenja*</sys:String>
+    <sys:String x:Key="Address">Adresa stanovanja*</sys:String>
+    <sys:String x:Key="PhoneNumber">Broj telefona*</sys:String>
+    <sys:String x:Key="EmailAdr">E-mail adresa*</sys:String>
+    <sys:String x:Key="IndexLabel">Oznaka smera za indeks*</sys:String>
+    <sys:String x:Key="EnrollmentYear">Godina upisa*</sys:String>
+    <sys:String x:Key="CurrentYear">Trenutna godina studija*</sys:String>
+    <sys:String x:Key="FinancingMethod">Način finansiranja*</sys:String>
+    <sys:String x:Key="Budget">Budžet</sys:String>
+    <sys:String x:Key="SelfFinancing">Samofinansiranje</sys:String>
+    <sys:String x:Key="Confirm">Potvrdi</sys:String>
+    <sys:String x:Key="Cancel">Odustani</sys:String>
 </ResourceDictionary>
