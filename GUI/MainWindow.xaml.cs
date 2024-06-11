@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace GUI
 {
@@ -14,14 +15,14 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<Student> students = new ObservableCollection<Student>
+        private ObservableCollection<Student> students = new()
         {
             new Student { Id = 1, Ime = "Marko", Prezime = "Markovic", Status = StatusEnum.Budzet },
         };
         public ObservableCollection<Student> Students
         {
-            get { return students; }
-            set { students = value; }
+            get => students;
+            set => students = value;
         }
 
         public MainWindow()
@@ -29,6 +30,36 @@ namespace GUI
             InitializeComponent();
             Students = students;
             DataContext = this;
+            SetMenuIcons();
+        }
+        
+        private void SetMenuIcons()
+        {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var imagesFolder = Path.Combine(baseDirectory, "..", "..", "..", "Resources", "images");
+
+            SetMenuItemIcon(NewMenuItem, Path.Combine(imagesFolder, "add.png"));
+            SetMenuItemIcon(SaveMenuItem, Path.Combine(imagesFolder, "diskette.png"));
+            SetMenuItemIcon(OpenMenuItem, Path.Combine(imagesFolder, "folder.png"));
+            SetMenuItemIcon(CloseMenuItem, Path.Combine(imagesFolder, "close.png"));
+            SetMenuItemIcon(EditMenuItem, Path.Combine(imagesFolder, "edit.png"));
+            SetMenuItemIcon(DeleteMenuItem, Path.Combine(imagesFolder, "delete.png"));
+            SetMenuItemIcon(AboutMenuItem, Path.Combine(imagesFolder, "info.png"));
+        }
+
+        private void SetMenuItemIcon(MenuItem menuItem, string imagePath)
+        {
+            if (File.Exists(imagePath))
+            {
+                var uri = new Uri(imagePath, UriKind.Absolute);
+                var bitmap = new BitmapImage(uri);
+                var image = new Image { Source = bitmap };
+                menuItem.Icon = image;
+            }
+            else
+            {
+                MessageBox.Show($"Image not found: {imagePath}");
+            }
         }
 
         private void SwitchLanguage(string cultureCode)
@@ -48,7 +79,7 @@ namespace GUI
         {
             if (e.AddedItems.Count <= 0) return;
             var selectedLanguage = (e.AddedItems[0] as ComboBoxItem)?.Tag.ToString();
-            SwitchLanguage(selectedLanguage);
+            if (selectedLanguage != null) SwitchLanguage(selectedLanguage);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
