@@ -35,6 +35,7 @@ namespace GUI
             SetMenuIcons();
             selected = Tabs1.SelectedItem as TabItem;
             StatusBarText.Content += " - " + selected?.Header.ToString();
+            StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
         }
         
         private void SetMenuIcons()
@@ -98,7 +99,7 @@ namespace GUI
             selected = Tabs1.SelectedItem as TabItem;
             var text = StatusBarText.Content as String;
             text = text?[..text.LastIndexOf('-')];
-            StatusBarText.Content += "- " + selected?.Header.ToString();
+            StatusBarText.Content += text + "- " + selected?.Header;
         }
     }
 }

@@ -23,4 +23,11 @@
     <sys:String x:Key="Delete">Delete</sys:String>
     <sys:String x:Key="About">About</sys:String>
     <sys:String x:Key="Search">Search</sys:String>
+    <sys:String x:Key="Title">Title</sys:String>
+    <sys:String x:Key="Email">Email</sys:String>
+    <sys:String x:Key="SubjCode">Subject code</sys:String>
+    <sys:String x:Key="SubjName">Subject name</sys:String>
+    <sys:String x:Key="SubjESPB">ECTS</sys:String>
+    <sys:String x:Key="SubjYear">Year</sys:String>
+    <sys:String x:Key="SubjSem">Semestar</sys:String>
 </ResourceDictionary>

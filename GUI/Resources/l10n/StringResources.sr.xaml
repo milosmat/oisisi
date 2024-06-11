@@ -23,4 +23,11 @@
     <sys:String x:Key="Delete">Obriši</sys:String>
     <sys:String x:Key="About">O aplikaciji</sys:String>
     <sys:String x:Key="Search">Traži</sys:String>
+    <sys:String x:Key="Title">Zvanje</sys:String>
+    <sys:String x:Key="Email">Email</sys:String>
+    <sys:String x:Key="SubjCode">Šifra predmeta</sys:String>
+    <sys:String x:Key="SubjName">Naziv predmeta</sys:String>
+    <sys:String x:Key="SubjESPB">Broj ESPB bodova</sys:String>
+    <sys:String x:Key="SubjYear">Godina</sys:String>
+    <sys:String x:Key="SubjSem">Semestar</sys:String>
 </ResourceDictionary>
