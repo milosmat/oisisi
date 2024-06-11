@@ -26,6 +26,7 @@ class Serializer<T> where T : ISerializable, new()
         foreach (string line in lines)
         {
             string[] csvValues = line.Split(Delimiter);
+            if (csvValues.Length < 2) continue;
             T obj = new T();
             obj.FromCSV(csvValues);
             objects.Add(obj);

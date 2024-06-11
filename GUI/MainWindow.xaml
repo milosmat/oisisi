@@ -36,7 +36,7 @@
     <Grid>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Stretch">
             <MenuItem Header="{DynamicResource File}">
-                <MenuItem x:Name="NewMenuItem" Header="{DynamicResource New}" InputGestureText="Ctrl+N"/>
+                <MenuItem x:Name="NewMenuItem" Header="{DynamicResource New}" InputGestureText="Ctrl+N" Command="New"/>
                 <MenuItem x:Name="SaveMenuItem" Header="{DynamicResource Save}" InputGestureText="Ctrl+S"/>
                 <MenuItem x:Name="OpenMenuItem" Header="{DynamicResource Open}" InputGestureText="Ctrl+O"/>
                 <MenuItem x:Name="CloseMenuItem" Header="{DynamicResource Close}" InputGestureText="Ctrl+E"/>
@@ -49,16 +49,16 @@
                 <MenuItem x:Name="AboutMenuItem" Header="{DynamicResource About}" InputGestureText="Ctrl+H"/>
             </MenuItem>
         </Menu>
-        <ToolBarTray VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0">
-            <ToolBar>
-                <Button x:Name="BtnNew" Command="New" />
-                <Button x:Name="BtnEdit" Command="Properties" />
-                <Button x:Name="BtnDelete" Command="Delete" />
+        <ToolBarTray  VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0" IsLocked="True" Height="40">
+            <ToolBar AllowDrop="False">
+                <Button x:Name="BtnNew" Command="New" Width="30" Height="30" />
+                <Button x:Name="BtnEdit" Command="Properties" Width="30" Height="30" />
+                <Button x:Name="BtnDelete" Command="Delete" Width="30" Height="30" />
                 <ComboBox Width="100" SelectionChanged="LanguageSelectionChanged">
                     <ComboBoxItem Content="English" Tag="en"/>
                     <ComboBoxItem Content="Srpski" Tag="sr"/>
                 </ComboBox>
-                <TextBox x:Name="TxtSearch">
+                <TextBox x:Name="TxtSearch" Width="150" HorizontalAlignment="Right" >
                     <TextBox.Style>
                         <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                             <Style.Resources>
@@ -82,13 +82,13 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button x:Name="BtnSearch" Command="Search" />
+                <Button x:Name="BtnSearch" Command="Search" Width="30" Height="30" HorizontalAlignment="Right" />
             </ToolBar>
         </ToolBarTray>
-        <TabControl x:Name="Tabs1" Margin="10,60,10,10" SelectionChanged="Tabs1_OnSelectionChanged">
+        <TabControl x:Name="Tabs1" Margin="10,80,10,10" SelectionChanged="Tabs1_OnSelectionChanged">
             <TabItem Header="{DynamicResource Students}">
                 <Grid>
-                    <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" >
+                    <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Students, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding BrojIndeksa}" Width="*">
                                 <DataGridTextColumn.Header>

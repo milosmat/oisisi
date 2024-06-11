@@ -1,14 +1,17 @@
-﻿using StudentskaSluzba.Model;
+﻿using CLI.Service;
+using GUI.View;
+using StudentskaSluzba.Model;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using GUI.View;
 
 namespace GUI
 {
@@ -17,21 +20,30 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<Student> students = new()
-        {
-            new Student { Id = 1, Ime = "Marko", Prezime = "Markovic", Status = StatusEnum.Budzet },
-        };
+        private ObservableCollection<Student> students;
         public ObservableCollection<Student> Students
         {
             get => students;
-            set => students = value;
+            set
+            {
+                students = value;
+                OnPropertyChanged(nameof(Students));
+            }
         }
 
         private TabItem? selected;
-        
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+            students = new ObservableCollection<Student>(StudentService.GetStudents());
             Students = students;
             DataContext = this;
             SetMenuIcons();
@@ -39,7 +51,7 @@ namespace GUI
             StatusBarText.Content += " - " + selected?.Header.ToString();
             StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
         }
-        
+
         private void SetMenuIcons()
         {
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -52,6 +64,10 @@ namespace GUI
             SetMenuItemIcon(EditMenuItem, Path.Combine(imagesFolder, "edit.png"));
             SetMenuItemIcon(DeleteMenuItem, Path.Combine(imagesFolder, "delete.png"));
             SetMenuItemIcon(AboutMenuItem, Path.Combine(imagesFolder, "info.png"));
+            SetButtonIcon(BtnNew, Path.Combine(imagesFolder, "add.png"));
+            SetButtonIcon(BtnEdit, Path.Combine(imagesFolder, "edit.png"));
+            SetButtonIcon(BtnDelete, Path.Combine(imagesFolder, "delete.png"));
+            SetButtonIcon(BtnSearch, Path.Combine(imagesFolder, "info.png"));
         }
 
         private void SetMenuItemIcon(MenuItem menuItem, string imagePath)
@@ -62,6 +78,21 @@ namespace GUI
                 var bitmap = new BitmapImage(uri);
                 var image = new Image { Source = bitmap };
                 menuItem.Icon = image;
+            }
+            else
+            {
+                MessageBox.Show($"Image not found: {imagePath}");
+            }
+        }
+
+        private void SetButtonIcon(Button button, string imagePath)
+        {
+            if (File.Exists(imagePath))
+            {
+                var uri = new Uri(imagePath, UriKind.Absolute);
+                var bitmap = new BitmapImage(uri);
+                var image = new Image { Source = bitmap };
+                button.Content = image;
             }
             else
             {
@@ -101,7 +132,7 @@ namespace GUI
             selected = Tabs1.SelectedItem as TabItem;
             var text = StatusBarText.Content as String;
             text = text?[..text.LastIndexOf('-')];
-            StatusBarText.Content += text + "- " + selected?.Header;
+            StatusBarText.Content = text + "- " + selected?.Header;
         }
 
         private void NewEntityBinding_Executed(object sender, ExecutedRoutedEventArgs e)

@@ -12,7 +12,7 @@ class Program
         ProfesorDAO profesor = new ProfesorDAO();
         AdresaDAO adresa = new AdresaDAO();
         IndeksDAO indeks = new IndeksDAO();
-        KatedraDAO katedra = new KatedraDAO();  
+        KatedraDAO katedra = new KatedraDAO();
         OcenaNaIspituDAO ocenaNaIspitu = new OcenaNaIspituDAO();
         PredmetDAO predmet = new PredmetDAO();
         StudentDAO student = new StudentDAO();

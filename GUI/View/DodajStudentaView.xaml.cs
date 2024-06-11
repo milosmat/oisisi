@@ -1,8 +1,8 @@
+using StudentskaSluzba.Model;
+using StudentskaSluzba.Service;
 using System;
 using System.Windows;
-using StudentskaSluzba.Model;
-using CLI.DAO;
-using StudentskaSluzba.Service;
+using System.Windows.Controls;
 
 namespace GUI.View;
 
@@ -34,8 +34,8 @@ public partial class DodajStudentaView : Window
                 GodinaUpisa = int.Parse(TxtGodinaUpisa.Text),
                 OznakaSmera = TxtBrojIndeksa.Text
             }),
-            TrenutnaGodinaStudija = int.Parse("" + CmbTrenutnaGodinaStudija.SelectedItem),
-            Status = CmbNacinFinansiranja.SelectedItem is StatusEnum ? (StatusEnum)CmbNacinFinansiranja.SelectedItem : StatusEnum.Budzet 
+            TrenutnaGodinaStudija = int.Parse("" + ((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag),
+            Status = ((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag is StatusEnum ? (StatusEnum)((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag : StatusEnum.Budzet
         };
         MessageBox.Show(DodavanjeEntitetaService.DodajStudenta(s) ? "Entitet uspešno dodat!" : "Entitet nije dodat!",
             "Dodavanje entiteta");

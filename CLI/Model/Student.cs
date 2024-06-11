@@ -1,23 +1,22 @@
-using CLI.DAO;
 using StudentskaSluzba.Serialization;
 namespace StudentskaSluzba.Model;
 
-public enum StatusEnum {Budzet, Samofinansiranje} 
+public enum StatusEnum { Budzet, Samofinansiranje }
 public class Student : ISerializable
 {
-    public int Id { get; set; } 
-    public string Prezime {get; set;}
-    public string Ime {get; set;}
-    public DateTime DatumRodjenja {get; set;}
-    public Adresa AdresaStanovanja {get; set;}
-    public string KontaktTelefon {get; set;}
-    public string EmailAdresa {get; set;}
-    public Indeks BrojIndeksa{get; set;}
-    public int TrenutnaGodinaStudija {get; set;}
-    public StatusEnum Status {get; set;}
-    public double ProsecnaOcena {get; set;}
-    public List<Predmet> SpisakPolozenihIspita {get; set;}
-    public List<Predmet> SpisakNepolozenihPredmeta {get; set;}
+    public int Id { get; set; }
+    public string Prezime { get; set; }
+    public string Ime { get; set; }
+    public DateTime DatumRodjenja { get; set; }
+    public Adresa AdresaStanovanja { get; set; }
+    public string KontaktTelefon { get; set; }
+    public string EmailAdresa { get; set; }
+    public Indeks BrojIndeksa { get; set; }
+    public int TrenutnaGodinaStudija { get; set; }
+    public StatusEnum Status { get; set; }
+    public double ProsecnaOcena { get; set; }
+    public List<Predmet> SpisakPolozenihIspita { get; set; }
+    public List<Predmet> SpisakNepolozenihPredmeta { get; set; }
 
     public Student()
     {
@@ -70,10 +69,16 @@ public class Student : ISerializable
             Prezime,
             Ime,
             DatumRodjenja.ToString("yyyy-MM-dd"),
-            AdresaStanovanja.ToString(),
+            AdresaStanovanja.Id.ToString(),
+            AdresaStanovanja.Ulica,
+            AdresaStanovanja.Broj.ToString(),
+            AdresaStanovanja.Grad,
+            AdresaStanovanja.Drzava,
             KontaktTelefon,
             EmailAdresa,
-            BrojIndeksa.ToString(),
+            BrojIndeksa.OznakaSmera,
+            BrojIndeksa.BrojUpisa.ToString(),
+            BrojIndeksa.GodinaUpisa.ToString(),
             TrenutnaGodinaStudija.ToString(),
             Status.ToString(),
             ProsecnaOcena.ToString("F2"),
@@ -91,13 +96,14 @@ public class Student : ISerializable
         DatumRodjenja = DateTime.ParseExact(values[3], "yyyy-MM-dd", null);
         AdresaStanovanja = new Adresa
         {
-            Ulica = values[4],
-            Broj = int.Parse(values[5]),
-            Grad = values[6],
-            Drzava = values[7]
+            Id = int.Parse(values[4]),
+            Ulica = values[5],
+            Broj = int.Parse(values[6]),
+            Grad = values[7],
+            Drzava = values[8]
         };
-        KontaktTelefon = values[8];
-        EmailAdresa = values[9];
+        KontaktTelefon = values[9];
+        EmailAdresa = values[10];
         BrojIndeksa = new Indeks
         {
             OznakaSmera = values[11],
