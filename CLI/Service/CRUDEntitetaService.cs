@@ -3,7 +3,7 @@ using StudentskaSluzba.Model;
 
 namespace StudentskaSluzba.Service;
 
-public class DodavanjeEntitetaService
+public class CRUDEntitetaService
 {
     private static readonly StudentDAO _studentDao = new StudentDAO();
     private static readonly ProfesorDAO _profesorDao = new ProfesorDAO();
@@ -36,5 +36,44 @@ public class DodavanjeEntitetaService
     {
         Predmet p = _predmetDao.DodajPredmet(predmet);
         return p.SifraPredmeta != null;
+    }
+
+    public static bool IzmeniStudenta(Student student)
+    {
+        try
+        {
+            _studentDao.AzurirajStudenta(student);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static bool IzmeniProfestora(Profesor profesor)
+    {
+        try
+        {
+            _profesorDao.AzurirajProfesora(profesor);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static bool IzmeniPredmet(Predmet predmet)
+    {
+        try
+        {
+            _predmetDao.AzurirajPredmet(predmet);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

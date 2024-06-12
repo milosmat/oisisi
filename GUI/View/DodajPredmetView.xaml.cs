@@ -68,7 +68,7 @@ public partial class DodajPredmetView : Window
         string? success = (string)Application.Current.FindResource("AddSuccess");
         string? fail = (string)Application.Current.FindResource("AddFail");
         
-        MessageBox.Show(DodavanjeEntitetaService.DodajPredmet(p) ? success : fail,
+        MessageBox.Show(CRUDEntitetaService.DodajPredmet(p) ? success : fail,
             title);
         OnFinish?.Invoke(sender, e);
         Close();

@@ -64,6 +64,42 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
+
+        private Predmet? _predmet;
+
+        public Predmet? SelectedPredmet
+        {
+            get => _predmet;
+            set
+            {
+                _predmet = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Profesor? _profesor;
+
+        public Profesor? SelectedProfesor
+        {
+            get => _profesor;
+            set
+            {
+                _profesor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Student? _student;
+
+        public Student? SelectedStudent
+        {
+            get => _student;
+            set
+            {
+                _student = value;
+                OnPropertyChanged();
+            }
+        }
         
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -228,7 +264,49 @@ namespace GUI
 
         private void EditBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    if (SelectedStudent == null)
+                    {
+                        MessageBox.Show("Nijedan student nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        EditStudentView esv = new EditStudentView(SelectedStudent);
+                        MessageBox.Show(esv.DialogResult == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
+                    }
+                    break;
+            
+                case "Profesori":
+                    if (SelectedProfesor == null)
+                    {
+                        MessageBox.Show("Nijedan profesor nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        EditProfesorView esv = new EditProfesorView(SelectedProfesor);
+                        // MessageBox.Show(esv.DialogResult == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
+                    }
+                    break;
+
+                case "Predmeti":
+                    if (SelectedPredmet == null)
+                    {
+                        MessageBox.Show("Nijedan predmet nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        // Proceed with editing the selected course
+                    }
+                    break;
+
+                default:
+                    MessageBox.Show("Nepoznata opcija.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+            }
+
         }
 
         private void DeleteBinding_Executed(object sender, ExecutedRoutedEventArgs e)

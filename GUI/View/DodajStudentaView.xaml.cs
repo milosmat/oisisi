@@ -21,7 +21,7 @@ public partial class DodajStudentaView : Window
         var adr = TxtAdresaStanovanja.Text.Split(" ");
         Student s = new()
         {
-            AdresaStanovanja = DodavanjeEntitetaService.DodajAdresu(new Adresa
+            AdresaStanovanja = CRUDEntitetaService.DodajAdresu(new Adresa
             {
                 Drzava = adr[2],
                 Ulica = adr[0],
@@ -32,7 +32,7 @@ public partial class DodajStudentaView : Window
             DatumRodjenja = DateTime.Parse(TxtDatumRodjenja.Text),
             EmailAdresa = TxtEmailAdresa.Text,
             KontaktTelefon = TxtBrojTelefona.Text,
-            BrojIndeksa = DodavanjeEntitetaService.DodajIndeks(new Indeks
+            BrojIndeksa = CRUDEntitetaService.DodajIndeks(new Indeks
             {
                 GodinaUpisa = int.Parse(TxtGodinaUpisa.Text),
                 OznakaSmera = TxtBrojIndeksa.Text
@@ -44,7 +44,7 @@ public partial class DodajStudentaView : Window
         string? success = (string)Application.Current.FindResource("AddSuccess");
         string? fail = (string)Application.Current.FindResource("AddFail");
         
-        MessageBox.Show(DodavanjeEntitetaService.DodajStudenta(s) ? success : fail,
+        MessageBox.Show(CRUDEntitetaService.DodajStudenta(s) ? success : fail,
             title);
         OnFinish?.Invoke(sender, e);
         Close();
