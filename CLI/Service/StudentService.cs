@@ -1,4 +1,5 @@
-﻿using CLI.DAO;
+﻿using System.Collections.Generic;
+using CLI.DAO;
 using StudentskaSluzba.Model;
 
 namespace CLI.Service

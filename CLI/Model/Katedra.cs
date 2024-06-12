@@ -4,6 +4,10 @@ Naziv katedre
 Šef katedre
 Spisak profesora koji su na katedri
 */
+
+using System.Collections.Generic;
+using System.Linq;
+
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
 public class Katedra : ISerializable

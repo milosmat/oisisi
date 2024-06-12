@@ -82,7 +82,7 @@
         </ComboBox>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+        <StackPanel Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
             <Button Content="{DynamicResource Confirm}" Width="100" Margin="5" Click="BtnPotvrdi_Action"/>
             <Button Content="{DynamicResource Cancel}" Width="100" Margin="5" Click="BtnOdustani_Action"/>
         </StackPanel>

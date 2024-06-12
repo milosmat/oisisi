@@ -4,6 +4,9 @@ Predmet
 Brojčana vrednost ocene (u intervalu od 6 do 10)
 Datum polaganja ispita
 */
+
+using System;
+
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
 using CLI.DAO;

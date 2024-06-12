@@ -1,4 +1,5 @@
-﻿using StudentskaSluzba.Model;
+﻿using System.Collections.Generic;
+using StudentskaSluzba.Model;
 using StudentskaSluzba.Storage;
 namespace CLI.DAO;
 class IndeksDAO

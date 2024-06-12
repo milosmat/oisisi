@@ -86,7 +86,7 @@
             </ToolBar>
         </ToolBarTray>
         <TabControl x:Name="Tabs1" Margin="10,80,10,10" SelectionChanged="Tabs1_OnSelectionChanged">
-            <TabItem Header="{DynamicResource Students}">
+            <TabItem Tag="Studneti" Header="{DynamicResource Students}">
                 <Grid>
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Students, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
@@ -124,7 +124,7 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{DynamicResource Professors}">
+            <TabItem Tag="Profesori" Header="{DynamicResource Professors}">
                 <Grid>
                     <DataGrid x:Name="GridProfessors" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" >
                         <DataGrid.Columns>
@@ -152,7 +152,7 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem Header="{DynamicResource Courses}">
+            <TabItem Tag="Predmeti" Header="{DynamicResource Courses}">
                 <Grid>
                     <DataGrid x:Name="GridSubjects" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" >
                         <DataGrid.Columns>

@@ -6,6 +6,8 @@ Grad
 Država
 */
 
+using System;
+
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
 using System.Xml.Linq;

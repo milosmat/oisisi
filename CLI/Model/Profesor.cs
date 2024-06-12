@@ -11,6 +11,10 @@ Godine staža
 Spisak predmeta na kojima je profesor
 */
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
 using CLI.DAO;

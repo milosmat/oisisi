@@ -8,6 +8,11 @@ Broj ESPB bodova
 Spisak studenata koji su položili predmet
 Spisak studenata koji nisu položili predmet
 */
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace StudentskaSluzba.Model;
 
 using CLI.DAO;

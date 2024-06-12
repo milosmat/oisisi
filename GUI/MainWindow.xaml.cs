@@ -1,6 +1,4 @@
-﻿using CLI.Service;
-using GUI.View;
-using StudentskaSluzba.Model;
+﻿using StudentskaSluzba.Model;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,6 +10,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using CLI.Service;
+using GUI.View;
 
 namespace GUI
 {
@@ -32,7 +32,7 @@ namespace GUI
         }
 
         private TabItem? selected;
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -51,7 +51,7 @@ namespace GUI
             StatusBarText.Content += " - " + selected?.Header.ToString();
             StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
         }
-
+        
         private void SetMenuIcons()
         {
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -84,7 +84,7 @@ namespace GUI
                 MessageBox.Show($"Image not found: {imagePath}");
             }
         }
-
+        
         private void SetButtonIcon(Button button, string imagePath)
         {
             if (File.Exists(imagePath))

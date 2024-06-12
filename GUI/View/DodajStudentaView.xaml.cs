@@ -39,6 +39,7 @@ public partial class DodajStudentaView : Window
         };
         MessageBox.Show(DodavanjeEntitetaService.DodajStudenta(s) ? "Entitet uspešno dodat!" : "Entitet nije dodat!",
             "Dodavanje entiteta");
+        Close();
     }
 
     private void BtnOdustani_Action(object sender, RoutedEventArgs e)
