@@ -57,7 +57,7 @@
         </ComboBox>
         <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource SubjSem}" VerticalAlignment="Center" Margin="5" />
         <ComboBox x:Name="CmbProfesor" Grid.Row="3" Grid.Column="1" Margin="5"
-                  Items="{Binding Profesors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding Profesors, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Buttons -->
