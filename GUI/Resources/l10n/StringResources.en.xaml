@@ -45,4 +45,20 @@
     <sys:String x:Key="SelfFinancing">Self Financing</sys:String>
     <sys:String x:Key="Confirm">Confirm</sys:String>
     <sys:String x:Key="Cancel">Cancel</sys:String>
+    
+    <!-- DodavanjeProfesora -->
+    <sys:String x:Key="AppTitleDProf">Add professor</sys:String>
+    <sys:String x:Key="YearsOfWork">Years of work</sys:String>
+    <sys:String x:Key="IDNumber">ID number</sys:String>
+    
+    <!-- DodavanjePredmeta -->
+    <sys:String x:Key="AppTitleDPred">Add subject</sys:String>
+    <sys:String x:Key="Summer">Summer</sys:String>
+    <sys:String x:Key="Winter">Winter</sys:String>
+    
+    <!-- MessageBox -->
+    <sys:String x:Key="AddSuccess">Entity successfully added!</sys:String>
+    <sys:String x:Key="AddFail">Entity not added!</sys:String>
+    <sys:String x:Key="AddTitle">Add entity</sys:String>
+
 </ResourceDictionary>

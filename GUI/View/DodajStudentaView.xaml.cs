@@ -8,6 +8,9 @@ namespace GUI.View;
 
 public partial class DodajStudentaView : Window
 {
+
+    public event EventHandler? OnFinish;
+    
     public DodajStudentaView()
     {
         InitializeComponent();
@@ -37,8 +40,13 @@ public partial class DodajStudentaView : Window
             TrenutnaGodinaStudija = int.Parse("" + ((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag),
             Status = ((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag is StatusEnum ? (StatusEnum)((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag : StatusEnum.Budzet
         };
-        MessageBox.Show(DodavanjeEntitetaService.DodajStudenta(s) ? "Entitet uspešno dodat!" : "Entitet nije dodat!",
-            "Dodavanje entiteta");
+        string? title = (string)Application.Current.FindResource("AddTitle");
+        string? success = (string)Application.Current.FindResource("AddSuccess");
+        string? fail = (string)Application.Current.FindResource("AddFail");
+        
+        MessageBox.Show(DodavanjeEntitetaService.DodajStudenta(s) ? success : fail,
+            title);
+        OnFinish?.Invoke(sender, e);
         Close();
     }
 

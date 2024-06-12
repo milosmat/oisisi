@@ -25,4 +25,16 @@ public class DodavanjeEntitetaService
     {
         return _indeksDao.dodajIndeks(i);
     }
+
+    public static bool DodajProfesora(Profesor profesor)
+    {
+        Profesor p = _profesorDao.DodajProfesora(profesor);
+        return p.Id != null;
+    }
+
+    public static bool DodajPredmet(Predmet predmet)
+    {
+        Predmet p = _predmetDao.DodajPredmet(predmet);
+        return p.SifraPredmeta != null;
+    }
 }

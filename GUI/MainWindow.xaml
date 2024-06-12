@@ -17,12 +17,12 @@
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="NewEntityBinding_Executed"/>
-        <CommandBinding Command="Save"/>
-        <CommandBinding Command="Open"/>
-        <CommandBinding Command="Close"/>
-        <CommandBinding Command="Properties"/>
-        <CommandBinding Command="Delete"/>
-        <CommandBinding Command="Help"/>
+        <CommandBinding Command="Save" Executed="SaveBinding_Executed"/>
+        <CommandBinding Command="Open" Executed="OpenBinding_Executed"/>
+        <CommandBinding Command="Close" Executed="CloseBinding_Executed"/>
+        <CommandBinding Command="Properties" Executed="EditBinding_Executed"/>
+        <CommandBinding Command="Delete" Executed="DeleteBinding_Executed"/> 
+        <CommandBinding Command="Help" Executed="HelpBinding_Executed"/>
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="Save"/>
@@ -49,7 +49,7 @@
                 <MenuItem x:Name="AboutMenuItem" Header="{DynamicResource About}" InputGestureText="Ctrl+H"/>
             </MenuItem>
         </Menu>
-        <ToolBarTray  VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0" IsLocked="True" Height="40">
+        <ToolBarTray x:Name="TTray" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0" IsLocked="True" Height="40">
             <ToolBar AllowDrop="False">
                 <Button x:Name="BtnNew" Command="New" Width="30" Height="30" />
                 <Button x:Name="BtnEdit" Command="Properties" Width="30" Height="30" />
@@ -85,7 +85,7 @@
                 <Button x:Name="BtnSearch" Command="Search" Width="30" Height="30" HorizontalAlignment="Right" />
             </ToolBar>
         </ToolBarTray>
-        <TabControl x:Name="Tabs1" Margin="10,80,10,10" SelectionChanged="Tabs1_OnSelectionChanged">
+        <TabControl x:Name="Tabs1" Margin="10,80,10,10" SelectionChanged="Tabs1_OnSelectionChanged" SelectedItem="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <TabItem Tag="Studneti" Header="{DynamicResource Students}">
                 <Grid>
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Students, UpdateSourceTrigger=PropertyChanged}">
@@ -126,7 +126,7 @@
             </TabItem>
             <TabItem Tag="Profesori" Header="{DynamicResource Professors}">
                 <Grid>
-                    <DataGrid x:Name="GridProfessors" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" >
+                    <DataGrid x:Name="GridProfessors" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Profesors, UpdateSourceTrigger=PropertyChanged}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Ime}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -154,7 +154,7 @@
             </TabItem>
             <TabItem Tag="Predmeti" Header="{DynamicResource Courses}">
                 <Grid>
-                    <DataGrid x:Name="GridSubjects" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" >
+                    <DataGrid x:Name="GridSubjects" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0" ItemsSource="{Binding Predmets, UpdateSourceTrigger=PropertyChanged}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
                                 <DataGridTextColumn.Header>

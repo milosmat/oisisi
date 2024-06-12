@@ -45,4 +45,20 @@
     <sys:String x:Key="SelfFinancing">Samofinansiranje</sys:String>
     <sys:String x:Key="Confirm">Potvrdi</sys:String>
     <sys:String x:Key="Cancel">Odustani</sys:String>
+    
+    <!-- DodavanjeProfesora -->
+    <sys:String x:Key="AppTitleDProf">Dodaj profesora</sys:String>
+    <sys:String x:Key="YearsOfWork">Godine staža</sys:String>
+    <sys:String x:Key="IDNumber">Broj lične karte</sys:String>
+    
+    <!-- DodavanjePredmeta -->
+    <sys:String x:Key="AppTitleDPred">Dodaj predmet</sys:String>
+    <sys:String x:Key="Summer">Letnji</sys:String>
+    <sys:String x:Key="Winter">Zimski</sys:String>
+    
+    <!-- MessageBox -->
+    <sys:String x:Key="AddSuccess">Entitet uspešno dodat!</sys:String>
+    <sys:String x:Key="AddFail">Entitet nije dodat!</sys:String>
+    <sys:String x:Key="AddTitle">Dodaj entitet</sys:String>
+    
 </ResourceDictionary>

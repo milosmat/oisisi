@@ -27,15 +27,47 @@ namespace GUI
             set
             {
                 students = value;
-                OnPropertyChanged(nameof(Students));
+                OnPropertyChanged();
+            }
+        }
+        
+        private ObservableCollection<Predmet> predmets;
+        public ObservableCollection<Predmet> Predmets
+        {
+            get => predmets;
+            set
+            {
+                predmets = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        private ObservableCollection<Profesor> profesors;
+        public ObservableCollection<Profesor> Profesors
+        {
+            get => profesors;
+            set
+            {
+                profesors = value;
+                OnPropertyChanged();
             }
         }
 
         private TabItem? selected;
-        
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public TabItem? Selected
+        {
+            get => selected;
+            set
+            {
+                selected = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -43,13 +75,20 @@ namespace GUI
         public MainWindow()
         {
             InitializeComponent();
+            this.Width = SystemParameters.PrimaryScreenWidth * 0.75;
+            this.Height = SystemParameters.PrimaryScreenHeight * 0.75;
             students = new ObservableCollection<Student>(StudentService.GetStudents());
+            profesors = new ObservableCollection<Profesor>(ProfesorService.GetProfesors());
+            predmets = new ObservableCollection<Predmet>(PredmetService.GetPredmets());
             Students = students;
+            Profesors = profesors;
+            Predmets = predmets;
             DataContext = this;
             SetMenuIcons();
             selected = Tabs1.SelectedItem as TabItem;
-            StatusBarText.Content += " - " + selected?.Header.ToString();
+            StatusBarText.Content += " - " + selected?.Header;
             StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
+            TxtSearch.Margin = TxtSearch.Margin with { Left = TTray.Width - 270 };
         }
         
         private void SetMenuIcons()
@@ -122,8 +161,7 @@ namespace GUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Width = SystemParameters.PrimaryScreenWidth * 0.75;
-            this.Height = SystemParameters.PrimaryScreenHeight * 0.75;
+            
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
@@ -135,10 +173,72 @@ namespace GUI
             StatusBarText.Content = text + "- " + selected?.Header;
         }
 
+        private void RefreshData(object? sender, EventArgs e)
+        {
+            var lista = StudentService.GetStudents();
+            var listaProf = ProfesorService.GetProfesors();
+            var listaPred = PredmetService.GetPredmets();
+            Students.Clear();
+            Predmets.Clear();
+            Profesors.Clear();
+            lista.ForEach(i => Students.Add(i));
+            listaPred.ForEach(i => Predmets.Add(i));
+            listaProf.ForEach(i => Profesors.Add(i));
+        }
+
         private void NewEntityBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            DodajStudentaView dsv = new DodajStudentaView();
-            dsv.Show();
+            switch (Selected?.Tag)
+            {
+                case "Studenti":
+                    DodajStudentaView dsv = new DodajStudentaView();
+                    dsv.OnFinish += RefreshData;
+                    dsv.Show();
+                    break;
+                case "Profesori":
+                    DodajProfesoraView dpv = new DodajProfesoraView();
+                    dpv.OnFinish += RefreshData;
+                    dpv.Show();
+                    break;
+                case "Predmeti":
+                    DodajPredmetView dprv = new DodajPredmetView();
+                    dprv.OnFinish += RefreshData;
+                    dprv.Show();
+                    break;
+                 default:
+                    MessageBox.Show("Greška", "Greška");
+                     break;
+            }
+        }
+
+        private void SaveBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OpenBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CloseBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void EditBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DeleteBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void HelpBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("Verzija: \t0.1\nAutor: \tMiloš Matunović\nStudent FTN-a E2 smer.");
         }
     }
 }
