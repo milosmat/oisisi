@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Controls;
 using StudentskaSluzba.Model;
 using StudentskaSluzba.Service;
 
@@ -13,6 +14,7 @@ public partial class EditStudentView : Window
         InitializeComponent();
         EditStudent = selectedStud;
         DataContext = this;
+        CmbTrenutnaGodinaStudija.SelectedIndex = EditStudent.TrenutnaGodinaStudija - 1;
     }
 
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)

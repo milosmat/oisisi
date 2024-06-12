@@ -56,6 +56,18 @@
     <sys:String x:Key="Summer">Letnji</sys:String>
     <sys:String x:Key="Winter">Zimski</sys:String>
     
+    <!-- EditStudenta -->
+    <sys:String x:Key="AppTitleEStud">Izmeni studenta</sys:String>
+    <sys:String x:Key="Information">Informacije</sys:String>
+    <sys:String x:Key="Passed">Položeni</sys:String>
+    <sys:String x:Key="Failed">Nepoloženi</sys:String>
+    
+    <!-- EditProfesor -->
+    <sys:String x:Key="AppTitleEProf">Izmeni profesora</sys:String>
+    
+    <!-- EditPredmet -->
+    <sys:String x:Key="AppTitleEPred">Izmeni predmet</sys:String>
+    
     <!-- MessageBox -->
     <sys:String x:Key="AddSuccess">Entitet uspešno dodat!</sys:String>
     <sys:String x:Key="AddFail">Entitet nije dodat!</sys:String>
