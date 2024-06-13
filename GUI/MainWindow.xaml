@@ -23,6 +23,7 @@
         <CommandBinding Command="Properties" Executed="EditBinding_Executed" />
         <CommandBinding Command="Delete" Executed="DeleteBinding_Executed" />
         <CommandBinding Command="Help" Executed="HelpBinding_Executed" />
+        <CommandBinding Command="Search" Executed="SearchBinding_Executed" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="Save" />
@@ -32,21 +33,22 @@
         <KeyBinding Key="P" Modifiers="Control" Command="Properties" />
         <KeyBinding Key="D" Modifiers="Control" Command="Delete" />
         <KeyBinding Key="H" Modifiers="Control" Command="Help" />
+        <KeyBinding Key="F" Modifiers="Control" Command="Search" />
     </Window.InputBindings>
     <Grid>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Stretch">
             <MenuItem Header="{DynamicResource File}">
                 <MenuItem x:Name="NewMenuItem" Header="{DynamicResource New}" InputGestureText="Ctrl+N" Command="New" />
-                <MenuItem x:Name="SaveMenuItem" Header="{DynamicResource Save}" InputGestureText="Ctrl+S" />
-                <MenuItem x:Name="OpenMenuItem" Header="{DynamicResource Open}" InputGestureText="Ctrl+O" />
-                <MenuItem x:Name="CloseMenuItem" Header="{DynamicResource Close}" InputGestureText="Ctrl+E" />
+                <MenuItem x:Name="SaveMenuItem" Header="{DynamicResource Save}" InputGestureText="Ctrl+S" Command="Save" />
+                <MenuItem x:Name="OpenMenuItem" Header="{DynamicResource Open}" InputGestureText="Ctrl+O" Command="Open" />
+                <MenuItem x:Name="CloseMenuItem" Header="{DynamicResource Close}" InputGestureText="Ctrl+E" Command="Close" />
             </MenuItem>
             <MenuItem Header="{DynamicResource Edit}">
-                <MenuItem x:Name="EditMenuItem" Header="{DynamicResource Edit}" InputGestureText="Ctrl+P" />
-                <MenuItem x:Name="DeleteMenuItem" Header="{DynamicResource Delete}" InputGestureText="Ctrl+D" />
+                <MenuItem x:Name="EditMenuItem" Header="{DynamicResource Edit}" InputGestureText="Ctrl+P" Command="Properties" />
+                <MenuItem x:Name="DeleteMenuItem" Header="{DynamicResource Delete}" InputGestureText="Ctrl+D" Command="Delete" />
             </MenuItem>
             <MenuItem Header="{DynamicResource Help}">
-                <MenuItem x:Name="AboutMenuItem" Header="{DynamicResource About}" InputGestureText="Ctrl+H" />
+                <MenuItem x:Name="AboutMenuItem" Header="{DynamicResource About}" InputGestureText="Ctrl+H" Command="Help" />
             </MenuItem>
         </Menu>
         <ToolBarTray x:Name="TTray" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,30,0,0"
@@ -93,7 +95,8 @@
                 <Grid>
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding Students, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                              SelectedItem="{Binding SelectedStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding BrojIndeksa}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -133,6 +136,7 @@
                 <Grid>
                     <DataGrid x:Name="GridProfessors" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding Profesors, UpdateSourceTrigger=PropertyChanged}"
+                              
                               SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Ime}" Width="*">
