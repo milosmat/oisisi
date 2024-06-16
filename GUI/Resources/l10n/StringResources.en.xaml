@@ -6,6 +6,7 @@
     <sys:String x:Key="Help">Help</sys:String>
     <sys:String x:Key="Students">Students</sys:String>
     <sys:String x:Key="Professors">Professors</sys:String>
+    <sys:String x:Key="Professor">Professor</sys:String>
     <sys:String x:Key="Courses">Courses</sys:String>
     <sys:String x:Key="Index">Index</sys:String>
     <sys:String x:Key="FirstName">First Name</sys:String>

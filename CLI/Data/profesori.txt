@@ -1,1 +1,8 @@
-1,Smith,John,1980-05-20,Main Street,123,City,Country,123-456,smith@example.com,ABC123,Professor,10,Math;Physics;Chemistry
+1,Smith,John,1980-05-20,MainStreet,123,City,Country,123-456,smith@example.com,ABC123,Professor,10,Math;Physics;Chemistry
+2,Doe,John,1988-06-27,Ulica,0,Grad,Drzava,0662233322,johndoe@gmail.com,0123456789,drrr,10,
+3,Prezime,Ime,2006-06-06,UlicaNeka,0,Grad,Drzava,0662233322,ime@gmail.com,012,Professor,10,
+4,Ime,prezime,2005-05-05,NekaUlica,12,NoviSad,Srbija,0662233322,prezime@gmail.com,123,Professor,21,
+5,Ninic,Boske,2002-06-27,nemaUlice,12,Grad,Drzava,0662233322,boske@gmail.com,123,Dr.MR.,12,
+6,testic,Test,2001-01-10,A,0,B,D,0662233322,a@gmail.com,012,DR.MR.,10,
+7,Testa,Provera,2001-02-01,A,0,B,D,0662233322,a@gmail.com,0512,A,10,
+8,Prov,Provera#2,2001-01-01,A,1,B,C,0662233322,abc@gmail.com,01451,ABVC,10,

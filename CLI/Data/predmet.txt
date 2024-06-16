@@ -1,0 +1,2 @@
+SF1,Spredmer,Zimski,1,1,4,,
+SP2,sifra predmet,Zimski,2,1,6,,

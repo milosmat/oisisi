@@ -48,7 +48,10 @@ public partial class DodajPredmetView : Window
 
     public DodajPredmetView()
     {
+        _profesors = ProfesorService.GetProfesors();
+        Profesors = _profesors;
         InitializeComponent();
+        DataContext = this;
     }
     
     private void BtnPotvrdi_Action(object sender, RoutedEventArgs e)
@@ -64,9 +67,9 @@ public partial class DodajPredmetView : Window
             GodinaStudija = int.Parse(TxtGodinaStudija.Text),
             BrojESPB = int.Parse(TxtEspb.Text)
         };
-        string? title = (string)Application.Current.FindResource("AddTitle");
-        string? success = (string)Application.Current.FindResource("AddSuccess");
-        string? fail = (string)Application.Current.FindResource("AddFail");
+        string? title = FindResource("AddTitle") as string;
+        string? success = FindResource("AddSuccess") as string;
+        string? fail = this.FindResource("AddFail") as string;
         
         MessageBox.Show(CRUDEntitetaService.DodajPredmet(p) ? success : fail,
             title);
