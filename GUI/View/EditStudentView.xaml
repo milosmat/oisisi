@@ -10,8 +10,11 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <local:LocalizedResourceDictionary/>
+                <local:LocalizedResourceDictionary />
             </ResourceDictionary.MergedDictionaries>
+            <local:AddressConverter x:Key="AddressConverter" />
+            <local:IndeksConverter x:Key="IndeksConverter" />
+            <local:EnrollmentYearConverter x:Key="EnrollmentYearConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10">
@@ -19,56 +22,67 @@
             <TabItem Header="{DynamicResource Information}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="{DynamicResource FirstName}" Margin="5"/>
-                    <TextBox Grid.Column="1" Margin="5" Name="FirstNameTextBox" Text="{Binding EditStudent.Ime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{DynamicResource FirstName}" Margin="5" />
+                    <TextBox Grid.Column="1" Margin="5" Name="FirstNameTextBox"
+                             Text="{Binding EditStudent.Ime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="{DynamicResource LastName}" Grid.Row="1" Margin="5"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Name="LastNameTextBox" Text="{Binding EditStudent.Prezime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{DynamicResource LastName}" Grid.Row="1" Margin="5" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Name="LastNameTextBox"
+                             Text="{Binding EditStudent.Prezime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="{DynamicResource BirthDate}" Grid.Row="2" Margin="5"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Name="BirthDateTextBox" Text="{Binding EditStudent.DatumRodjenja.ToString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MM/yyyy}}"/>
+                    <TextBlock Text="{DynamicResource BirthDate}" Grid.Row="2" Margin="5" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Name="BirthDateTextBox"
+                             Text="{Binding EditStudent.DatumRodjenja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MM/yyyy}}" />
 
-                    <TextBlock Text="{DynamicResource Address}" Grid.Row="3" Margin="5"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Name="AddressTextBox" Text="{Binding EditStudent.AdresaStanovanja.ToString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{DynamicResource Address}" Grid.Row="3" Margin="5" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Name="AddressTextBox"
+                             Text="{Binding EditStudent.AdresaStanovanja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource AddressConverter}}" />
 
-                    <TextBlock Text="{DynamicResource PhoneNumber}" Grid.Row="4" Margin="5"/>
-                    <TextBox Grid.Row="4" Grid.Column="1" Margin="5" Name="PhoneTextBox" Text="{Binding EditStudent.KontaktTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{DynamicResource PhoneNumber}" Grid.Row="4" Margin="5" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Margin="5" Name="PhoneTextBox"
+                             Text="{Binding EditStudent.KontaktTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="{DynamicResource EmailAdr}" Grid.Row="5" Margin="5"/>
-                    <TextBox Grid.Row="5" Grid.Column="1" Margin="5" Name="EmailTextBox" Text="{Binding EditStudent.EmailAdresa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{DynamicResource EmailAdr}" Grid.Row="5" Margin="5" />
+                    <TextBox Grid.Row="5" Grid.Column="1" Margin="5" Name="EmailTextBox"
+                             Text="{Binding EditStudent.EmailAdresa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Text="{DynamicResource Index}" Grid.Row="6" Margin="5"/>
-                    <TextBox Grid.Row="6" Grid.Column="1" Margin="5" Name="IndexNumberTextBox" Text="{Binding EditStudent.BrojIndeksa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{DynamicResource Index}" Grid.Row="6" Margin="5" />
+                    <TextBox Grid.Row="6" Grid.Column="1" Margin="5" Name="IndexNumberTextBox"
+                             Text="{Binding EditStudent.BrojIndeksa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IndeksConverter}}" />
 
-                    <TextBlock Text="{DynamicResource EnrollmentYear}" Grid.Row="7" Margin="5"/>
-                    <TextBox Grid.Row="7" Grid.Column="1" Margin="5" Name="EnrollmentYearTextBox" Text="{Binding EditStudent.GodinaUpisa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{DynamicResource EnrollmentYear}" Grid.Row="7" Margin="5" />
+                    <TextBox Grid.Row="7" Grid.Column="1" Margin="5" Name="EnrollmentYearTextBox"
+                             Text="{Binding EditStudent.BrojIndeksa, Mode=OneTime, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnrollmentYearConverter}}" />
 
-                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource CurrentYear}" VerticalAlignment="Center" Margin="5"/>
-                    <ComboBox x:Name="CmbTrenutnaGodinaStudija" Grid.Row="8" Grid.Column="1" Margin="5" >
-                        <ComboBoxItem Content="I (prva)" Tag="1"/>
-                        <ComboBoxItem Content="II (druga)" Tag="2"/>
-                        <ComboBoxItem Content="III (treća)" Tag="3"/>
-                        <ComboBoxItem Content="IV (četvrta)" Tag="4"/>
+                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource CurrentYear}"
+                           VerticalAlignment="Center" Margin="5" />
+                    <ComboBox x:Name="CmbTrenutnaGodinaStudija" Grid.Row="8" Grid.Column="1" Margin="5">
+                        <ComboBoxItem Content="I (prva)" Tag="1" />
+                        <ComboBoxItem Content="II (druga)" Tag="2" />
+                        <ComboBoxItem Content="III (treća)" Tag="3" />
+                        <ComboBoxItem Content="IV (četvrta)" Tag="4" />
                     </ComboBox>
 
-                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource FinancingMethod}" VerticalAlignment="Center" Margin="5"/>
-                    <ComboBox x:Name="CmbNacinFinansiranja" Grid.Row="9" Grid.Column="1" Margin="5" SelectedItem="{Binding EditStudent.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource FinancingMethod}"
+                           VerticalAlignment="Center" Margin="5" />
+                    <ComboBox x:Name="CmbNacinFinansiranja" Grid.Row="9" Grid.Column="1" Margin="5"
+                              SelectedItem="{Binding EditStudent.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBoxItem Content="{DynamicResource Budget}">
                             <ComboBoxItem.Tag>
                                 <model:StatusEnum>Budzet</model:StatusEnum>
@@ -90,8 +104,8 @@
             </TabItem>
         </TabControl>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <Button Content="{DynamicResource Confirm}" Width="100" Margin="10" Click="ConfirmButton_Click"/>
-            <Button Content="{DynamicResource Cancel}" Width="100" Margin="10" Click="CancelButton_Click"/>
+            <Button Content="{DynamicResource Confirm}" Width="100" Margin="10" Click="ConfirmButton_Click" />
+            <Button Content="{DynamicResource Cancel}" Width="100" Margin="10" Click="CancelButton_Click" />
         </StackPanel>
     </Grid>
 </Window>

@@ -89,7 +89,7 @@
         </ToolBarTray>
         <TabControl x:Name="Tabs1" Margin="10,80,10,10" SelectionChanged="Tabs1_OnSelectionChanged"
                     SelectedItem="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TabItem Tag="Studneti" Header="{DynamicResource Students}">
+            <TabItem Tag="Studenti" Header="{DynamicResource Students}">
                 <Grid>
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding Students, UpdateSourceTrigger=PropertyChanged}"
@@ -132,7 +132,7 @@
             <TabItem Tag="Profesori" Header="{DynamicResource Professors}">
                 <Grid>
                     <DataGrid x:Name="GridProfessors" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
-                              ItemsSource="{Binding Profesors, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding Profesors,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Ime}" Width="*">
