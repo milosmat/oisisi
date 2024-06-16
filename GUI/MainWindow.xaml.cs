@@ -1,6 +1,7 @@
-﻿using StudentskaSluzba.Model;
+﻿using CLI.Service;
+using GUI.View;
+using StudentskaSluzba.Model;
 using System;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -12,8 +13,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using CLI.Service;
-using GUI.View;
 
 namespace GUI
 {
@@ -25,7 +24,7 @@ namespace GUI
         public ObservableCollection<Student> FilteredStudents { get; set; }
         public ObservableCollection<Profesor> FilteredProfesors { get; set; }
         public ObservableCollection<Predmet> FilteredPredmets { get; set; }
-        
+
         private ObservableCollection<Student> students;
         public ObservableCollection<Student> Students
         {
@@ -36,7 +35,7 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
-        
+
         private ObservableCollection<Predmet> predmets;
         public ObservableCollection<Predmet> Predmets
         {
@@ -47,7 +46,7 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
-        
+
         private ObservableCollection<Profesor> profesors;
         public ObservableCollection<Profesor> Profesors
         {
@@ -106,7 +105,7 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
-        
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -136,7 +135,7 @@ namespace GUI
             GridStudents.ItemsSource = FilteredStudents;
             //TxtSearch.Margin = TxtSearch.Margin with { Left = TTray.Width - 270 };
         }
-        
+
         private void SetMenuIcons()
         {
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -169,7 +168,7 @@ namespace GUI
                 MessageBox.Show($"Image not found: {imagePath}");
             }
         }
-        
+
         private void SetButtonIcon(Button button, string imagePath)
         {
             if (File.Exists(imagePath))
@@ -207,7 +206,7 @@ namespace GUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
@@ -224,9 +223,6 @@ namespace GUI
             Students.Clear();
             Predmets.Clear();
             Profesors.Clear();
-            lista.ForEach(i => Students.Add(i));
-            listaPred.ForEach(i => Predmets.Add(i));
-            listaProf.ForEach(i => Profesors.Add(i));
             CollectionViewSource.GetDefaultView(GridStudents.ItemsSource).Refresh();
             CollectionViewSource.GetDefaultView(GridProfessors.ItemsSource).Refresh();
             CollectionViewSource.GetDefaultView(GridSubjects.ItemsSource).Refresh();
@@ -262,9 +258,9 @@ namespace GUI
                     dprv.OnFinish += RefreshData;
                     dprv.Show();
                     break;
-                 default:
+                default:
                     MessageBox.Show("Greška", "Greška");
-                     break;
+                    break;
             }
         }
 
@@ -296,10 +292,10 @@ namespace GUI
                     else
                     {
                         EditStudentView esv = new EditStudentView(SelectedStudent);
-                        MessageBox.Show(esv.ShowDialog() == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
+                        MessageBox.Show(esv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
-            
+
                 case "Profesori":
                     if (SelectedProfesor == null)
                     {
@@ -308,7 +304,7 @@ namespace GUI
                     else
                     {
                         EditProfesorView epv = new EditProfesorView(SelectedProfesor);
-                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
+                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
 
@@ -402,11 +398,11 @@ namespace GUI
                     }
                     break;
                 case "Profesori":
-                    
+
                     break;
 
                 case "Predmeti":
-                    
+
                     break;
 
                 default:
