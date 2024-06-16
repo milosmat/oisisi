@@ -12,7 +12,7 @@ namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
 using System.Xml.Linq;
 
-public class Adresa : ISerializable
+public class Adresa : ISerializable, IComparable<Adresa>
 { 
     public int Id { get; set; }
     public string Ulica {get; set;}
@@ -83,5 +83,18 @@ public class Adresa : ISerializable
         adresa.Drzava = System.Console.ReadLine() ?? string.Empty;
 
         return adresa;
+    }
+
+    public int CompareTo(Adresa? other)
+    {
+        if (ReferenceEquals(this, other)) return 0;
+        if (ReferenceEquals(null, other)) return 1;
+        var ulicaComparison = string.Compare(Ulica, other.Ulica, StringComparison.Ordinal);
+        if (ulicaComparison != 0) return ulicaComparison;
+        var brojComparison = Broj.CompareTo(other.Broj);
+        if (brojComparison != 0) return brojComparison;
+        var gradComparison = string.Compare(Grad, other.Grad, StringComparison.Ordinal);
+        if (gradComparison != 0) return gradComparison;
+        return string.Compare(Drzava, other.Drzava, StringComparison.Ordinal);
     }
 }

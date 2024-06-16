@@ -1,5 +1,6 @@
 ﻿using StudentskaSluzba.Model;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -8,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using CLI.Service;
@@ -20,6 +22,10 @@ namespace GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ObservableCollection<Student> FilteredStudents { get; set; }
+        public ObservableCollection<Profesor> FilteredProfesors { get; set; }
+        public ObservableCollection<Predmet> FilteredPredmets { get; set; }
+        
         private ObservableCollection<Student> students;
         public ObservableCollection<Student> Students
         {
@@ -119,11 +125,15 @@ namespace GUI
             Students = students;
             Profesors = profesors;
             Predmets = predmets;
+            FilteredStudents = new ObservableCollection<Student>(Students);
+            FilteredProfesors = new ObservableCollection<Profesor>(Profesors);
+            FilteredPredmets = new ObservableCollection<Predmet>(Predmets);
             DataContext = this;
             SetMenuIcons();
             selected = Tabs1.SelectedItem as TabItem;
             StatusBarText.Content += " - " + selected?.Header;
             StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
+            GridStudents.ItemsSource = FilteredStudents;
             //TxtSearch.Margin = TxtSearch.Margin with { Left = TTray.Width - 270 };
         }
         
@@ -211,7 +221,15 @@ namespace GUI
 
         private void RefreshData(object? sender, EventArgs e)
         {
-            Console.WriteLine("Ovde sam");
+            Students.Clear();
+            Predmets.Clear();
+            Profesors.Clear();
+            lista.ForEach(i => Students.Add(i));
+            listaPred.ForEach(i => Predmets.Add(i));
+            listaProf.ForEach(i => Profesors.Add(i));
+            CollectionViewSource.GetDefaultView(GridStudents.ItemsSource).Refresh();
+            CollectionViewSource.GetDefaultView(GridProfessors.ItemsSource).Refresh();
+            CollectionViewSource.GetDefaultView(GridSubjects.ItemsSource).Refresh();
             students = new ObservableCollection<Student>(StudentService.GetStudents());
             profesors = new ObservableCollection<Profesor>(ProfesorService.GetProfesors());
             predmets = new ObservableCollection<Predmet>(PredmetService.GetPredmets());
@@ -320,6 +338,87 @@ namespace GUI
         private void HelpBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             MessageBox.Show("Verzija: \t0.1\nAutor: \tMiloš Matunović\nStudent FTN-a E2 smer.");
+        }
+
+        private void SearchBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    string query = TxtSearch.Text;
+                    FilteredStudents.Clear();
+
+                    if (string.IsNullOrWhiteSpace(query))
+                    {
+                        foreach (var student in Students)
+                        {
+                            FilteredStudents.Add(student);
+                        }
+
+                        return;
+                    }
+
+                    var parts = query.Split(',');
+
+                    if (parts.Length == 1)
+                    {
+                        string lastNamePart = parts[0].Trim().ToLower();
+                        foreach (var student in Students)
+                        {
+                            if (student.Prezime.ToLower().Contains(lastNamePart))
+                            {
+                                FilteredStudents.Add(student);
+                            }
+                        }
+                    }
+                    else if (parts.Length == 2)
+                    {
+                        string lastNamePart = parts[0].Trim().ToLower();
+                        string firstNamePart = parts[1].Trim().ToLower();
+                        foreach (var student in Students)
+                        {
+                            if (student.Prezime.ToLower().Contains(lastNamePart) &&
+                                student.Ime.ToLower().Contains(firstNamePart))
+                            {
+                                FilteredStudents.Add(student);
+                            }
+                        }
+                    }
+                    else if (parts.Length == 3)
+                    {
+                        string indexPart = parts[0].Trim().ToLower();
+                        string firstNamePart = parts[1].Trim().ToLower();
+                        string lastNamePart = parts[2].Trim().ToLower();
+                        foreach (var student in Students)
+                        {
+                            if (student.BrojIndeksa.ToString().ToLower().Contains(indexPart) &&
+                                student.Ime.ToLower().Contains(firstNamePart) &&
+                                student.Prezime.ToLower().Contains(lastNamePart))
+                            {
+                                FilteredStudents.Add(student);
+                            }
+                        }
+                    }
+                    break;
+                case "Profesori":
+                    
+                    break;
+
+                case "Predmeti":
+                    
+                    break;
+
+                default:
+                    MessageBox.Show("Nepoznata opcija.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+            }
+        }
+
+        private void OnDataGridSort_Executed(object sender, DataGridSortingEventArgs e)
+        {
+            var dg = sender as DataGrid;
+            var lcv = CollectionViewSource.GetDefaultView(dg.ItemsSource) as ListCollectionView;
         }
     }
 }

@@ -6,7 +6,7 @@ Godina upisa*/
 
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
-public class Indeks : ISerializable
+public class Indeks : ISerializable, IComparable<Indeks>
 {
     public string OznakaSmera {get; set;}
     public int BrojUpisa {get; set;}
@@ -66,4 +66,14 @@ public class Indeks : ISerializable
         return new Indeks(oznakaSmera, brojUpisa, godinaUpisa);
     }
 
+    public int CompareTo(Indeks? other)
+    {
+        if (ReferenceEquals(this, other)) return 0;
+        if (ReferenceEquals(null, other)) return 1;
+        var oznakaSmeraComparison = string.Compare(OznakaSmera, other.OznakaSmera, StringComparison.Ordinal);
+        if (oznakaSmeraComparison != 0) return oznakaSmeraComparison;
+        var brojUpisaComparison = BrojUpisa.CompareTo(other.BrojUpisa);
+        if (brojUpisaComparison != 0) return brojUpisaComparison;
+        return GodinaUpisa.CompareTo(other.GodinaUpisa);
+    }
 }
