@@ -1,6 +1,7 @@
 using StudentskaSluzba.Model;
 using StudentskaSluzba.Service;
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -29,7 +30,7 @@ public partial class DodajStudentaView : Window
             }),
             Ime = TxtIme.Text,
             Prezime = TxtPrezime.Text,
-            DatumRodjenja = DateTime.Parse(TxtDatumRodjenja.Text),
+            DatumRodjenja = DateTime.ParseExact(TxtDatumRodjenja.Text, "dd/MM/yyyy", CultureInfo.CurrentCulture),
             EmailAdresa = TxtEmailAdresa.Text,
             KontaktTelefon = TxtBrojTelefona.Text,
             BrojIndeksa = CRUDEntitetaService.DodajIndeks(new Indeks
@@ -40,9 +41,9 @@ public partial class DodajStudentaView : Window
             TrenutnaGodinaStudija = int.Parse("" + ((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag),
             Status = ((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag is StatusEnum ? (StatusEnum)((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag : StatusEnum.Budzet
         };
-        string? title = (string)Application.Current.FindResource("AddTitle");
-        string? success = (string)Application.Current.FindResource("AddSuccess");
-        string? fail = (string)Application.Current.FindResource("AddFail");
+        string? title = FindResource("AddTitle") as string;
+        string? success = FindResource("AddSuccess") as string;
+        string? fail = FindResource("AddFail") as string;
         
         MessageBox.Show(CRUDEntitetaService.DodajStudenta(s) ? success : fail,
             title);

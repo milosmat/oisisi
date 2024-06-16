@@ -55,9 +55,9 @@
                 </ComboBoxItem.Tag>
             </ComboBoxItem>
         </ComboBox>
-        <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource SubjSem}" VerticalAlignment="Center" Margin="5" />
-        <ComboBox x:Name="CmbProfesor" Grid.Row="3" Grid.Column="1" Margin="5"
-                  ItemsSource="{Binding Profesors, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+        <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Professor}" VerticalAlignment="Center" Margin="5" />
+        <ComboBox x:Name="CmbProfesor" Grid.Row="5" Grid.Column="1" Margin="5"
+                  ItemsSource="{Binding Profesors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Buttons -->

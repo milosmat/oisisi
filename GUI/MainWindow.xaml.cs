@@ -124,7 +124,7 @@ namespace GUI
             selected = Tabs1.SelectedItem as TabItem;
             StatusBarText.Content += " - " + selected?.Header;
             StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
-            TxtSearch.Margin = TxtSearch.Margin with { Left = TTray.Width - 270 };
+            //TxtSearch.Margin = TxtSearch.Margin with { Left = TTray.Width - 270 };
         }
         
         private void SetMenuIcons()
@@ -211,30 +211,33 @@ namespace GUI
 
         private void RefreshData(object? sender, EventArgs e)
         {
-            var lista = StudentService.GetStudents();
-            var listaProf = ProfesorService.GetProfesors();
-            var listaPred = PredmetService.GetPredmets();
-            Students.Clear();
-            Predmets.Clear();
-            Profesors.Clear();
-            lista.ForEach(i => Students.Add(i));
-            listaPred.ForEach(i => Predmets.Add(i));
-            listaProf.ForEach(i => Profesors.Add(i));
+            Console.WriteLine("Ovde sam");
+            students = new ObservableCollection<Student>(StudentService.GetStudents());
+            profesors = new ObservableCollection<Profesor>(ProfesorService.GetProfesors());
+            predmets = new ObservableCollection<Predmet>(PredmetService.GetPredmets());
+            Students = students;
+            Profesors = profesors;
+            Predmets = predmets;
         }
 
         private void NewEntityBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            RefreshData(sender, e);
             switch (Selected?.Tag)
             {
                 case "Studenti":
                     DodajStudentaView dsv = new DodajStudentaView();
-                    dsv.OnFinish += RefreshData;
-                    dsv.Show();
+                    if (dsv.ShowDialog() == true)
+                    {
+                        RefreshData(sender, e);
+                    }
                     break;
                 case "Profesori":
                     DodajProfesoraView dpv = new DodajProfesoraView();
-                    dpv.OnFinish += RefreshData;
-                    dpv.Show();
+                    if (dpv.ShowDialog() == true)
+                    {
+                        RefreshData(sender, e);
+                    }
                     break;
                 case "Predmeti":
                     DodajPredmetView dprv = new DodajPredmetView();
@@ -275,7 +278,7 @@ namespace GUI
                     else
                     {
                         EditStudentView esv = new EditStudentView(SelectedStudent);
-                        MessageBox.Show(esv.DialogResult == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
+                        MessageBox.Show(esv.ShowDialog() == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
             
@@ -286,8 +289,8 @@ namespace GUI
                     }
                     else
                     {
-                        EditProfesorView esv = new EditProfesorView(SelectedProfesor);
-                        // MessageBox.Show(esv.DialogResult == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
+                        EditProfesorView epv = new EditProfesorView(SelectedProfesor);
+                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!": "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
 

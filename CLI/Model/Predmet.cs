@@ -91,6 +91,7 @@ public class Predmet : ISerializable
         }
 
         BrojESPB = int.Parse(values[5]);
+        if (values[6].Equals(String.Empty)) return;
         SpisakStudenataPolozili = values[6].Split(',').Select(id => new Student() { Id = int.Parse(id) }).ToList();
         SpisakStudenataNisuPolozili = values[7].Split(',').Select(id => new Student() { Id = int.Parse(id) }).ToList();
     }
