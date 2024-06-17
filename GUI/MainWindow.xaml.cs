@@ -220,9 +220,6 @@ namespace GUI
 
         private void RefreshData(object? sender, EventArgs e)
         {
-            Students.Clear();
-            Predmets.Clear();
-            Profesors.Clear();
             CollectionViewSource.GetDefaultView(GridStudents.ItemsSource).Refresh();
             CollectionViewSource.GetDefaultView(GridProfessors.ItemsSource).Refresh();
             CollectionViewSource.GetDefaultView(GridSubjects.ItemsSource).Refresh();
@@ -315,7 +312,8 @@ namespace GUI
                     }
                     else
                     {
-                        // Proceed with editing the selected course
+                        EditPredmetView epv = new EditPredmetView(SelectedPredmet);
+                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
 
