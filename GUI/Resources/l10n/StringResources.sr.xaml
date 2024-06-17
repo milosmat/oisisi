@@ -62,6 +62,9 @@
     <sys:String x:Key="Information">Informacije</sys:String>
     <sys:String x:Key="Passed">Položeni</sys:String>
     <sys:String x:Key="Failed">Nepoloženi</sys:String>
+    <sys:String x:Key="UndoGrade">Poništi ocenu</sys:String>
+    <sys:String x:Key="AverageGrade">Prosečna ocena</sys:String>
+    <sys:String x:Key="TotalESPB">Ukupno ESPB</sys:String>
     
     <!-- EditProfesor -->
     <sys:String x:Key="AppTitleEProf">Izmeni profesora</sys:String>

@@ -62,6 +62,9 @@
     <sys:String x:Key="Information">Information</sys:String>
     <sys:String x:Key="Passed">Passed</sys:String>
     <sys:String x:Key="Failed">Failed</sys:String>
+    <sys:String x:Key="UndoGrade">Undo grade</sys:String>
+    <sys:String x:Key="AverageGrade">Average grade</sys:String>
+    <sys:String x:Key="TotalESPB">Total ECTS</sys:String>
     
     <!-- EditProfesora -->
     <sys:String x:Key="AppTitleEProf">Edit professor</sys:String>

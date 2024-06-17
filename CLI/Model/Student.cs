@@ -117,7 +117,7 @@ public class Student : ISerializable
         Status = (StatusEnum)Enum.Parse(typeof(StatusEnum), values[15]);
         ProsecnaOcena = double.Parse(values[16], null);
 
-        SpisakPolozenihIspita = values[17].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
-        SpisakNepolozenihPredmeta = values[18].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
+        //SpisakPolozenihIspita = values[17].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
+        //SpisakNepolozenihPredmeta = values[18].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
     }
 }

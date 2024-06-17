@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -20,6 +21,18 @@ public partial class EditStudentView : Window
         }
     }
     
+    private List<Predmet> _predmets;
+    public List<Predmet> PredmetsNePolozeni
+    {
+        get => _predmets;
+        set
+        {
+            EditStudent.SpisakNepolozenihPredmeta = value;
+            _predmets = value;
+            OnPropertyChanged();
+        }
+    }
+    
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -35,6 +48,7 @@ public partial class EditStudentView : Window
         DataContext = this;
         CmbTrenutnaGodinaStudija.SelectedIndex = EditStudent.TrenutnaGodinaStudija - 1;
         CmbNacinFinansiranja.SelectedIndex = EditStudent.Status.Equals(StatusEnum.Budzet) ? 0 : 1;
+        PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
     }
 
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
@@ -47,5 +61,10 @@ public partial class EditStudentView : Window
     {
         this.DialogResult = false;
         Close();
+    }
+
+    private void AddNewSubject_Click(object sender, RoutedEventArgs e)
+    {
+        
     }
 }
