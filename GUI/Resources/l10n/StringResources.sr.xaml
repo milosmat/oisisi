@@ -76,6 +76,7 @@
     
     <!-- EditPredmet -->
     <sys:String x:Key="AppTitleEPred">Izmeni predmet</sys:String>
+    <sys:String x:Key="RemoveProfessor">Skloni</sys:String>
     
     <!-- MessageBox -->
     <sys:String x:Key="AddSuccess">Entitet uspešno dodat!</sys:String>

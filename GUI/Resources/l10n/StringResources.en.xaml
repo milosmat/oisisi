@@ -76,6 +76,7 @@
     
     <!-- EditPredmeta -->
     <sys:String x:Key="AppTitleEPred">Edit subject</sys:String>
+    <sys:String x:Key="RemoveProfessor">Remove</sys:String>
     
     <!-- MessageBox -->
     <sys:String x:Key="AddSuccess">Entity successfully added!</sys:String>

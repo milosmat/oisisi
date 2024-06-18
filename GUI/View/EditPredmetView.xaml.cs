@@ -22,9 +22,9 @@ public partial class EditPredmetView : Window
         }
     }
 
-    private Profesor _profesor;
+    private Profesor? _profesor;
 
-    public Profesor SelectedProfesor
+    public Profesor? SelectedProfesor
     {
         get => _profesor;
         set
@@ -66,9 +66,8 @@ public partial class EditPredmetView : Window
         _profesors = ProfesorService.GetProfesors();
         _profesor = EditPredmet.PredmetniProfesor;
         Profesors = _profesors;
-        SelectedProfesor = Profesors.Find(p => p.Id == _profesor.Id);
+        SelectedProfesor = Profesors.Find(p => p.Id == _profesor?.Id);
         DataContext = this;
-
     }
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
@@ -80,5 +79,11 @@ public partial class EditPredmetView : Window
     {
         this.DialogResult = false;
         Close();
+    }
+
+    private void RemoveProfessor_Click(object sender, RoutedEventArgs e)
+    {
+        if(SelectedProfesor == null) return;
+        SelectedProfesor = null;
     }
 }

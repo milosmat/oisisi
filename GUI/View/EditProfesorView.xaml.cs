@@ -72,10 +72,9 @@ public partial class EditProfesorView : Window
     private void RemoveSubject_Click(object sender, RoutedEventArgs e)
     {
         if (SelectedPredmet == null) return;
+        var dialogRes = MessageBox.Show("Da li ste sigurni?", "Ukloni predmet", MessageBoxButton.OKCancel);
+        if(!dialogRes.Equals(MessageBoxResult.OK)) return;
         var res = CRUDEntitetaService.ObrisiPredmetProfesoru(EditProfesor, SelectedPredmet);
-        if (res)
-            MessageBox.Show("Uspešno skinut profesor sa predmeta");
-        else
-            MessageBox.Show("Došlo je do greške prilikom birsanja!");
+        MessageBox.Show(res ? "Uspešno skinut profesor sa predmeta" : "Došlo je do greške prilikom birsanja!");
     }
 }

@@ -32,26 +32,27 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource SubjCode}" VerticalAlignment="Center"
                Margin="5" />
-        <TextBox x:Name="TxtSifra" Grid.Row="0" Grid.Column="1" Margin="5"
+        <TextBox x:Name="TxtSifra" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
                  Text="{Binding EditPredmet.SifraPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource SubjName}" VerticalAlignment="Center"
                Margin="5" />
-        <TextBox x:Name="TxtNaziv" Grid.Row="1" Grid.Column="1" Margin="5"
+        <TextBox x:Name="TxtNaziv" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
                  Text="{Binding EditPredmet.NazivPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource SubjYear}" VerticalAlignment="Center"
                Margin="5" />
-        <TextBox x:Name="TxtGodinaStudija" Grid.Row="2" Grid.Column="1" Margin="5"
+        <TextBox x:Name="TxtGodinaStudija" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
                  Text="{Binding EditPredmet.GodinaStudija, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource SubjESPB}" VerticalAlignment="Center"
                Margin="5" />
-        <TextBox x:Name="TxtEspb" Grid.Row="3" Grid.Column="1" Margin="5"
+        <TextBox x:Name="TxtEspb" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
                  Text="{Binding EditPredmet.BrojESPB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource SubjSem}" VerticalAlignment="Center"
@@ -69,10 +70,12 @@
                 </ComboBoxItem.Tag>
             </ComboBoxItem>
         </ComboBox>
+        <Button Grid.Row="4" Grid.Column="2" Content="{DynamicResource RemoveProfessor}" Width="100" Height="45" Margin="5"
+                Click="RemoveProfessor_Click" />
         <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Professor}"
                VerticalAlignment="Center"
                Margin="5" />
-        <ComboBox x:Name="CmbProfesor" Grid.Row="5" Grid.Column="1" Margin="5"
+        <ComboBox x:Name="CmbProfesor" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="5"
                   ItemsSource="{Binding Profesors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
