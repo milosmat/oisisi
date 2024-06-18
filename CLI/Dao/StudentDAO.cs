@@ -1,17 +1,14 @@
-﻿
-using System.Collections.Generic;
+﻿using StudentskaSluzba.Model;
 using StudentskaSluzba.Storage;
-using StudentskaSluzba.Model;
 namespace CLI.DAO;
 class StudentDAO
 {
-    private readonly List<Student> studenti;
+    private List<Student> studenti;
     private readonly Storage<Student> skladiste;
 
     public StudentDAO()
     {
         skladiste = new Storage<Student>("studenti.txt");
-        studenti = skladiste.Load();
     }
 
     private int GenerateId()
@@ -22,6 +19,7 @@ class StudentDAO
 
     public Student DodajStudenta(Student student)
     {
+        studenti = skladiste.Load();
         student.Id = GenerateId();
         studenti.Add(student);
         skladiste.Save(studenti);
@@ -30,6 +28,7 @@ class StudentDAO
 
     public Student AzurirajStudenta(Student student)
     {
+        studenti = skladiste.Load();
         Student stariStudent = UzmiStudentaPoID(student.Id);
         if (stariStudent is null) return null;
 
@@ -52,6 +51,7 @@ class StudentDAO
 
     public Student? IzbrisiStudenta(int id)
     {
+        studenti = skladiste.Load();
         Student? student = UzmiStudentaPoID(id);
         if (student == null) return null;
 
@@ -62,11 +62,13 @@ class StudentDAO
 
     public Student? UzmiStudentaPoID(int id)
     {
+        studenti = skladiste.Load();
         return studenti.Find(s => s.Id == id);
     }
 
     public List<Student> UzmiSveStudente()
     {
+        studenti = skladiste.Load();
         return studenti;
     }
 }

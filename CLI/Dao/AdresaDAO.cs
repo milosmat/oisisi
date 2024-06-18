@@ -1,19 +1,16 @@
-
-using System.Collections.Generic;
-using StudentskaSluzba.Storage;
 using StudentskaSluzba.Model;
+using StudentskaSluzba.Storage;
 
 namespace CLI.DAO;
 public class AdresaDAO
 {
-    private readonly List<Adresa> adrese;
+    private List<Adresa> adrese;
     private readonly Storage<Adresa> skladiste;
 
 
     public AdresaDAO()
     {
         skladiste = new Storage<Adresa>("adresa.txt");
-        adrese = skladiste.Load();
     }
 
     private int GenerateId()
@@ -24,6 +21,8 @@ public class AdresaDAO
 
     public Adresa dodajAdresu(Adresa adresa)
     {
+        adrese = skladiste.Load();
+
         adresa.Id = GenerateId();
         adrese.Add(adresa);
         skladiste.Save(adrese);
@@ -32,6 +31,8 @@ public class AdresaDAO
 
     public Adresa azurirajAdresu(Adresa adresa)
     {
+        adrese = skladiste.Load();
+
         Adresa staraAdresa = UzmiAdresuPoID(adresa.Id);
         if (staraAdresa is null) return null;
 
@@ -46,6 +47,8 @@ public class AdresaDAO
 
     public Adresa? IzbrisiAdresu(int id)
     {
+        adrese = skladiste.Load();
+
         Adresa? adresa = UzmiAdresuPoID(id);
         if (adresa == null) return null;
 
@@ -56,11 +59,15 @@ public class AdresaDAO
 
     private Adresa? UzmiAdresuPoID(int id)
     {
+        adrese = skladiste.Load();
+
         return adrese.Find(a => a.Id == id);
     }
 
     public List<Adresa> UzmiSveAdrese()
     {
+        adrese = skladiste.Load();
+
         return adrese;
     }
 

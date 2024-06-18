@@ -9,26 +9,20 @@ Spisak studenata koji su položili predmet
 Spisak studenata koji nisu položili predmet
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using CLI.Service;
-
 namespace StudentskaSluzba.Model;
 
-using CLI.DAO;
 using StudentskaSluzba.Serialization;
-public enum SemestarEnum {Letnji, Zimski}
+public enum SemestarEnum { Letnji, Zimski }
 public class Predmet : ISerializable
 {
-    public string SifraPredmeta {get; set;}
-    public string NazivPredmeta {get; set;}
-    public SemestarEnum Semestar {get; set;}
-    public int GodinaStudija {get; set;}
-    public Profesor? PredmetniProfesor {get; set;}
-    public int BrojESPB {get; set;}
-    public List<Student> SpisakStudenataPolozili {get; set;}
-    public List<Student> SpisakStudenataNisuPolozili {get; set;}
+    public string SifraPredmeta { get; set; }
+    public string NazivPredmeta { get; set; }
+    public SemestarEnum Semestar { get; set; }
+    public int GodinaStudija { get; set; }
+    public Profesor? PredmetniProfesor { get; set; }
+    public int BrojESPB { get; set; }
+    public List<Student> SpisakStudenataPolozili { get; set; }
+    public List<Student> SpisakStudenataNisuPolozili { get; set; }
 
     public Predmet()
     {
@@ -50,8 +44,8 @@ public class Predmet : ISerializable
     public override string ToString()
     {
         string profesorImePrezime = (PredmetniProfesor != null) ? PredmetniProfesor.imePrezimeToString() : "N/A";
-
-        return $"{SifraPredmeta}|{NazivPredmeta}|{Semestar}|{GodinaStudija}|{profesorImePrezime}|{BrojESPB}";
+        var prof = (PredmetniProfesor != null) ? PredmetniProfesor.Id : -1;
+        return $"{SifraPredmeta}|{NazivPredmeta}|{Semestar}|{GodinaStudija}|{prof}|{BrojESPB}";
     }
 
     public string[] ToCSV()
@@ -82,20 +76,20 @@ public class Predmet : ISerializable
 
         if (int.TryParse(values[4], out int profesorId) && profesorId != -1)
         {
-            PredmetniProfesor =
-                ProfesorService.GetById(profesorId);
+            PredmetniProfesor = new Profesor() { Id = profesorId };
         }
         else
         {
             PredmetniProfesor = null;
         }
         if (values[6].Equals(String.Empty)) return;
-        
+
         BrojESPB = int.Parse(values[5]);
         List<Student> tmp = new List<Student>();
         foreach (var se in values[6].Split(";"))
         {
             var tmpPred = se.Split('|');
+            if (tmpPred.Length < 6) continue;
             tmp.Add(new Student()
             {
                 Id = int.Parse(tmpPred[0].Trim()),
@@ -112,6 +106,7 @@ public class Predmet : ISerializable
         foreach (var se in values[6].Split(";"))
         {
             var tmpPred = se.Split('|');
+            if (tmpPred.Length < 6) continue;
             tmp.Add(new Student()
             {
                 Id = int.Parse(tmpPred[0].Trim()),

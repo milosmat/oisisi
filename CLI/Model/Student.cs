@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using CLI.Service;
 using StudentskaSluzba.Serialization;
 namespace StudentskaSluzba.Model;
 
@@ -121,13 +117,14 @@ public class Student : ISerializable
         foreach (var se in values[17].Split(";"))
         {
             var tmpPred = se.Split('|');
+            if (tmpPred.Length < 6) continue;
             tmp.Add(new Predmet()
             {
                 SifraPredmeta = tmpPred[0],
                 NazivPredmeta = tmpPred[1],
                 Semestar = Enum.Parse<SemestarEnum>(tmpPred[2]),
                 GodinaStudija = int.Parse(tmpPred[3]),
-                PredmetniProfesor = int.Parse(tmpPred[4]) != -1 ? ProfesorService.GetById(int.Parse(values[3])) : null,
+                PredmetniProfesor = int.Parse(tmpPred[4]) != -1 ? new() { Id = int.Parse(tmpPred[4]) } : null,
                 BrojESPB = int.Parse(tmpPred[5])
             });
         }
@@ -136,13 +133,14 @@ public class Student : ISerializable
         foreach (var se in values[18].Split(";"))
         {
             var tmpPred = se.Split('|');
+            if (tmpPred.Length < 6) continue;
             tmp.Add(new Predmet()
             {
                 SifraPredmeta = tmpPred[0],
                 NazivPredmeta = tmpPred[1],
                 Semestar = Enum.Parse<SemestarEnum>(tmpPred[2]),
                 GodinaStudija = int.Parse(tmpPred[3]),
-                PredmetniProfesor = int.Parse(tmpPred[4]) != -1 ? ProfesorService.GetById(int.Parse(values[3])) : null,
+                PredmetniProfesor = int.Parse(tmpPred[4]) != -1 ? new() { Id = int.Parse(tmpPred[4]) } : null,
                 BrojESPB = int.Parse(tmpPred[5])
             });
         }

@@ -15,9 +15,7 @@
             <local:AddressConverter x:Key="AddressConverter" />
         </ResourceDictionary>
     </Window.Resources>
-    <Window.DataContext>
-        <data:EditProfesorView></data:EditProfesorView>
-    </Window.DataContext>
+
     <Grid Margin="10">
         <TabControl>
             <TabItem Tag="Info" Header="{DynamicResource Information}">
