@@ -27,6 +27,7 @@
         <CommandBinding Command="Delete" Executed="DeleteBinding_Executed" />
         <CommandBinding Command="Help" Executed="HelpBinding_Executed" />
         <CommandBinding Command="Search" Executed="SearchBinding_Executed" />
+        <CommandBinding Command="Favorites" Executed="ShowKatedraInfo" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" Command="Save" />
@@ -37,6 +38,7 @@
         <KeyBinding Key="D" Modifiers="Control" Command="Delete" />
         <KeyBinding Key="H" Modifiers="Control" Command="Help" />
         <KeyBinding Key="F" Modifiers="Control" Command="Search" />
+        <KeyBinding Key="K" Modifiers="Control" Command="Favorites" />
     </Window.InputBindings>
     <Grid>
         <Menu VerticalAlignment="Top" HorizontalAlignment="Stretch">
@@ -49,6 +51,7 @@
             <MenuItem Header="{DynamicResource Edit}">
                 <MenuItem x:Name="EditMenuItem" Header="{DynamicResource Edit}" InputGestureText="Ctrl+P" Command="Properties" />
                 <MenuItem x:Name="DeleteMenuItem" Header="{DynamicResource Delete}" InputGestureText="Ctrl+D" Command="Delete" />
+                <MenuItem x:Name="KatedraInfo" Header="{DynamicResource KatedraInfo}" InputGestureText="Ctrl+K" Command="Favorites"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource Help}">
                 <MenuItem x:Name="AboutMenuItem" Header="{DynamicResource About}" InputGestureText="Ctrl+H" Command="Help" />
