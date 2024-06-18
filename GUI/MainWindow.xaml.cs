@@ -419,5 +419,10 @@ namespace GUI
             var dg = sender as DataGrid;
             var lcv = CollectionViewSource.GetDefaultView(dg.ItemsSource) as ListCollectionView;
         }
+
+        private void ShowKatedraInfo(object sender, ExecutedRoutedEventArgs e)
+        {
+            
+        }
     }
 }
