@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:GUI"
         mc:Ignorable="d"
-        Title="{DynamicResource AppTitleDProf}" Height="450" Width="800"
+        Title="{DynamicResource AppTitleDProf}" Height="700" Width="800"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
@@ -17,52 +17,81 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource FirstName}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtIme" Grid.Row="0" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtIme" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblImeError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource LastName}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtPrezime" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtPrezime" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblPrezimeError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource BirthDate}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtDatumRodjenja" Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtDatumRodjenja" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblDatumRodjenjaError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource Address}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtAdresaStanovanja" Grid.Row="3" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtAdresaStanovanja" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblAdresaStanovanjaError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource PhoneNumber}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtBrojTelefona" Grid.Row="4" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtBrojTelefona" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblBrojTelefonaError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Email}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtEmailAdresa" Grid.Row="5" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="5" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtEmailAdresa" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblEmailAdresaError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource Title}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtZvanje" Grid.Row="6" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="6" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtZvanje" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblZvanjeError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource IDNumber}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtLicnaKarta" Grid.Row="7" Grid.Column="1" Margin="5"/>
-        
+        <StackPanel Grid.Row="7" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtLicnaKarta" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblLicnaKartaError" Foreground="Red"/>
+        </StackPanel>
+
         <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource YearsOfWork}" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="TxtGodineStaza" Grid.Row="8" Grid.Column="1" Margin="5"/>
+        <StackPanel Grid.Row="8" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtGodineStaza" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblGodineStazaError" Foreground="Red"/>
+        </StackPanel>
 
         <!-- Buttons -->
-        <StackPanel Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Height="50" Margin="5">
-            <Button Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="BtnPotvrdi_Action"/>
+        <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Height="50" Margin="5">
+            <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="BtnPotvrdi_Action" IsEnabled="False"/>
             <Button Content="{DynamicResource Cancel}" Width="100" Height="45" Margin="5" Click="BtnOdustani_Action"/>
         </StackPanel>
     </Grid>
