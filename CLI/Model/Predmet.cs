@@ -25,7 +25,7 @@ public class Predmet : ISerializable
     public string NazivPredmeta {get; set;}
     public SemestarEnum Semestar {get; set;}
     public int GodinaStudija {get; set;}
-    public Profesor PredmetniProfesor {get; set;}
+    public Profesor? PredmetniProfesor {get; set;}
     public int BrojESPB {get; set;}
     public List<Student> SpisakStudenataPolozili {get; set;}
     public List<Student> SpisakStudenataNisuPolozili {get; set;}

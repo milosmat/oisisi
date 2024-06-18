@@ -129,4 +129,36 @@ public class CRUDEntitetaService
             return false;
         }
     }
+
+    public static bool DodajPredmetProfesoru(Profesor profesor, Predmet predmet)
+    {
+        try
+        {
+            profesor.SpisakPredmeta.Add(predmet);
+            predmet.PredmetniProfesor = profesor;
+            PredmetDao.AzurirajPredmet(predmet);
+            ProfesorDao.AzurirajProfesora(profesor);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public static bool ObrisiPredmetProfesoru(Profesor editProfesor, Predmet selectedPredmet)
+    {
+        try
+        {
+            selectedPredmet.PredmetniProfesor = null;
+            editProfesor.SpisakPredmeta.Remove(selectedPredmet);
+            PredmetDao.AzurirajPredmet(selectedPredmet);
+            ProfesorDao.AzurirajProfesora(editProfesor);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 }

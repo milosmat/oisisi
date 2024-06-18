@@ -160,13 +160,13 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Row="0" Grid.Column="0" Content="{DynamicResource Confirm}" Width="100" Margin="10"
+                    <Button Grid.Row="0" Grid.Column="0" Content="{DynamicResource AddSubject}" Width="100" Margin="10"
                             Click="AddNewSubject_Click"
                             HorizontalAlignment="Left" />
-                    <Button Grid.Row="0" Grid.Column="1" Content="{DynamicResource Confirm}" Width="100" Margin="10"
+                    <Button Grid.Row="0" Grid.Column="1" Content="{DynamicResource RemoveSubject}" Width="100" Margin="10"
                             Click="RemoveSubject_Click"
                             HorizontalAlignment="Left" />
-                    <Button Grid.Row="0" Grid.Column="2" Content="{DynamicResource Confirm}" Width="100" Margin="10"
+                    <Button Grid.Row="0" Grid.Column="2" Content="{DynamicResource Exam}" Width="100" Margin="10"
                             Click="AddGrade_Click"
                             HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="0" Text="Passed Courses" Grid.Row="1" Margin="10" />

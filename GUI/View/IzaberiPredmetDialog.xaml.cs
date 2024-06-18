@@ -42,7 +42,8 @@ public partial class IzaberiPredmetDialog : Window
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private Student _student;
+    private Student? _student;
+    private Profesor? _profesor;
     public IzaberiPredmetDialog()
     {
         InitializeComponent();
@@ -53,6 +54,16 @@ public partial class IzaberiPredmetDialog : Window
     {
         InitializeComponent();
         _student = student;
+        _profesor = null;
+        Predmets = PredmetService.GetPredmets();
+        DataContext = this;
+    }
+
+    public IzaberiPredmetDialog(Profesor profesor)
+    {
+        InitializeComponent();
+        _profesor = profesor;
+        _student = null;
         Predmets = PredmetService.GetPredmets();
         DataContext = this;
     }
@@ -60,12 +71,15 @@ public partial class IzaberiPredmetDialog : Window
 
     private void SelectionChangedEvent(object sender, SelectionChangedEventArgs e)
     {
-        MessageBoxResult dlgRes = MessageBox.Show("Da li želite da dodate ovaj predmet studentu?", "Obaveštenje",
+        MessageBoxResult dlgRes = MessageBox.Show("Da li želite da dodelite ovaj predmet?", "Obaveštenje",
             MessageBoxButton.YesNo);
 
         if (dlgRes.Equals(MessageBoxResult.Yes) && SelectedPredmet != null)
         {
-            DialogResult = CRUDEntitetaService.DodajPredmetStudentu(SelectedPredmet, _student, 0, new DateTime());
+            if (_profesor == null)
+                DialogResult = CRUDEntitetaService.DodajPredmetStudentu(SelectedPredmet, _student, 0, new DateTime());
+            else
+                DialogResult = CRUDEntitetaService.DodajPredmetProfesoru(_profesor, SelectedPredmet);
             Close();
         }
     }

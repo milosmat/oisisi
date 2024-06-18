@@ -67,9 +67,12 @@
     <sys:String x:Key="TotalESPB">Ukupno ESPB</sys:String>
     <sys:String x:Key="Grade">Ocena</sys:String>
     <sys:String x:Key="Date">Datum</sys:String>
+    <sys:String x:Key="Exam">Polaganje</sys:String>
     
     <!-- EditProfesor -->
     <sys:String x:Key="AppTitleEProf">Izmeni profesora</sys:String>
+    <sys:String x:Key="AddSubject">Dodaj predmet</sys:String>
+    <sys:String x:Key="RemoveSubject">Ukloni predmet</sys:String>
     
     <!-- EditPredmet -->
     <sys:String x:Key="AppTitleEPred">Izmeni predmet</sys:String>

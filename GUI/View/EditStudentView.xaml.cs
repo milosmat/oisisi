@@ -96,7 +96,7 @@ public partial class EditStudentView : Window
 
     private void AddNewSubject_Click(object sender, RoutedEventArgs e)
     {
-        IzaberiPredmetDialog izaberiPredmetDialog = new IzaberiPredmetDialog();
+        IzaberiPredmetDialog izaberiPredmetDialog = new IzaberiPredmetDialog(EditStudent);
         if (izaberiPredmetDialog.ShowDialog() == true)
         {
             MessageBox.Show("Predmet uspešno dodat!");

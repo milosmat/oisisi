@@ -34,23 +34,28 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource SubjCode}" VerticalAlignment="Center" Margin="5" />
+        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource SubjCode}" VerticalAlignment="Center"
+               Margin="5" />
         <TextBox x:Name="TxtSifra" Grid.Row="0" Grid.Column="1" Margin="5"
                  Text="{Binding EditPredmet.SifraPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource SubjName}" VerticalAlignment="Center" Margin="5" />
+        <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource SubjName}" VerticalAlignment="Center"
+               Margin="5" />
         <TextBox x:Name="TxtNaziv" Grid.Row="1" Grid.Column="1" Margin="5"
                  Text="{Binding EditPredmet.NazivPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource SubjYear}" VerticalAlignment="Center" Margin="5" />
+        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource SubjYear}" VerticalAlignment="Center"
+               Margin="5" />
         <TextBox x:Name="TxtGodinaStudija" Grid.Row="2" Grid.Column="1" Margin="5"
                  Text="{Binding EditPredmet.GodinaStudija, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource SubjESPB}" VerticalAlignment="Center" Margin="5" />
+        <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource SubjESPB}" VerticalAlignment="Center"
+               Margin="5" />
         <TextBox x:Name="TxtEspb" Grid.Row="3" Grid.Column="1" Margin="5"
                  Text="{Binding EditPredmet.BrojESPB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource SubjSem}" VerticalAlignment="Center" Margin="5" />
+        <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource SubjSem}" VerticalAlignment="Center"
+               Margin="5" />
         <ComboBox x:Name="CmbSemestar" Grid.Row="4" Grid.Column="1" Margin="5"
                   SelectedItem="{Binding EditPredmet.Semestar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ComboBoxItem Content="{DynamicResource Summer}">
@@ -64,7 +69,9 @@
                 </ComboBoxItem.Tag>
             </ComboBoxItem>
         </ComboBox>
-        <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Professor}" VerticalAlignment="Center" Margin="5" />
+        <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Professor}"
+               VerticalAlignment="Center"
+               Margin="5" />
         <ComboBox x:Name="CmbProfesor" Grid.Row="5" Grid.Column="1" Margin="5"
                   ItemsSource="{Binding Profesors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -73,8 +80,11 @@
         <!-- Buttons -->
         <StackPanel Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal"
                     HorizontalAlignment="Center" Height="50" Margin="5">
-            <Button Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="ConfirmButton_Click" />
-            <Button Content="{DynamicResource Cancel}" Width="100" Height="45" Margin="5" Click="CancelButton_Click" />
+            <Button Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5"
+                    Click="ConfirmButton_Click" />
+            <Button Content="{DynamicResource Cancel}" Width="100" Height="45" Margin="5"
+                    Click="CancelButton_Click" />
         </StackPanel>
+
     </Grid>
 </Window>

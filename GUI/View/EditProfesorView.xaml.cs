@@ -19,6 +19,18 @@ public partial class EditProfesorView : Window
             OnPropertyChanged();
         }
     }
+
+    private Predmet? _predmet;
+
+    public Predmet? SelectedPredmet
+    {
+        get => _predmet;
+        set
+        {
+            _predmet = value;
+            OnPropertyChanged();
+        }
+    }
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -48,5 +60,22 @@ public partial class EditProfesorView : Window
     {
         this.DialogResult = false;
         Close();
+    }
+
+    private void AddSubject_Click(object sender, RoutedEventArgs e)
+    {
+        var predmetDialog = new IzaberiPredmetDialog(EditProfesor);
+        if (predmetDialog.ShowDialog() == true)
+            MessageBox.Show("Uspšeno dodat predmet!");
+    }
+
+    private void RemoveSubject_Click(object sender, RoutedEventArgs e)
+    {
+        if (SelectedPredmet == null) return;
+        var res = CRUDEntitetaService.ObrisiPredmetProfesoru(EditProfesor, SelectedPredmet);
+        if (res)
+            MessageBox.Show("Uspešno skinut profesor sa predmeta");
+        else
+            MessageBox.Show("Došlo je do greške prilikom birsanja!");
     }
 }
