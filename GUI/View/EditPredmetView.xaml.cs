@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -23,9 +23,9 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
         }
     }
 
-    private Profesor _profesor;
+    private Profesor? _profesor;
 
-    public Profesor SelectedProfesor
+    public Profesor? SelectedProfesor
     {
         get => _profesor;
         set
@@ -55,6 +55,12 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    public EditPredmetView()
+    {
+        InitializeComponent();
+        DataContext = this;
+    }
+
     public EditPredmetView(Predmet predmet)
     {
         InitializeComponent();
@@ -63,7 +69,7 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
         _profesors = ProfesorService.GetProfesors();
         _profesor = EditPredmet.PredmetniProfesor;
         Profesors = _profesors;
-        SelectedProfesor = Profesors.Find(p => p.Id == _profesor.Id);
+        SelectedProfesor = Profesors.Find(p => p.Id == _profesor?.Id);
         DataContext = this;
         ValidateInputs(null, null);
     }
@@ -151,5 +157,11 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
         }
 
         BtnPotvrdi.IsEnabled = isValid;
+    }
+
+    private void RemoveProfessor_Click(object sender, RoutedEventArgs e)
+    {
+        if(SelectedProfesor == null) return;
+        SelectedProfesor = null;
     }
 }

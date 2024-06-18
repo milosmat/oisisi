@@ -1,21 +1,19 @@
-﻿
-using System.Collections.Generic;
+﻿using StudentskaSluzba.Model;
 using StudentskaSluzba.Storage;
-using StudentskaSluzba.Model;
 namespace CLI.DAO;
 class PredmetDAO
 {
-    private readonly List<Predmet> predmeti;
+    private List<Predmet> predmeti;
     private readonly Storage<Predmet> skladiste;
 
     public PredmetDAO()
     {
         skladiste = new Storage<Predmet>("predmet.txt");
-        predmeti = skladiste.Load();
     }
 
     public Predmet DodajPredmet(Predmet predmet)
     {
+        predmeti = skladiste.Load();
         predmeti.Add(predmet);
         skladiste.Save(predmeti);
         return predmet;
@@ -23,6 +21,7 @@ class PredmetDAO
 
     public Predmet AzurirajPredmet(Predmet predmet)
     {
+        predmeti = skladiste.Load();
         Predmet stariPredmet = UzmiPredmetPoSifri(predmet.SifraPredmeta);
         if (stariPredmet is null) return null;
 
@@ -40,6 +39,7 @@ class PredmetDAO
 
     public Predmet? IzbrisiPredmet(string sifra)
     {
+        predmeti = skladiste.Load();
         Predmet? predmet = UzmiPredmetPoSifri(sifra);
         if (predmet == null) return null;
 
@@ -50,11 +50,13 @@ class PredmetDAO
 
     public Predmet? UzmiPredmetPoSifri(string sifra)
     {
+        predmeti = skladiste.Load();
         return predmeti.Find(p => p.SifraPredmeta == sifra);
     }
 
     public List<Predmet> UzmiSvePredmete()
     {
+        predmeti = skladiste.Load();
         return predmeti;
     }
 }

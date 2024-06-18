@@ -1,12 +1,13 @@
-﻿using System;
+using StudentskaSluzba.Model;
+using StudentskaSluzba.Service;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using StudentskaSluzba.Model;
-using StudentskaSluzba.Service;
 
 namespace GUI.View;
 
@@ -23,11 +24,52 @@ public partial class EditStudentView : Window, INotifyPropertyChanged
         }
     }
 
+    private List<Predmet> _predmets;
+    public List<Predmet> PredmetsNePolozeni
+    {
+        get => _predmets;
+        set
+        {
+            EditStudent.SpisakNepolozenihPredmeta = value;
+            _predmets = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private List<Predmet> _predmetsPolozeni;
+    public List<Predmet> PredmetsPolozeni
+    {
+        get => _predmetsPolozeni;
+        set
+        {
+            EditStudent.SpisakPolozenihIspita = value;
+            _predmetsPolozeni = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private Predmet? _predmet;
+    public Predmet? SelectedPredmet
+    {
+        get => _predmet;
+        set
+        {
+            _predmet = value;
+            OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public EditStudentView()
+    {
+        InitializeComponent();
+        DataContext = this;
     }
 
     public EditStudentView(Student selectedStud)
@@ -38,6 +80,8 @@ public partial class EditStudentView : Window, INotifyPropertyChanged
         DataContext = this;
         CmbTrenutnaGodinaStudija.SelectedIndex = EditStudent.TrenutnaGodinaStudija - 1;
         CmbNacinFinansiranja.SelectedIndex = EditStudent.Status.Equals(StatusEnum.Budzet) ? 0 : 1;
+        PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
+        PredmetsPolozeni = EditStudent.SpisakPolozenihIspita;
         ValidateInputs(null, null);
     }
 
@@ -78,7 +122,6 @@ public partial class EditStudentView : Window, INotifyPropertyChanged
         {
             LblLastNameError.Content = string.Empty;
         }
-
 
         // Datum rođenja
         if (!DateTime.TryParseExact(BirthDateTextBox.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
@@ -169,5 +212,49 @@ public partial class EditStudentView : Window, INotifyPropertyChanged
         }
 
         BtnPotvrdi.IsEnabled = isValid;
+    }
+
+    private void AddNewSubject_Click(object sender, RoutedEventArgs e)
+    {
+        IzaberiPredmetDialog izaberiPredmetDialog = new IzaberiPredmetDialog(EditStudent);
+        if (izaberiPredmetDialog.ShowDialog() == true)
+        {
+            MessageBox.Show("Predmet uspešno dodat!");
+        }
+    }
+
+    private void UndoPassedExam_Click(object sender, RoutedEventArgs e)
+    {
+        if (SelectedPredmet == null) return;
+        MessageBoxResult res = MessageBox.Show("Da li ste sigurni da hoćete da poništite ocenu?", "Upozorenje", MessageBoxButton.OKCancel);
+        if (res.Equals(MessageBoxResult.OK))
+        {
+            CRUDEntitetaService.PonistiOcenu(SelectedPredmet.SifraPredmeta, EditStudent.Id);
+        }
+    }
+
+    private void AddGrade_Click(object sender, RoutedEventArgs e)
+    {
+        if (SelectedPredmet == null) return;
+        AddGradeView gradeView = new AddGradeView(SelectedPredmet, _student);
+        if (gradeView.ShowDialog() == true)
+        {
+            MessageBox.Show("Ocena uspešno upisana");
+        }
+    }
+
+    private void TabChangedEvent(object sender, RoutedEventArgs e)
+    {
+        SelectedPredmet = null;
+    }
+
+    private void RemoveSubject_Click(object sender, RoutedEventArgs e)
+    {
+        if (SelectedPredmet == null) return;
+        MessageBoxResult res = MessageBox.Show("Da li ste sigurni da hoćete da poništite ocenu?", "Upozorenje", MessageBoxButton.OKCancel);
+        if (res.Equals(MessageBoxResult.OK))
+        {
+            CRUDEntitetaService.PonistiOcenu(SelectedPredmet.SifraPredmeta, EditStudent.Id);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -24,11 +24,29 @@ public partial class EditProfesorView : Window, INotifyPropertyChanged
         }
     }
 
+    private Predmet? _selectedPredmet;
+
+    public Predmet? SelectedPredmet
+    {
+        get => _selectedPredmet;
+        set
+        {
+            _selectedPredmet = value;
+            OnPropertyChanged();
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public EditProfesorView()
+    {
+        InitializeComponent();
+        DataContext = this;
     }
 
     public EditProfesorView(Profesor selectedProf)
@@ -50,6 +68,22 @@ public partial class EditProfesorView : Window, INotifyPropertyChanged
     {
         this.DialogResult = false;
         Close();
+    }
+
+    private void AddSubject_Click(object sender, RoutedEventArgs e)
+    {
+        var predmetDialog = new IzaberiPredmetDialog(EditProfesor);
+        if (predmetDialog.ShowDialog() == true)
+            MessageBox.Show("Uspšeno dodat predmet!");
+    }
+
+    private void RemoveSubject_Click(object sender, RoutedEventArgs e)
+    {
+        if (SelectedPredmet == null) return;
+        var dialogRes = MessageBox.Show("Da li ste sigurni?", "Ukloni predmet", MessageBoxButton.OKCancel);
+        if (!dialogRes.Equals(MessageBoxResult.OK)) return;
+        var res = CRUDEntitetaService.ObrisiPredmetProfesoru(EditProfesor, SelectedPredmet);
+        MessageBox.Show(res ? "Uspešno skinut profesor sa predmeta" : "Došlo je do greške prilikom birsanja!");
     }
 
     private void ValidateInputs(object sender, TextChangedEventArgs e)

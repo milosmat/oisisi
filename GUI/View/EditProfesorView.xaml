@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:GUI"
+        xmlns:data="clr-namespace:GUI.View"
         mc:Ignorable="d"
         Title="{DynamicResource AppTitleEProf}" Height="900" Width="800">
     <Window.Resources>
@@ -11,87 +12,131 @@
             <ResourceDictionary.MergedDictionaries>
                 <local:LocalizedResourceDictionary />
             </ResourceDictionary.MergedDictionaries>
-            <local:AddressConverter x:Key="AddressConverter"/>
+            <local:AddressConverter x:Key="AddressConverter" />
         </ResourceDictionary>
     </Window.Resources>
+
     <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem Tag="Info" Header="{DynamicResource Information}">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource FirstName}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtIme" Grid.Row="0" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.Ime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblImeError" Grid.Row="1" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource FirstName}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtIme" Grid.Row="0" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.Ime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblImeError" Grid.Row="1" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource LastName}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtPrezime" Grid.Row="2" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.Prezime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblPrezimeError" Grid.Row="3" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource LastName}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtPrezime" Grid.Row="2" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.Prezime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblPrezimeError" Grid.Row="3" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource BirthDate}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtDatumRodjenja" Grid.Row="4" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.DatumRodjenja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MM/yyyy}}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblDatumRodjenjaError" Grid.Row="5" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource BirthDate}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtDatumRodjenja" Grid.Row="4" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.DatumRodjenja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MM/yyyy}}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblDatumRodjenjaError" Grid.Row="5" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource Address}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtAdresaStanovanja" Grid.Row="6" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.AdresaStanovanja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource AddressConverter}}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblAdresaStanovanjaError" Grid.Row="7" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource Address}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtAdresaStanovanja" Grid.Row="6" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.AdresaStanovanja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource AddressConverter}}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblAdresaStanovanjaError" Grid.Row="7" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource PhoneNumber}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtBrojTelefona" Grid.Row="8" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.KontaktTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblBrojTelefonaError" Grid.Row="9" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource PhoneNumber}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtBrojTelefona" Grid.Row="8" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.KontaktTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblBrojTelefonaError" Grid.Row="9" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Email}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtEmailAdresa" Grid.Row="10" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.EmailAdresa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblEmailAdresaError" Grid.Row="11" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="10" Grid.Column="0" Content="{DynamicResource Email}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtEmailAdresa" Grid.Row="10" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.EmailAdresa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblEmailAdresaError" Grid.Row="11" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="12" Grid.Column="0" Content="{DynamicResource Title}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtZvanje" Grid.Row="12" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.Zvanje, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblZvanjeError" Grid.Row="13" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="12" Grid.Column="0" Content="{DynamicResource Title}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtZvanje" Grid.Row="12" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.Zvanje, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblZvanjeError" Grid.Row="13" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource IDNumber}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtLicnaKarta" Grid.Row="14" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.BrojLicneKarte, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblLicnaKartaError" Grid.Row="15" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="14" Grid.Column="0" Content="{DynamicResource IDNumber}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtLicnaKarta" Grid.Row="14" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.BrojLicneKarte, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblLicnaKartaError" Grid.Row="15" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource YearsOfWork}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtGodineStaza" Grid.Row="16" Grid.Column="1" Margin="5"
-                 Text="{Binding EditProfesor.GodineStaza, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-        <Label x:Name="LblGodineStazaError" Grid.Row="17" Grid.Column="1" Margin="5" Foreground="Red"/>
+                    <Label Grid.Row="16" Grid.Column="0" Content="{DynamicResource YearsOfWork}" VerticalAlignment="Center" Margin="5" />
+                    <TextBox x:Name="TxtGodineStaza" Grid.Row="16" Grid.Column="1" Margin="5"
+                             Text="{Binding EditProfesor.GodineStaza, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                    <Label x:Name="LblGodineStazaError" Grid.Row="17" Grid.Column="1" Margin="5" Foreground="Red"/>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Column="0" Grid.Row="18" Grid.ColumnSpan="2" Orientation="Horizontal"
-                    HorizontalAlignment="Center" Height="50" Margin="5">
-            <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="ConfirmButton_Click" IsEnabled="False"/>
-            <Button Content="{DynamicResource Cancel}" Width="100" Height="45" Margin="5" Click="CancelButton_Click" />
-        </StackPanel>
+                    <!-- Buttons -->
+                    <StackPanel Grid.Column="0" Grid.Row="18" Grid.ColumnSpan="2" Orientation="Horizontal"
+                                HorizontalAlignment="Center" Height="50" Margin="5">
+                        <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="ConfirmButton_Click" IsEnabled="False"/>
+                        <Button Content="{DynamicResource Cancel}" Width="100" Height="45" Margin="5" Click="CancelButton_Click" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Tag="Predmeti" Header="{DynamicResource Courses}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" Content="{DynamicResource AddSubject}" Width="100" Margin="10"
+                            Click="AddSubject_Click"
+                            HorizontalAlignment="Left" />
+                    <Button Grid.Row="0" Grid.Column="1" Content="{DynamicResource RemoveSubject}" Width="100" Margin="10"
+                            Click="RemoveSubject_Click"
+                            HorizontalAlignment="Left" />
+                    <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="GridSubjects"
+                              AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
+                              ItemsSource="{Binding EditProfesor.SpisakPredmeta, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource SubjCode}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding NazivPredmeta}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource SubjName}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding GodinaStudija}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource SubjYear}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Semestar}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="{DynamicResource SubjSem}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
+

@@ -11,32 +11,27 @@ Godine staža
 Spisak predmeta na kojima je profesor
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
-using CLI.DAO;
 
 public class Profesor : ISerializable
 {
     public int Id { get; set; }
-    public string Prezime {get; set;}
-    public string Ime {get; set;}
-    public DateTime DatumRodjenja {get; set;}
-    public Adresa AdresaStanovanja {get; set;}
-    public string KontaktTelefon {get; set;}
-    public string EmailAdresa {get; set;}
-    public string BrojLicneKarte {get; set;}
-    public string Zvanje {get; set;}
-    public int GodineStaza {get; set;}
-    public List<Predmet> SpisakPredmeta {get; set;}
+    public string Prezime { get; set; }
+    public string Ime { get; set; }
+    public DateTime DatumRodjenja { get; set; }
+    public Adresa AdresaStanovanja { get; set; }
+    public string KontaktTelefon { get; set; }
+    public string EmailAdresa { get; set; }
+    public string BrojLicneKarte { get; set; }
+    public string Zvanje { get; set; }
+    public int GodineStaza { get; set; }
+    public List<Predmet> SpisakPredmeta { get; set; }
     public Profesor()
     {
         SpisakPredmeta = new List<Predmet>();
     }
-    public Profesor(int id,string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, string licna, string zvanje, int staz)
+    public Profesor(int id, string prezime, string ime, DateTime datum, Adresa adresa, string telefon, string email, string licna, string zvanje, int staz)
     {
         Id = id;
         Prezime = prezime;
@@ -124,9 +119,8 @@ public class Profesor : ISerializable
         BrojLicneKarte = values[10];
         Zvanje = values[11];
         GodineStaza = int.Parse(values[12]);
-
-        // Konvertujte šifre predmeta u objekte klase Predmet
-        SpisakPredmeta = values[13].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
+        if (values[13].Split(';').Length < 1) return;
+        SpisakPredmeta = values[13].Split(';').Select(sifra => new Predmet() { SifraPredmeta = sifra }).ToList();
 
     }
 
@@ -197,5 +191,5 @@ public class Profesor : ISerializable
     public string imePrezimeToString()
     {
         return $"{Ime} {Prezime}";
-    } 
+    }
 }

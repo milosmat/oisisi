@@ -11,4 +11,9 @@ public class ProfesorService
     {
         return _profesorDao.UzmiSveProfesore();
     }
+
+    public static Profesor GetById(int id)
+    {
+        return _profesorDao.UzmiProfesoraPoID(id);
+    }
 }

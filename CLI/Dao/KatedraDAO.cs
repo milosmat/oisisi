@@ -1,21 +1,19 @@
-﻿
-using System.Collections.Generic;
+﻿using StudentskaSluzba.Model;
 using StudentskaSluzba.Storage;
-using StudentskaSluzba.Model;
 namespace CLI.DAO;
 class KatedraDAO
 {
-    private readonly List<Katedra> katedre;
+    private List<Katedra> katedre;
     private readonly Storage<Katedra> skladiste;
 
     public KatedraDAO()
     {
         skladiste = new Storage<Katedra>("katedra.txt");
-        katedre = skladiste.Load();
     }
 
     public Katedra DodajKatedru(Katedra katedra)
     {
+        katedre = skladiste.Load();
         katedre.Add(katedra);
         skladiste.Save(katedre);
         return katedra;
@@ -23,6 +21,7 @@ class KatedraDAO
 
     public Katedra AzurirajKatedru(Katedra katedra)
     {
+        katedre = skladiste.Load();
         Katedra staraKatedra = UzmiKatedruPoSifri(katedra.SifraKatedre);
         if (staraKatedra is null) return null;
 
@@ -36,6 +35,8 @@ class KatedraDAO
 
     public Katedra? IzbrisiKatedru(string sifra)
     {
+        katedre = skladiste.Load();
+
         Katedra? katedra = UzmiKatedruPoSifri(sifra);
         if (katedra == null) return null;
 
@@ -46,11 +47,15 @@ class KatedraDAO
 
     private Katedra? UzmiKatedruPoSifri(string sifra)
     {
+        katedre = skladiste.Load();
+
         return katedre.Find(k => k.SifraKatedre == sifra);
     }
 
     public List<Katedra> UzmiSveKatedre()
     {
+        katedre = skladiste.Load();
+
         return katedre;
     }
 }

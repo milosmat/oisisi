@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:GUI"
         xmlns:model="clr-namespace:StudentskaSluzba.Model;assembly=CLI"
+        xmlns:data="clr-namespace:GUI.View"
         mc:Ignorable="d"
         Title="{DynamicResource AppTitleDPred}" Height="500" Width="800"
         WindowStartupLocation="CenterScreen">

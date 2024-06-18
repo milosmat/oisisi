@@ -62,16 +62,27 @@
     <sys:String x:Key="Information">Informacije</sys:String>
     <sys:String x:Key="Passed">Položeni</sys:String>
     <sys:String x:Key="Failed">Nepoloženi</sys:String>
+    <sys:String x:Key="UndoGrade">Poništi ocenu</sys:String>
+    <sys:String x:Key="AverageGrade">Prosečna ocena</sys:String>
+    <sys:String x:Key="TotalESPB">Ukupno ESPB</sys:String>
+    <sys:String x:Key="Grade">Ocena</sys:String>
+    <sys:String x:Key="Date">Datum</sys:String>
+    <sys:String x:Key="Exam">Polaganje</sys:String>
     
     <!-- EditProfesor -->
     <sys:String x:Key="AppTitleEProf">Izmeni profesora</sys:String>
+    <sys:String x:Key="AddSubject">Dodaj predmet</sys:String>
+    <sys:String x:Key="RemoveSubject">Ukloni predmet</sys:String>
     
     <!-- EditPredmet -->
     <sys:String x:Key="AppTitleEPred">Izmeni predmet</sys:String>
+    <sys:String x:Key="RemoveProfessor">Skloni</sys:String>
     
     <!-- MessageBox -->
     <sys:String x:Key="AddSuccess">Entitet uspešno dodat!</sys:String>
     <sys:String x:Key="AddFail">Entitet nije dodat!</sys:String>
     <sys:String x:Key="AddTitle">Dodaj entitet</sys:String>
+    <sys:String x:Key="OkButton">Ok</sys:String>
+    <sys:String x:Key="CancelButton">Odustani</sys:String>
     
 </ResourceDictionary>
