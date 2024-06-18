@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10">
-        <TabControl Margin="0,0,0,40" SelectionChanged="TabChangedEvent">
+        <TabControl Margin="0,0,0,40">
             <TabItem Header="{DynamicResource Information}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
@@ -166,7 +166,6 @@
                     <Button Grid.Row="0" Grid.Column="2" Content="{DynamicResource Exam}" Width="100" Margin="10"
                             Click="AddGrade_Click"
                             HorizontalAlignment="Left" />
-                    <TextBlock Grid.Column="0" Text="Passed Courses" Grid.Row="1" Margin="10" />
                     <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="GridSubjects"
                               AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding PredmetsNePolozeni, UpdateSourceTrigger=PropertyChanged}"

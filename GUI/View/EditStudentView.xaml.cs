@@ -1,10 +1,11 @@
+using StudentskaSluzba.Model;
+using StudentskaSluzba.Service;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using StudentskaSluzba.Model;
-using StudentskaSluzba.Service;
 
 namespace GUI.View;
 
@@ -20,7 +21,7 @@ public partial class EditStudentView : Window
             OnPropertyChanged();
         }
     }
-    
+
     private List<Predmet> _predmets;
     public List<Predmet> PredmetsNePolozeni
     {
@@ -32,7 +33,7 @@ public partial class EditStudentView : Window
             OnPropertyChanged();
         }
     }
-    
+
     private List<Predmet> _predmetsPolozeni;
     public List<Predmet> PredmetsPolozeni
     {
@@ -54,9 +55,10 @@ public partial class EditStudentView : Window
         {
             _predmet = value;
             OnPropertyChanged();
+            Console.WriteLine($"Selected predmet changed {_predmet}");
         }
     }
-    
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -69,7 +71,7 @@ public partial class EditStudentView : Window
         InitializeComponent();
         DataContext = this;
     }
-    
+
     public EditStudentView(Student selectedStud)
     {
         InitializeComponent();
@@ -106,7 +108,7 @@ public partial class EditStudentView : Window
     private void UndoPassedExam_Click(object sender, RoutedEventArgs e)
     {
         if (SelectedPredmet == null) return;
-        MessageBoxResult res =  MessageBox.Show("Da li ste sigurni da hoćete da poništite ocenu?", "Upozorenje", MessageBoxButton.OKCancel);
+        MessageBoxResult res = MessageBox.Show("Da li ste sigurni da hoćete da poništite ocenu?", "Upozorenje", MessageBoxButton.OKCancel);
         if (res.Equals(MessageBoxResult.OK))
         {
             CRUDEntitetaService.PonistiOcenu(SelectedPredmet.SifraPredmeta, EditStudent.Id);
@@ -123,15 +125,15 @@ public partial class EditStudentView : Window
         }
     }
 
-    private void TabChangedEvent(object sender, SelectionChangedEventArgs e)
+    private void TabChangedEvent(object sender, RoutedEventArgs e)
     {
         SelectedPredmet = null;
     }
 
     private void RemoveSubject_Click(object sender, RoutedEventArgs e)
     {
-        if(SelectedPredmet == null) return;
-        MessageBoxResult res =  MessageBox.Show("Da li ste sigurni da hoćete da poništite ocenu?", "Upozorenje", MessageBoxButton.OKCancel);
+        if (SelectedPredmet == null) return;
+        MessageBoxResult res = MessageBox.Show("Da li ste sigurni da hoćete da poništite ocenu?", "Upozorenje", MessageBoxButton.OKCancel);
         if (res.Equals(MessageBoxResult.OK))
         {
             CRUDEntitetaService.PonistiOcenu(SelectedPredmet.SifraPredmeta, EditStudent.Id);
