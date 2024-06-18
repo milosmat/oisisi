@@ -15,6 +15,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.DataContext>
+        <local:MainWindow></local:MainWindow>
+    </Window.DataContext>
     <Window.CommandBindings>
         <CommandBinding Command="New" Executed="NewEntityBinding_Executed" />
         <CommandBinding Command="Save" Executed="SaveBinding_Executed" />

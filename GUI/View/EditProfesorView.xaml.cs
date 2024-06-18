@@ -25,6 +25,11 @@ public partial class EditProfesorView : Window
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+    public EditProfesorView()
+    {
+        InitializeComponent();
+        DataContext = this;
+    }
     public EditProfesorView(Profesor selectedProf)
     {
         InitializeComponent();

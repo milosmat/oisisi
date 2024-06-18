@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:GUI"
+        xmlns:data="clr-namespace:GUI.View"
         mc:Ignorable="d"
         xmlns:model="clr-namespace:StudentskaSluzba.Model;assembly=CLI"
         Title="{DynamicResource AppTitleDStud}" Height="450" Width="800"
@@ -15,6 +16,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.DataContext>
+        <data:DodajStudentaView></data:DodajStudentaView>
+    </Window.DataContext>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
