@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using CLI.Service;
 using StudentskaSluzba.Model;
 using StudentskaSluzba.Service;
 
 namespace GUI.View;
 
-public partial class EditPredmetView : Window
+public partial class EditPredmetView : Window, INotifyPropertyChanged
 {
     private Predmet _predmet;
 
@@ -34,7 +35,7 @@ public partial class EditPredmetView : Window
             OnPropertyChanged();
         }
     }
-    
+
     private List<Profesor> _profesors;
 
     public List<Profesor> Profesors
@@ -46,6 +47,7 @@ public partial class EditPredmetView : Window
             OnPropertyChanged();
         }
     }
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -58,6 +60,7 @@ public partial class EditPredmetView : Window
         InitializeComponent();
         DataContext = this;
     }
+
     public EditPredmetView(Predmet predmet)
     {
         InitializeComponent();
@@ -68,7 +71,9 @@ public partial class EditPredmetView : Window
         Profesors = _profesors;
         SelectedProfesor = Profesors.Find(p => p.Id == _profesor?.Id);
         DataContext = this;
+        ValidateInputs(null, null);
     }
+
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
         this.DialogResult = CRUDEntitetaService.IzmeniPredmet(EditPredmet);
@@ -79,6 +84,79 @@ public partial class EditPredmetView : Window
     {
         this.DialogResult = false;
         Close();
+    }
+
+    private void ValidateInputs(object sender, RoutedEventArgs e)
+    {
+        bool isValid = true;
+
+        // Šifra predmeta
+        if (string.IsNullOrWhiteSpace(TxtSifra.Text))
+        {
+            isValid = false;
+            LblSifraError.Content = "Šifra predmeta je obavezna.";
+        }
+        else
+        {
+            LblSifraError.Content = string.Empty;
+        }
+
+        // Naziv predmeta
+        if (string.IsNullOrWhiteSpace(TxtNaziv.Text))
+        {
+            isValid = false;
+            LblNazivError.Content = "Naziv predmeta je obavezan.";
+        }
+        else
+        {
+            LblNazivError.Content = string.Empty;
+        }
+
+        // Godina studija
+        if (string.IsNullOrWhiteSpace(TxtGodinaStudija.Text) || !int.TryParse(TxtGodinaStudija.Text, out int godinaStudija) || godinaStudija < 1 || godinaStudija > 4)
+        {
+            isValid = false;
+            LblGodinaStudijaError.Content = "Godina studija mora biti između 1 i 4.";
+        }
+        else
+        {
+            LblGodinaStudijaError.Content = string.Empty;
+        }
+
+        // Broj ESPB
+        if (string.IsNullOrWhiteSpace(TxtEspb.Text) || !int.TryParse(TxtEspb.Text, out int espb) || espb < 1)
+        {
+            isValid = false;
+            LblEspbError.Content = "Broj ESPB mora biti pozitivan broj.";
+        }
+        else
+        {
+            LblEspbError.Content = string.Empty;
+        }
+
+        // Semestar
+        if (CmbSemestar.SelectedItem == null)
+        {
+            isValid = false;
+            LblSemestarError.Content = "Semestar je obavezan.";
+        }
+        else
+        {
+            LblSemestarError.Content = string.Empty;
+        }
+
+        // Profesor
+        if (CmbProfesor.SelectedItem == null)
+        {
+            isValid = false;
+            LblProfesorError.Content = "Profesor je obavezan.";
+        }
+        else
+        {
+            LblProfesorError.Content = string.Empty;
+        }
+
+        BtnPotvrdi.IsEnabled = isValid;
     }
 
     private void RemoveProfessor_Click(object sender, RoutedEventArgs e)

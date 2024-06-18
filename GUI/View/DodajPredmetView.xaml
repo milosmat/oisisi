@@ -7,7 +7,8 @@
         xmlns:model="clr-namespace:StudentskaSluzba.Model;assembly=CLI"
         xmlns:data="clr-namespace:GUI.View"
         mc:Ignorable="d"
-        Title="{DynamicResource AppTitleDPred}" Height="450" Width="800">
+        Title="{DynamicResource AppTitleDPred}" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,14 +16,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Margin="10">
+    <Grid Margin="10,10,10,118">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -32,19 +33,31 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource SubjCode}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtSifra" Grid.Row="0" Grid.Column="1" Margin="5" />
-        
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtSifra" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblSifraError" Foreground="Red"/>
+        </StackPanel>
+
         <Label Grid.Row="1" Grid.Column="0" Content="{DynamicResource SubjName}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtNaziv" Grid.Row="1" Grid.Column="1" Margin="5" />
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtNaziv" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblNazivError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource SubjYear}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtGodinaStudija" Grid.Row="2" Grid.Column="1" Margin="5" />
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtGodinaStudija" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblGodinaStudijaError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" Content="{DynamicResource SubjESPB}" VerticalAlignment="Center" Margin="5" />
-        <TextBox x:Name="TxtEspb" Grid.Row="3" Grid.Column="1" Margin="5" />
+        <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+            <TextBox x:Name="TxtEspb" Margin="5" TextChanged="ValidateInputs"/>
+            <Label x:Name="LblEspbError" Foreground="Red"/>
+        </StackPanel>
 
         <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource SubjSem}" VerticalAlignment="Center" Margin="5" />
-        <ComboBox x:Name="CmbSemestar" Grid.Row="4" Grid.Column="1" Margin="5">
+        <ComboBox x:Name="CmbSemestar" Grid.Row="4" Grid.Column="1" Margin="5" SelectionChanged="ValidateInputs">
             <ComboBoxItem Content="{DynamicResource Summer}">
                 <ComboBoxItem.Tag>
                     <model:SemestarEnum>Letnji</model:SemestarEnum>
@@ -56,15 +69,18 @@
                 </ComboBoxItem.Tag>
             </ComboBoxItem>
         </ComboBox>
+        <Label x:Name="LblSemestarError" Grid.Row="5" Grid.Column="1" Margin="5" Foreground="Red"/>
+
         <Label Grid.Row="5" Grid.Column="0" Content="{DynamicResource Professor}" VerticalAlignment="Center" Margin="5" />
         <ComboBox x:Name="CmbProfesor" Grid.Row="5" Grid.Column="1" Margin="5"
                   ItemsSource="{Binding Profesors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ValidateInputs"/>
+        <Label x:Name="LblProfesorError" Grid.Row="6" Grid.Column="1" Margin="5,5,5,172" Foreground="Red"/>
 
         <!-- Buttons -->
         <StackPanel Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal"
                     HorizontalAlignment="Center" Height="50" Margin="5">
-            <Button Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="BtnPotvrdi_Action" />
+            <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="BtnPotvrdi_Action" IsEnabled="False"/>
             <Button Content="{DynamicResource Cancel}" Width="100" Height="45" Margin="5" Click="BtnOdustani_Action" />
         </StackPanel>
     </Grid>
