@@ -64,10 +64,10 @@ public partial class DodajStudentaView : Window
         bool isValid = true;
 
         // Ime
-        if (string.IsNullOrWhiteSpace(TxtIme.Text))
+        if (string.IsNullOrWhiteSpace(TxtIme.Text) || !Regex.IsMatch(TxtIme.Text, @"^[a-zA-Z]+$"))
         {
             isValid = false;
-            LblImeError.Content = "Ime je obavezno.";
+            LblImeError.Content = "Ime je obavezno i mora sadržati samo slova.";
         }
         else
         {
@@ -75,10 +75,10 @@ public partial class DodajStudentaView : Window
         }
 
         // Prezime
-        if (string.IsNullOrWhiteSpace(TxtPrezime.Text))
+        if (string.IsNullOrWhiteSpace(TxtPrezime.Text) || !Regex.IsMatch(TxtPrezime.Text, @"^[a-zA-Z]+$"))
         {
             isValid = false;
-            LblPrezimeError.Content = "Prezime je obavezno.";
+            LblPrezimeError.Content = "Prezime je obavezno i mora sadržati samo slova.";
         }
         else
         {
