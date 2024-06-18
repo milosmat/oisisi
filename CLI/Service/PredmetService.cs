@@ -11,4 +11,9 @@ public class PredmetService
     {
         return _predmetDao.UzmiSvePredmete();
     }
+
+    public static Predmet GetByid(string sifra)
+    {
+        return _predmetDao.UzmiPredmetPoSifri(sifra);
+    }
 }

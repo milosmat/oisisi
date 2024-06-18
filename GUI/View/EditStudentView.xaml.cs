@@ -116,7 +116,7 @@ public partial class EditStudentView : Window
     private void AddGrade_Click(object sender, RoutedEventArgs e)
     {
         if (SelectedPredmet == null) return;
-        AddGradeView gradeView = new AddGradeView();
+        AddGradeView gradeView = new AddGradeView(SelectedPredmet, _student);
         if (gradeView.ShowDialog() == true)
         {
             MessageBox.Show("Ocena uspešno upisana");

@@ -14,6 +14,7 @@ Spisak predmeta na kojima je profesor
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CLI.Service;
 
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
@@ -124,9 +125,7 @@ public class Profesor : ISerializable
         BrojLicneKarte = values[10];
         Zvanje = values[11];
         GodineStaza = int.Parse(values[12]);
-
-        // Konvertujte šifre predmeta u objekte klase Predmet
-        SpisakPredmeta = values[13].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
+        SpisakPredmeta = values[13].Split(';').Select(sifra => PredmetService.GetByid(sifra)).ToList();
 
     }
 

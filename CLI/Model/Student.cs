@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CLI.Service;
 using StudentskaSluzba.Serialization;
 namespace StudentskaSluzba.Model;
 
@@ -61,7 +62,7 @@ public class Student : ISerializable
 
     public override string ToString()
     {
-        return $"ID: {Id,5} | Prezime: {Prezime,-20} | Ime: {Ime,-20} | Godina: {TrenutnaGodinaStudija,3} | Status: {Status} | Prosek: {ProsecnaOcena,5:F2} |";
+        return $"{Id,5}|{Prezime,-20}|{Ime,-20}|{TrenutnaGodinaStudija,3}|{Status}|{ProsecnaOcena,5:F2}";
     }
 
     public string[] ToCSV()
@@ -116,8 +117,36 @@ public class Student : ISerializable
         TrenutnaGodinaStudija = int.Parse(values[14]);
         Status = (StatusEnum)Enum.Parse(typeof(StatusEnum), values[15]);
         ProsecnaOcena = double.Parse(values[16], null);
+        List<Predmet> tmp = new List<Predmet>();
+        foreach (var se in values[17].Split(";"))
+        {
+            var tmpPred = se.Split('|');
+            tmp.Add(new Predmet()
+            {
+                SifraPredmeta = tmpPred[0],
+                NazivPredmeta = tmpPred[1],
+                Semestar = Enum.Parse<SemestarEnum>(tmpPred[2]),
+                GodinaStudija = int.Parse(tmpPred[3]),
+                PredmetniProfesor = int.Parse(tmpPred[4]) != -1 ? ProfesorService.GetById(int.Parse(values[3])) : null,
+                BrojESPB = int.Parse(tmpPred[5])
+            });
+        }
+        SpisakPolozenihIspita = tmp;
+        tmp = new List<Predmet>();
+        foreach (var se in values[18].Split(";"))
+        {
+            var tmpPred = se.Split('|');
+            tmp.Add(new Predmet()
+            {
+                SifraPredmeta = tmpPred[0],
+                NazivPredmeta = tmpPred[1],
+                Semestar = Enum.Parse<SemestarEnum>(tmpPred[2]),
+                GodinaStudija = int.Parse(tmpPred[3]),
+                PredmetniProfesor = int.Parse(tmpPred[4]) != -1 ? ProfesorService.GetById(int.Parse(values[3])) : null,
+                BrojESPB = int.Parse(tmpPred[5])
+            });
+        }
 
-        //SpisakPolozenihIspita = values[17].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
-        //SpisakNepolozenihPredmeta = values[18].Split(';').Select(sifra => new Predmet { SifraPredmeta = sifra }).ToList();
+        SpisakNepolozenihPredmeta = tmp;
     }
 }

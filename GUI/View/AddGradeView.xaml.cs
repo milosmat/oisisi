@@ -83,7 +83,7 @@ public partial class AddGradeView : Window
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
         this.DialogResult =
-            CRUDEntitetaService.DodajPredmetStudentu(Predmet!, _student, SelectedGrade ?? 0, DateTime.Parse(Datum));
+            CRUDEntitetaService.DodajPredmetStudentu(Predmet!, _student, SelectedGrade ?? 0, DateTime.ParseExact(Datum, "yyyy-MM-dd", null));
         Close();
     }
 

@@ -12,6 +12,7 @@ Spisak studenata koji nisu položili predmet
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CLI.Service;
 
 namespace StudentskaSluzba.Model;
 
@@ -50,7 +51,7 @@ public class Predmet : ISerializable
     {
         string profesorImePrezime = (PredmetniProfesor != null) ? PredmetniProfesor.imePrezimeToString() : "N/A";
 
-        return $"Sifra: {SifraPredmeta} | Naziv: {NazivPredmeta} | Semestar: {Semestar} | Godina studija: {GodinaStudija} | Predmetni profesor: {profesorImePrezime} | Broj ESPB: {BrojESPB}";
+        return $"{SifraPredmeta}|{NazivPredmeta}|{Semestar}|{GodinaStudija}|{profesorImePrezime}|{BrojESPB}";
     }
 
     public string[] ToCSV()
@@ -65,8 +66,8 @@ public class Predmet : ISerializable
         GodinaStudija.ToString(),
         profesorInfo,
         BrojESPB.ToString(),
-        string.Join(",", SpisakStudenataPolozili),
-        string.Join(",", SpisakStudenataNisuPolozili)
+        string.Join(";", SpisakStudenataPolozili),
+        string.Join(";", SpisakStudenataNisuPolozili)
     };
 
         return csvValues;
@@ -81,19 +82,47 @@ public class Predmet : ISerializable
 
         if (int.TryParse(values[4], out int profesorId) && profesorId != -1)
         {
-            // Ako postoji ID za predmetnog profesora, pronađi profesora sa datim ID-jem
-            PredmetniProfesor = new Profesor() { Id = profesorId }; // Trebalo bi postaviti samo ID, a ne kompletnog profesora
+            PredmetniProfesor =
+                ProfesorService.GetById(profesorId);
         }
         else
         {
-            // Inače, nema predmetnog profesora
             PredmetniProfesor = null;
         }
-
-        BrojESPB = int.Parse(values[5]);
         if (values[6].Equals(String.Empty)) return;
-        SpisakStudenataPolozili = values[6].Split(',').Select(id => new Student() { Id = int.Parse(id) }).ToList();
-        SpisakStudenataNisuPolozili = values[7].Split(',').Select(id => new Student() { Id = int.Parse(id) }).ToList();
+        
+        BrojESPB = int.Parse(values[5]);
+        List<Student> tmp = new List<Student>();
+        foreach (var se in values[6].Split(";"))
+        {
+            var tmpPred = se.Split('|');
+            tmp.Add(new Student()
+            {
+                Id = int.Parse(tmpPred[0].Trim()),
+                Prezime = tmpPred[1].Trim(),
+                Ime = tmpPred[2].Trim(),
+                TrenutnaGodinaStudija = int.Parse(tmpPred[3].Trim()),
+                Status = Enum.Parse<StatusEnum>(tmpPred[4]),
+                ProsecnaOcena = double.Parse(tmpPred[5].Trim())
+            });
+        }
+
+        SpisakStudenataPolozili = tmp;
+        tmp = new List<Student>();
+        foreach (var se in values[6].Split(";"))
+        {
+            var tmpPred = se.Split('|');
+            tmp.Add(new Student()
+            {
+                Id = int.Parse(tmpPred[0].Trim()),
+                Prezime = tmpPred[1].Trim(),
+                Ime = tmpPred[2].Trim(),
+                TrenutnaGodinaStudija = int.Parse(tmpPred[3].Trim()),
+                Status = Enum.Parse<StatusEnum>(tmpPred[4]),
+                ProsecnaOcena = double.Parse(tmpPred[5].Trim())
+            });
+        }
+        SpisakStudenataNisuPolozili = tmp;
     }
 
 }
