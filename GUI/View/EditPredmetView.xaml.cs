@@ -52,6 +52,12 @@ public partial class EditPredmetView : Window
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    public EditPredmetView()
+    {
+        InitializeComponent();
+        DataContext = this;
+    }
     public EditPredmetView(Predmet predmet)
     {
         InitializeComponent();

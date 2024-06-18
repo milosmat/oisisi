@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -195,6 +196,9 @@ namespace GUI
             dict.Source = new Uri(resourcesPath, UriKind.Relative);
 
             this.Resources.MergedDictionaries[0] = dict;
+            MessageBoxManager.OK = (dict["OkButton"] as string)!;
+            MessageBoxManager.Cancel = (dict["CancelButton"] as string)!;
+            MessageBoxManager.Register();
         }
 
         private void LanguageSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -202,6 +206,7 @@ namespace GUI
             if (e.AddedItems.Count <= 0) return;
             var selectedLanguage = (e.AddedItems[0] as ComboBoxItem)?.Tag.ToString();
             if (selectedLanguage != null) SwitchLanguage(selectedLanguage);
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

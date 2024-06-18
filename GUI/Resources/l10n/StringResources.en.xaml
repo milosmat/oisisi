@@ -65,6 +65,8 @@
     <sys:String x:Key="UndoGrade">Undo grade</sys:String>
     <sys:String x:Key="AverageGrade">Average grade</sys:String>
     <sys:String x:Key="TotalESPB">Total ECTS</sys:String>
+    <sys:String x:Key="Grade">Grade</sys:String>
+    <sys:String x:Key="Date">Date</sys:String>
     
     <!-- EditProfesora -->
     <sys:String x:Key="AppTitleEProf">Edit professor</sys:String>
@@ -76,5 +78,7 @@
     <sys:String x:Key="AddSuccess">Entity successfully added!</sys:String>
     <sys:String x:Key="AddFail">Entity not added!</sys:String>
     <sys:String x:Key="AddTitle">Add entity</sys:String>
+    <sys:String x:Key="OkButton">Ok</sys:String>
+    <sys:String x:Key="CancelButton">Cancel</sys:String>
 
 </ResourceDictionary>

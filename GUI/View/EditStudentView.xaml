@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:GUI"
+        xmlns:data="clr-namespace:GUI.View"
         xmlns:model="clr-namespace:StudentskaSluzba.Model;assembly=CLI"
         mc:Ignorable="d"
         Title="{DynamicResource AppTitleEStud}" Height="450" Width="800">
@@ -17,8 +18,11 @@
             <local:EnrollmentYearConverter x:Key="EnrollmentYearConverter" />
         </ResourceDictionary>
     </Window.Resources>
+    <Window.DataContext>
+        <data:EditStudentView></data:EditStudentView>
+    </Window.DataContext>
     <Grid Margin="10">
-        <TabControl Margin="0,0,0,40">
+        <TabControl Margin="0,0,0,40" SelectionChanged="TabChangedEvent">
             <TabItem Header="{DynamicResource Information}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
@@ -104,9 +108,10 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Button Content="{DynamicResource UndoGrade}" Width="120" Margin="5" HorizontalAlignment="Left" 
-                            Click="ConfirmButton_Click"/>
+                            Click="UndoPassedExam_Click"/>
                     <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" IsReadOnly="True"
-                              ItemsSource="{Binding PassedSubjects}">
+                              ItemsSource="{Binding PredmetsPolozeni}"
+                              SelectedItem="{Binding SelectedPredmet}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -137,7 +142,7 @@
                     </DataGrid>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
                         <TextBlock Text="{DynamicResource AverageGrade}" FontWeight="Bold" />
-                        <TextBlock Text="{Binding AverageGrade}" Margin="10,0,0,0" />
+                        <TextBlock Text="{Binding EditStudent.ProsecnaOcena}" Margin="10,0,0,0" />
                         <TextBlock Text="{DynamicResource TotalESPB}" FontWeight="Bold" Margin="20,0,0,0" />
                         <TextBlock Text="{Binding TotalESPB}" Margin="10,0,0,0" />
                     </StackPanel>
@@ -159,15 +164,15 @@
                             Click="AddNewSubject_Click"
                             HorizontalAlignment="Left" />
                     <Button Grid.Row="0" Grid.Column="1" Content="{DynamicResource Confirm}" Width="100" Margin="10"
-                            Click="ConfirmButton_Click"
+                            Click="RemoveSubject_Click"
                             HorizontalAlignment="Left" />
                     <Button Grid.Row="0" Grid.Column="2" Content="{DynamicResource Confirm}" Width="100" Margin="10"
-                            Click="ConfirmButton_Click"
+                            Click="AddGrade_Click"
                             HorizontalAlignment="Left" />
                     <TextBlock Grid.Column="0" Text="Passed Courses" Grid.Row="1" Margin="10" />
                     <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="GridSubjects"
                               AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
-                              ItemsSource="{Binding Predmets, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding PredmetsNePolozeni, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">

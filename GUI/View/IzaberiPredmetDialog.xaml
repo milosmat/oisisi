@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:GUI"
+        xmlns:data="clr-namespace:GUI.View"
         mc:Ignorable="d"
         Title="IzaberiPredmetDialog" Height="450" Width="800">
     <Window.Resources>
@@ -13,7 +14,27 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.DataContext>
+        <data:IzaberiPredmetDialog></data:IzaberiPredmetDialog>
+    </Window.DataContext>
     <Grid Margin="10">
-        
+        <DataGrid x:Name="GridSubjects"
+                  AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
+                  ItemsSource="{Binding Predmets, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectionChanged="SelectionChangedEvent">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource SubjCode}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding NazivPredmeta}" Width="*">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{DynamicResource SubjName}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

@@ -1,11 +1,72 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Controls;
+using CLI.Service;
+using StudentskaSluzba.Model;
+using StudentskaSluzba.Service;
 
 namespace GUI.View;
 
 public partial class IzaberiPredmetDialog : Window
 {
+    private Predmet? _predmet;
+
+    public Predmet? SelectedPredmet
+    {
+        get => _predmet;
+        set
+        {
+            _predmet = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    private List<Predmet> _predmets;
+    public List<Predmet> Predmets
+    {
+        get => _predmets;
+        set
+        {
+            _predmets = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private Student _student;
     public IzaberiPredmetDialog()
     {
         InitializeComponent();
+        Predmets = PredmetService.GetPredmets();
+    }
+    
+    public IzaberiPredmetDialog(Student student)
+    {
+        InitializeComponent();
+        _student = student;
+        Predmets = PredmetService.GetPredmets();
+        DataContext = this;
+    }
+
+
+    private void SelectionChangedEvent(object sender, SelectionChangedEventArgs e)
+    {
+        MessageBoxResult dlgRes = MessageBox.Show("Da li želite da dodate ovaj predmet studentu?", "Obaveštenje",
+            MessageBoxButton.YesNo);
+
+        if (dlgRes.Equals(MessageBoxResult.Yes) && SelectedPredmet != null)
+        {
+            DialogResult = CRUDEntitetaService.DodajPredmetStudentu(SelectedPredmet, _student, 0, new DateTime());
+            Close();
+        }
     }
 }

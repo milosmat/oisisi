@@ -10,6 +10,7 @@ public class CRUDEntitetaService
     private static readonly PredmetDAO _predmetDao = new PredmetDAO();
     private static readonly AdresaDAO _adresaDao = new AdresaDAO();
     private static readonly IndeksDAO _indeksDao = new IndeksDAO();
+    private static readonly OcenaNaIspituDAO _ocena = new();
     public static bool DodajStudenta(Student student)
     {
         Student s = _studentDao.DodajStudenta(student);
@@ -72,6 +73,37 @@ public class CRUDEntitetaService
             return true;
         }
         catch
+        {
+            return false;
+        }
+    }
+
+    public static void PonistiOcenu(String predmet, int studentId)
+    {
+        try
+        {
+            _ocena.IzbrisiOcenuNaIspitu(studentId, predmet);
+        }
+        catch (Exception e)
+        {   
+            System.Console.WriteLine("Greška prilikom brisanja ocene!");
+        }
+    }
+
+    public static bool DodajPredmetStudentu(Predmet predmet, Student student, int ocena, DateTime datum)
+    {
+        try
+        {
+            _ocena.DodajOcenuNaIspitu(new OcenaNaIspitu()
+            {
+                StudentKojiJePolozio = student,
+                Predmet = predmet,
+                BrojcanaVrednostOcene = ocena,
+                DatumPolaganjaIspita = datum
+            });
+            return true;
+        }
+        catch (Exception e)
         {
             return false;
         }

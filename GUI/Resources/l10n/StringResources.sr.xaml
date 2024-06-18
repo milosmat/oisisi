@@ -65,6 +65,8 @@
     <sys:String x:Key="UndoGrade">Poništi ocenu</sys:String>
     <sys:String x:Key="AverageGrade">Prosečna ocena</sys:String>
     <sys:String x:Key="TotalESPB">Ukupno ESPB</sys:String>
+    <sys:String x:Key="Grade">Ocena</sys:String>
+    <sys:String x:Key="Date">Datum</sys:String>
     
     <!-- EditProfesor -->
     <sys:String x:Key="AppTitleEProf">Izmeni profesora</sys:String>
@@ -76,5 +78,7 @@
     <sys:String x:Key="AddSuccess">Entitet uspešno dodat!</sys:String>
     <sys:String x:Key="AddFail">Entitet nije dodat!</sys:String>
     <sys:String x:Key="AddTitle">Dodaj entitet</sys:String>
+    <sys:String x:Key="OkButton">Ok</sys:String>
+    <sys:String x:Key="CancelButton">Odustani</sys:String>
     
 </ResourceDictionary>
