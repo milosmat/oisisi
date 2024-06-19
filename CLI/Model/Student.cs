@@ -147,4 +147,13 @@ public class Student : ISerializable
 
         SpisakNepolozenihPredmeta = tmp;
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (obj is not Student) return false;
+        var tmp = obj as Student;
+        if (tmp.Id == this.Id) return true;
+        return false;
+    }
 }

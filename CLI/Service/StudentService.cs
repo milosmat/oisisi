@@ -12,5 +12,15 @@ namespace CLI.Service
         {
             return studentDAO.UzmiSveStudente();
         }
+
+        public static Student GetStudentById(int id)
+        {
+            return studentDAO.UzmiStudentaPoID(id);
+        }
+
+        public static void AzurirajStudenta(Student s)
+        {
+            studentDAO.AzurirajStudenta(s);
+        }
     }
 }
