@@ -68,7 +68,9 @@
     <sys:String x:Key="Grade">Ocena</sys:String>
     <sys:String x:Key="Date">Datum</sys:String>
     <sys:String x:Key="Exam">Polaganje</sys:String>
-    
+    <sys:String x:Key="ProfessorName">Ime profesora</sys:String>
+    <sys:String x:Key="SubjectName">Predmet</sys:String>
+
     <!-- EditProfesor -->
     <sys:String x:Key="AppTitleEProf">Izmeni profesora</sys:String>
     <sys:String x:Key="AddSubject">Dodaj predmet</sys:String>

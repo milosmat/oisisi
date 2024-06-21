@@ -15,7 +15,6 @@
             </ResourceDictionary.MergedDictionaries>
             <local:AddressConverter x:Key="AddressConverter" />
             <local:IndeksConverter x:Key="IndeksConverter" />
-            <local:EnrollmentYearConverter x:Key="EnrollmentYearConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10">
@@ -33,7 +32,6 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -82,14 +80,8 @@
                         <Label x:Name="LblIndexError" Foreground="Red"/>
                     </StackPanel>
 
-                    <TextBlock Text="{DynamicResource EnrollmentYear}" Grid.Row="7" Margin="5" />
+                    <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource CurrentYear}" VerticalAlignment="Center" Margin="5" />
                     <StackPanel Grid.Row="7" Grid.Column="1" Margin="5">
-                        <TextBox x:Name="EnrollmentYearTextBox" Text="{Binding EditStudent.BrojIndeksa, Mode=OneTime, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnrollmentYearConverter}}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblEnrollmentYearError" Foreground="Red"/>
-                    </StackPanel>
-
-                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource CurrentYear}" VerticalAlignment="Center" Margin="5" />
-                    <StackPanel Grid.Row="8" Grid.Column="1" Margin="5">
                         <ComboBox x:Name="CmbTrenutnaGodinaStudija" Margin="5" SelectionChanged="ValidateInputs">
                             <ComboBoxItem Content="I (prva)" Tag="1" />
                             <ComboBoxItem Content="II (druga)" Tag="2" />
@@ -99,8 +91,8 @@
                         <Label x:Name="LblCurrentYearError" Foreground="Red"/>
                     </StackPanel>
 
-                    <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource FinancingMethod}" VerticalAlignment="Center" Margin="5" />
-                    <StackPanel Grid.Row="9" Grid.Column="1" Margin="5">
+                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource FinancingMethod}" VerticalAlignment="Center" Margin="5" />
+                    <StackPanel Grid.Row="8" Grid.Column="1" Margin="5">
                         <ComboBox x:Name="CmbNacinFinansiranja" Margin="5" SelectionChanged="ValidateInputs">
                             <ComboBoxItem Content="{DynamicResource Budget}">
                                 <ComboBoxItem.Tag>
@@ -214,6 +206,30 @@
                             <DataGridTextColumn Binding="{Binding Semestar}" Width="*">
                                 <DataGridTextColumn.Header>
                                     <TextBlock Text="{DynamicResource SubjSem}" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource Professors}">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" IsReadOnly="True"
+                  ItemsSource="{Binding NepolozeniProfesori}"
+                  SelectedItem="{Binding SelectedPredmet}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Ime}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="First Name" />
+                                </DataGridTextColumn.Header>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Prezime}" Width="*">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Last Name" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                         </DataGrid.Columns>

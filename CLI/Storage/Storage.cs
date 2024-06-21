@@ -26,6 +26,8 @@ public class Storage<T> where T : ISerializable, new()
         IEnumerable<string> lines = File.ReadLines(_filePath);
         List<T> objects = _serializer.FromCSV(lines);
 
+        System.Console.WriteLine("Loaded data from file: " + _filePath);
+
         return objects;
     }
 
@@ -36,5 +38,7 @@ public class Storage<T> where T : ISerializable, new()
         {
             streamWriter.Write(serializedVehicles);
         }
+        System.Console.WriteLine("Saved data to file: " + _filePath);
+        System.Console.WriteLine("Data: " + serializedVehicles);
     }
 }

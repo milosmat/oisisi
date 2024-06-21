@@ -21,7 +21,7 @@
         <CommandBinding Command="Open" Executed="OpenBinding_Executed" />
         <CommandBinding Command="Close" Executed="CloseBinding_Executed" />
         <CommandBinding Command="Properties" Executed="EditBinding_Executed" />
-        <CommandBinding Command="Delete" Executed="DeleteBinding_Executed" />
+        <CommandBinding Command="Delete" Executed="DeleteBinding_Executed" CanExecute="DeleteBinding_CanExecute" />
         <CommandBinding Command="Help" Executed="HelpBinding_Executed" />
         <CommandBinding Command="Search" Executed="SearchBinding_Executed" />
         <CommandBinding Command="Favorites" Executed="ShowKatedraInfo" />
@@ -42,7 +42,11 @@
             <MenuItem Header="{DynamicResource File}">
                 <MenuItem x:Name="NewMenuItem" Header="{DynamicResource New}" InputGestureText="Ctrl+N" Command="New" />
                 <MenuItem x:Name="SaveMenuItem" Header="{DynamicResource Save}" InputGestureText="Ctrl+S" Command="Save" />
-                <MenuItem x:Name="OpenMenuItem" Header="{DynamicResource Open}" InputGestureText="Ctrl+O" Command="Open" />
+                <MenuItem x:Name="OpenMenuItem" Header="{DynamicResource Open}" InputGestureText="Ctrl+O"  Command="Open">
+                    <MenuItem Header="Students" Click="MenuItem_Studenti_Click" />
+                    <MenuItem Header="Subjects" Click="MenuItem_Predmeti_Click" />
+                    <MenuItem Header="Professors" Click="MenuItem_Profesori_Click" />
+                </MenuItem>
                 <MenuItem x:Name="CloseMenuItem" Header="{DynamicResource Close}" InputGestureText="Ctrl+E" Command="Close" />
             </MenuItem>
             <MenuItem Header="{DynamicResource Edit}">
@@ -99,7 +103,7 @@
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding Students, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              >
+                              SelectionChanged="GridStudents_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding BrojIndeksa}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -139,7 +143,8 @@
                 <Grid>
                     <DataGrid x:Name="GridProfessors" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding Profesors, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                              SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="GridProfessors_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Ime}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -169,7 +174,8 @@
                 <Grid>
                     <DataGrid x:Name="GridSubjects" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding Predmets, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                              SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="GridSubjects_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
                                 <DataGridTextColumn.Header>

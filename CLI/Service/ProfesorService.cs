@@ -16,4 +16,11 @@ public class ProfesorService
     {
         return _profesorDao.UzmiProfesoraPoID(id);
     }
+
+    public static bool DeleteProfesor(int profesorId)
+    {
+        var profesor = _profesorDao.UzmiProfesoraPoID(profesorId);
+        if (profesor == null) return false;
+        return _profesorDao.IzbrisiProfesora(profesorId) != null;
+    }
 }

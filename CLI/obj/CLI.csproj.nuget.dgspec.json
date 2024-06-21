@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\shomi\\OneDrive\\Desktop\\New folder\\oisisi-2023-group-8-team-7-main\\oisisi-2023-group-8-team-7-main\\CLI\\CLI.csproj": {}
+    "D:\\OISIS-i\\oisisi-2023-group-8-team-7\\CLI\\CLI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\shomi\\OneDrive\\Desktop\\New folder\\oisisi-2023-group-8-team-7-main\\oisisi-2023-group-8-team-7-main\\CLI\\CLI.csproj": {
+    "D:\\OISIS-i\\oisisi-2023-group-8-team-7\\CLI\\CLI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\shomi\\OneDrive\\Desktop\\New folder\\oisisi-2023-group-8-team-7-main\\oisisi-2023-group-8-team-7-main\\CLI\\CLI.csproj",
+        "projectUniqueName": "D:\\OISIS-i\\oisisi-2023-group-8-team-7\\CLI\\CLI.csproj",
         "projectName": "CLI",
-        "projectPath": "C:\\Users\\shomi\\OneDrive\\Desktop\\New folder\\oisisi-2023-group-8-team-7-main\\oisisi-2023-group-8-team-7-main\\CLI\\CLI.csproj",
+        "projectPath": "D:\\OISIS-i\\oisisi-2023-group-8-team-7\\CLI\\CLI.csproj",
         "packagesPath": "C:\\Users\\shomi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\shomi\\OneDrive\\Desktop\\New folder\\oisisi-2023-group-8-team-7-main\\oisisi-2023-group-8-team-7-main\\CLI\\obj\\",
+        "outputPath": "D:\\OISIS-i\\oisisi-2023-group-8-team-7\\CLI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\shomi\\AppData\\Roaming\\NuGet\\NuGet.Config",

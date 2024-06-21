@@ -1,3 +1,5 @@
-SF1,Spredmer,Zimski,1,8,0,,
-SP2,sifra predmet,Zimski,2,1,8,    0|Student             |Test                |  2|Budzet| 0.00,    0|Student             |Test                |  2|Budzet| 0.00
-SP3,Sifra pred 3,Letnji,2,1,7,,
+SF1,Spredmer,Zimski,1,8,0,,    0|Student             |Test                |  2|Budzet| 0,00
+SP2,sifra predmet,Zimski,2,1,8,    0|Student             |Test                |  2|Budzet| 0,00,    0|Student             |Test                |  2|Budzet| 0,00
+SP3,Sifra pred 3,Letnji,2,1,0,,
+SPF1,Srpski,Letnji,2,1,6,,
+

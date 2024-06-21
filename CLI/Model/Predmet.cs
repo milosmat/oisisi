@@ -82,9 +82,9 @@ public class Predmet : ISerializable
         {
             PredmetniProfesor = null;
         }
+        BrojESPB = int.Parse(values[5]);
         if (values[6].Equals(String.Empty)) return;
 
-        BrojESPB = int.Parse(values[5]);
         List<Student> tmp = new List<Student>();
         foreach (var se in values[6].Split(";"))
         {

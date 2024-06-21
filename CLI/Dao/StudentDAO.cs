@@ -30,8 +30,13 @@ class StudentDAO
     {
         studenti = skladiste.Load();
         Student stariStudent = UzmiStudentaPoID(student.Id);
-        if (stariStudent is null) return null;
+        if (stariStudent == null)
+        {
+            Console.WriteLine("Student not found: " + student.Id);
+            return null;
+        }
 
+        // Ažuriranje vrednosti
         stariStudent.Prezime = student.Prezime;
         stariStudent.Ime = student.Ime;
         stariStudent.DatumRodjenja = student.DatumRodjenja;
@@ -45,9 +50,12 @@ class StudentDAO
         stariStudent.SpisakPolozenihIspita = student.SpisakPolozenihIspita;
         stariStudent.SpisakNepolozenihPredmeta = student.SpisakNepolozenihPredmeta;
 
+        // Snimanje ažuriranog spiska studenata nazad u skladište
         skladiste.Save(studenti);
+        Console.WriteLine("Student updated: " + student.Id);
         return stariStudent;
     }
+
 
     public Student? IzbrisiStudenta(int id)
     {

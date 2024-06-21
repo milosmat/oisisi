@@ -16,4 +16,10 @@ public class PredmetService
     {
         return _predmetDao.UzmiPredmetPoSifri(sifra);
     }
+    public static bool DeletePredmet(string predmetSifra)
+    {
+        var predmet = _predmetDao.UzmiPredmetPoSifri(predmetSifra);
+        if (predmet == null) return false;
+        return _predmetDao.IzbrisiPredmet(predmetSifra) != null;
+    }
 }

@@ -22,8 +22,6 @@ class IndeksDAO
     public Indeks dodajIndeks(Indeks indeks)
     {
         indeksi = skladiste.Load();
-
-        indeks.BrojUpisa = GenerateId();
         indeksi.Add(indeks);
         skladiste.Save(indeksi);
         return indeks;

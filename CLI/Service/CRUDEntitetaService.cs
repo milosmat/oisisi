@@ -53,7 +53,7 @@ public class CRUDEntitetaService
         }
     }
 
-    public static bool IzmeniProfestora(Profesor profesor)
+    public static bool IzmeniProfesora(Profesor profesor)
     {
         try
         {
@@ -155,15 +155,23 @@ public class CRUDEntitetaService
                 student.SpisakNepolozenihPredmeta.Add(predmet);
                 predmet.SpisakStudenataNisuPolozili.Add(student);
             }
+
             StudentDao.AzurirajStudenta(student);
             PredmetDao.AzurirajPredmet(predmet);
+
+            System.Console.WriteLine("Subject added successfully to student: " + student.Id);
+
             return true;
         }
         catch (Exception e)
         {
+            System.Console.WriteLine("Error adding subject to student: " + e.Message);
             return false;
         }
     }
+
+
+
 
     public static bool DodajPredmetProfesoru(Profesor profesor, Predmet predmet)
     {

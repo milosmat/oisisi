@@ -2,6 +2,7 @@
 using StudentskaSluzba.Service;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,37 +21,52 @@ public partial class DodajStudentaView : Window
 
     private void BtnPotvrdi_Action(object sender, RoutedEventArgs e)
     {
-        var adr = TxtAdresaStanovanja.Text.Split(" ");
+        // Parsiranje adrese
+        var adrParts = TxtAdresaStanovanja.Text.Split(", ");
+        Adresa adresaStanovanja = new Adresa
+        {
+            Ulica = adrParts.Length > 0 ? adrParts[0] : string.Empty,
+            Broj = adrParts.Length > 1 && int.TryParse(adrParts[1], out int broj) ? broj : 0,
+            Grad = adrParts.Length > 2 ? adrParts[2] : string.Empty,
+            Drzava = adrParts.Length > 3 ? adrParts[3] : string.Empty
+        };
+
+        // Parsiranje indeksa
+        var indeksParts = TxtBrojIndeksa.Text.Split(' ', '/');
+        Indeks brojIndeksa = new Indeks
+        {
+            OznakaSmera = indeksParts.Length > 0 ? indeksParts[0] : string.Empty,
+            BrojUpisa = indeksParts.Length > 1 && int.TryParse(indeksParts[1], out int brojUpisa) ? brojUpisa : 0,
+            GodinaUpisa = indeksParts.Length > 2 && int.TryParse(indeksParts[2], out int godinaUpisa) ? godinaUpisa : 0
+        };
+
         Student s = new()
         {
-            AdresaStanovanja = CRUDEntitetaService.DodajAdresu(new Adresa
-            {
-                Drzava = adr.Length > 2 ? adr[2] : string.Empty,
-                Ulica = adr.Length > 0 ? adr[0] : string.Empty,
-                Broj = adr.Length > 1 ? int.Parse(adr[1]) : 0
-            }),
+            AdresaStanovanja = CRUDEntitetaService.DodajAdresu(adresaStanovanja),
             Ime = TxtIme.Text,
             Prezime = TxtPrezime.Text,
             DatumRodjenja = DateTime.ParseExact(TxtDatumRodjenja.Text, "dd/MM/yyyy", CultureInfo.CurrentCulture),
             EmailAdresa = TxtEmailAdresa.Text,
             KontaktTelefon = TxtBrojTelefona.Text,
-            BrojIndeksa = CRUDEntitetaService.DodajIndeks(new Indeks
-            {
-                GodinaUpisa = int.Parse(TxtGodinaUpisa.Text),
-                OznakaSmera = TxtBrojIndeksa.Text
-            }),
+            BrojIndeksa = CRUDEntitetaService.DodajIndeks(brojIndeksa),
             TrenutnaGodinaStudija = int.Parse("" + ((ComboBoxItem)CmbTrenutnaGodinaStudija.SelectedItem).Tag),
             Status = ((ComboBoxItem)CmbNacinFinansiranja.SelectedItem).Tag is StatusEnum
                 ? (StatusEnum)((ComboBoxItem)CmbNacinFinansiranja.SelectedItem).Tag
                 : StatusEnum.Budzet
         };
+
         string? title = FindResource("AddTitle") as string;
         string? success = FindResource("AddSuccess") as string;
         string? fail = FindResource("AddFail") as string;
 
-        MessageBox.Show(CRUDEntitetaService.DodajStudenta(s) ? success : fail,
-            title);
-        OnFinish?.Invoke(sender, e);
+        bool result = CRUDEntitetaService.DodajStudenta(s);
+        MessageBox.Show(result ? success : fail, title);
+
+        if (result)
+        {
+            OnFinish?.Invoke(sender, e);
+        }
+
         Close();
     }
 
@@ -89,7 +105,7 @@ public partial class DodajStudentaView : Window
         if (!DateTime.TryParseExact(TxtDatumRodjenja.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
         {
             isValid = false;
-            LblDatumRodjenjaError.Content = "Datum rođenja nije validan.";
+            LblDatumRodjenjaError.Content = "Datum rođenja nije validan. Mora biti oblika dd/MM/yyyy";
         }
         else
         {
@@ -97,10 +113,11 @@ public partial class DodajStudentaView : Window
         }
 
         // Adresa stanovanja
-        if (string.IsNullOrWhiteSpace(TxtAdresaStanovanja.Text) || TxtAdresaStanovanja.Text.Split(" ").Length < 3)
+        var adrParts = TxtAdresaStanovanja.Text.Split(", ");
+        if (adrParts.Length != 4 || adrParts.Any(string.IsNullOrWhiteSpace))
         {
             isValid = false;
-            LblAdresaStanovanjaError.Content = "Adresa stanovanja nije validna.";
+            LblAdresaStanovanjaError.Content = "Adresa stanovanja mora biti u formatu: Ulica, Broj, Grad, Država.";
         }
         else
         {
@@ -138,17 +155,6 @@ public partial class DodajStudentaView : Window
         else
         {
             LblBrojIndeksaError.Content = string.Empty;
-        }
-
-        // Godina upisa
-        if (string.IsNullOrWhiteSpace(TxtGodinaUpisa.Text) || !int.TryParse(TxtGodinaUpisa.Text, out int godinaUpisa) || godinaUpisa <= 0)
-        {
-            isValid = false;
-            LblGodinaUpisaError.Content = "Godina upisa mora biti validan pozitivan broj.";
-        }
-        else
-        {
-            LblGodinaUpisaError.Content = string.Empty;
         }
 
         // Trenutna godina studija
