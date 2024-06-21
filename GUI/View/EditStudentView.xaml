@@ -40,47 +40,62 @@
 
                     <TextBlock Text="{DynamicResource FirstName}" Margin="5" />
                     <StackPanel Grid.Column="1" Margin="5">
-                        <TextBox x:Name="FirstNameTextBox" Text="{Binding EditStudent.Ime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblFirstNameError" Foreground="Red"/>
+                        <TextBox x:Name="FirstNameTextBox"
+                                 Text="{Binding EditStudent.Ime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="ValidateInputs" />
+                        <Label x:Name="LblFirstNameError" Foreground="Red" />
                     </StackPanel>
 
                     <TextBlock Text="{DynamicResource LastName}" Grid.Row="1" Margin="5" />
                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
-                        <TextBox x:Name="LastNameTextBox" Text="{Binding EditStudent.Prezime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblLastNameError" Foreground="Red"/>
+                        <TextBox x:Name="LastNameTextBox"
+                                 Text="{Binding EditStudent.Prezime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="ValidateInputs" />
+                        <Label x:Name="LblLastNameError" Foreground="Red" />
                     </StackPanel>
 
                     <TextBlock Text="{DynamicResource BirthDate}" Grid.Row="2" Margin="5" />
                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
-                        <TextBox x:Name="BirthDateTextBox" Text="{Binding EditStudent.DatumRodjenja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MM/yyyy}}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblBirthDateError" Foreground="Red"/>
+                        <TextBox x:Name="BirthDateTextBox"
+                                 Text="{Binding EditStudent.DatumRodjenja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MM/yyyy}}"
+                                 TextChanged="ValidateInputs" />
+                        <Label x:Name="LblBirthDateError" Foreground="Red" />
                     </StackPanel>
 
                     <TextBlock Text="{DynamicResource Address}" Grid.Row="3" Margin="5" />
                     <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
-                        <TextBox x:Name="AddressTextBox" Text="{Binding EditStudent.AdresaStanovanja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource AddressConverter}}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblAddressError" Foreground="Red"/>
+                        <TextBox x:Name="AddressTextBox"
+                                 Text="{Binding EditStudent.AdresaStanovanja, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource AddressConverter}}"
+                                 TextChanged="ValidateInputs" />
+                        <Label x:Name="LblAddressError" Foreground="Red" />
                     </StackPanel>
 
                     <TextBlock Text="{DynamicResource PhoneNumber}" Grid.Row="4" Margin="5" />
                     <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">
-                        <TextBox x:Name="PhoneTextBox" Text="{Binding EditStudent.KontaktTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblPhoneError" Foreground="Red"/>
+                        <TextBox x:Name="PhoneTextBox"
+                                 Text="{Binding EditStudent.KontaktTelefon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="ValidateInputs" />
+                        <Label x:Name="LblPhoneError" Foreground="Red" />
                     </StackPanel>
 
                     <TextBlock Text="{DynamicResource EmailAdr}" Grid.Row="5" Margin="5" />
                     <StackPanel Grid.Row="5" Grid.Column="1" Margin="5">
-                        <TextBox x:Name="EmailTextBox" Text="{Binding EditStudent.EmailAdresa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblEmailError" Foreground="Red"/>
+                        <TextBox x:Name="EmailTextBox"
+                                 Text="{Binding EditStudent.EmailAdresa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="ValidateInputs" />
+                        <Label x:Name="LblEmailError" Foreground="Red" />
                     </StackPanel>
 
                     <TextBlock Text="{DynamicResource Index}" Grid.Row="6" Margin="5" />
                     <StackPanel Grid.Row="6" Grid.Column="1" Margin="5">
-                        <TextBox x:Name="IndexNumberTextBox" Text="{Binding EditStudent.BrojIndeksa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IndeksConverter}}" TextChanged="ValidateInputs"/>
-                        <Label x:Name="LblIndexError" Foreground="Red"/>
+                        <TextBox x:Name="IndexNumberTextBox"
+                                 Text="{Binding EditStudent.BrojIndeksa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource IndeksConverter}}"
+                                 TextChanged="ValidateInputs" />
+                        <Label x:Name="LblIndexError" Foreground="Red" />
                     </StackPanel>
 
-                    <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource CurrentYear}" VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource CurrentYear}"
+                           VerticalAlignment="Center" Margin="5" />
                     <StackPanel Grid.Row="7" Grid.Column="1" Margin="5">
                         <ComboBox x:Name="CmbTrenutnaGodinaStudija" Margin="5" SelectionChanged="ValidateInputs">
                             <ComboBoxItem Content="I (prva)" Tag="1" />
@@ -88,10 +103,11 @@
                             <ComboBoxItem Content="III (treća)" Tag="3" />
                             <ComboBoxItem Content="IV (četvrta)" Tag="4" />
                         </ComboBox>
-                        <Label x:Name="LblCurrentYearError" Foreground="Red"/>
+                        <Label x:Name="LblCurrentYearError" Foreground="Red" />
                     </StackPanel>
 
-                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource FinancingMethod}" VerticalAlignment="Center" Margin="5" />
+                    <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource FinancingMethod}"
+                           VerticalAlignment="Center" Margin="5" />
                     <StackPanel Grid.Row="8" Grid.Column="1" Margin="5">
                         <ComboBox x:Name="CmbNacinFinansiranja" Margin="5" SelectionChanged="ValidateInputs">
                             <ComboBoxItem Content="{DynamicResource Budget}">
@@ -105,7 +121,7 @@
                                 </ComboBoxItem.Tag>
                             </ComboBoxItem>
                         </ComboBox>
-                        <Label x:Name="LblFinancingMethodError" Foreground="Red"/>
+                        <Label x:Name="LblFinancingMethodError" Foreground="Red" />
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -116,8 +132,8 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Button Content="{DynamicResource UndoGrade}" Width="120" Margin="5" HorizontalAlignment="Left" 
-                            Click="UndoPassedExam_Click"/>
+                    <Button Content="{DynamicResource UndoGrade}" Width="120" Margin="5" HorizontalAlignment="Left"
+                            Click="UndoPassedExam_Click" />
                     <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" IsReadOnly="True"
                               ItemsSource="{Binding PredmetsPolozeni}"
                               SelectedItem="{Binding SelectedPredmet}">
@@ -172,7 +188,8 @@
                     <Button Grid.Row="0" Grid.Column="0" Content="{DynamicResource AddSubject}" Width="100" Margin="10"
                             Click="AddNewSubject_Click"
                             HorizontalAlignment="Left" />
-                    <Button Grid.Row="0" Grid.Column="1" Content="{DynamicResource RemoveSubject}" Width="100" Margin="10"
+                    <Button Grid.Row="0" Grid.Column="1" Content="{DynamicResource RemoveSubject}" Width="100"
+                            Margin="10"
                             Click="RemoveSubject_Click"
                             HorizontalAlignment="Left" />
                     <Button Grid.Row="0" Grid.Column="2" Content="{DynamicResource Exam}" Width="100" Margin="10"
@@ -219,8 +236,8 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" IsReadOnly="True"
-                  ItemsSource="{Binding NepolozeniProfesori}"
-                  SelectedItem="{Binding SelectedPredmet}">
+                              ItemsSource="{Binding NepolozeniProfesori}"
+                              SelectedItem="{Binding SelectedPredmet}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Ime}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -238,7 +255,8 @@
             </TabItem>
         </TabControl>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Margin="10" Click="ConfirmButton_Click" IsEnabled="False" />
+            <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Margin="10"
+                    Click="ConfirmButton_Click" IsEnabled="False" />
             <Button Content="{DynamicResource Cancel}" Width="100" Margin="10" Click="CancelButton_Click" />
         </StackPanel>
     </Grid>

@@ -21,7 +21,7 @@
         <CommandBinding Command="Open" Executed="OpenBinding_Executed" />
         <CommandBinding Command="Close" Executed="CloseBinding_Executed" />
         <CommandBinding Command="Properties" Executed="EditBinding_Executed" />
-        <CommandBinding Command="Delete" Executed="DeleteBinding_Executed" CanExecute="DeleteBinding_CanExecute" />
+        <CommandBinding Command="Delete" Executed="DeleteBinding_Executed" />
         <CommandBinding Command="Help" Executed="HelpBinding_Executed" />
         <CommandBinding Command="Search" Executed="SearchBinding_Executed" />
         <CommandBinding Command="Favorites" Executed="ShowKatedraInfo" />

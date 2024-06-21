@@ -31,7 +31,8 @@
     <sys:String x:Key="SubjESPB">Broj ESPB bodova</sys:String>
     <sys:String x:Key="SubjYear">Godina</sys:String>
     <sys:String x:Key="SubjSem">Semestar</sys:String>
-    
+    <sys:String x:Key="KatedraInfo">Katedra info</sys:String>
+
     <!-- DodavanjeStudenta -->
     <sys:String x:Key="AppTitleDStud">Dodaj Studenta</sys:String>
     <sys:String x:Key="BirthDate">Datum rođenja*</sys:String>

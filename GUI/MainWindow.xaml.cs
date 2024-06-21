@@ -59,6 +59,8 @@ namespace GUI
             }
         }
 
+        private bool canExecute = false;
+
         private TabItem? selected;
 
         public TabItem? Selected
@@ -68,6 +70,7 @@ namespace GUI
             {
                 selected = value;
                 OnPropertyChanged();
+                DeleteBinding_CanExecute(this, null);
             }
         }
 
@@ -384,23 +387,23 @@ namespace GUI
         {
             if (Tabs1 == null || Tabs1.SelectedItem is not TabItem selectedTab)
             {
-                e.CanExecute = false;
+                canExecute = false;
                 return;
             }
-
+            Console.WriteLine("Ovde sam");
             switch (selectedTab.Tag.ToString())
             {
                 case "Studenti":
-                    e.CanExecute = SelectedStudent != null;
+                    canExecute = SelectedStudent != null;
                     break;
                 case "Profesori":
-                    e.CanExecute = SelectedProfesor != null;
+                    canExecute = SelectedProfesor != null;
                     break;
                 case "Predmeti":
-                    e.CanExecute = SelectedPredmet != null;
+                    canExecute = SelectedPredmet != null;
                     break;
                 default:
-                    e.CanExecute = false;
+                    canExecute = false;
                     break;
             }
         }
@@ -409,6 +412,11 @@ namespace GUI
         {
             if (Tabs1.SelectedItem is not TabItem selectedTab) return;
 
+            if (!canExecute)
+            {
+                MessageBox.Show("Ne ne");
+                return;
+            }
             switch (selectedTab.Tag.ToString())
             {
                 case "Studenti":

@@ -31,6 +31,7 @@
     <sys:String x:Key="SubjESPB">ECTS</sys:String>
     <sys:String x:Key="SubjYear">Year</sys:String>
     <sys:String x:Key="SubjSem">Semester</sys:String>
+    <sys:String x:Key="KatedraInfo">Department info</sys:String>
         
     <!-- DodavanjeStudenta -->
     <sys:String x:Key="AppTitleDStud">Add student</sys:String>
