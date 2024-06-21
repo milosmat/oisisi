@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using CLI.Service;
 using StudentskaSluzba.Model;
 using StudentskaSluzba.Service;
 
@@ -93,7 +94,11 @@ namespace GUI.View
         {
             var predmetDialog = new IzaberiPredmetDialog(EditProfesor);
             if (predmetDialog.ShowDialog() == true)
+            {
+                EditProfesor = ProfesorService.GetById(EditProfesor.Id);
+                
                 MessageBox.Show("Uspšeno dodat predmet!");
+            }
         }
 
         private void RemoveSubject_Click(object sender, RoutedEventArgs e)
@@ -103,6 +108,7 @@ namespace GUI.View
             if (!dialogRes.Equals(MessageBoxResult.OK)) return;
             var res = CRUDEntitetaService.ObrisiPredmetProfesoru(EditProfesor, SelectedPredmet);
             MessageBox.Show(res ? "Uspešno skinut profesor sa predmeta" : "Došlo je do greške prilikom birsanja!");
+            EditProfesor = ProfesorService.GetById(EditProfesor.Id);
         }
 
         private void ValidateInputs(object sender, TextChangedEventArgs e)

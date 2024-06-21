@@ -134,6 +134,7 @@ namespace GUI.View
                 var profesor = predmet.PredmetniProfesor;
                 if (profesor != null && !profesori.Contains(profesor))
                 {
+                    profesor = ProfesorService.GetById(profesor.Id);
                     profesori.Add(profesor);
                 }
             }
@@ -151,6 +152,7 @@ namespace GUI.View
                 var profesor = predmet.PredmetniProfesor;
                 if (profesor != null && !profesori.Contains(profesor))
                 {
+                    profesor = ProfesorService.GetById(profesor.Id);
                     profesori.Add(profesor);
                 }
             }
