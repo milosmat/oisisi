@@ -58,6 +58,12 @@ public partial class DodajPredmetView : Window, INotifyPropertyChanged
 
     private void BtnPotvrdi_Action(object sender, RoutedEventArgs e)
     {
+        if (!int.TryParse(TxtEspb.Text, out int espb) || espb <= 0)
+        {
+            MessageBox.Show("Broj ESPB bodova nije validan.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
         Predmet p = new Predmet()
         {
             SifraPredmeta = TxtSifra.Text,
@@ -67,8 +73,9 @@ public partial class DodajPredmetView : Window, INotifyPropertyChanged
                 ? (SemestarEnum)((ComboBoxItem)CmbSemestar.SelectedItem).Tag
                 : SemestarEnum.Letnji,
             GodinaStudija = int.Parse(TxtGodinaStudija.Text),
-            BrojESPB = int.Parse(TxtEspb.Text)
+            BrojESPB = espb
         };
+
         string? title = FindResource("AddTitle") as string;
         string? success = FindResource("AddSuccess") as string;
         string? fail = this.FindResource("AddFail") as string;
@@ -110,10 +117,10 @@ public partial class DodajPredmetView : Window, INotifyPropertyChanged
         }
 
         // Godina studija
-        if (string.IsNullOrWhiteSpace(TxtGodinaStudija.Text) || !int.TryParse(TxtGodinaStudija.Text, out int godina) || godina <= 0)
+        if (string.IsNullOrWhiteSpace(TxtGodinaStudija.Text) || !int.TryParse(TxtGodinaStudija.Text, out int godina) || godina <= 0 || godina >= 9)
         {
             isValid = false;
-            LblGodinaStudijaError.Content = "Godina studija mora biti validan pozitivan broj.";
+            LblGodinaStudijaError.Content = "Godina studija u kojoj se predmet izvodi mora biti validan pozitivan broj od 1 do 8.";
         }
         else
         {

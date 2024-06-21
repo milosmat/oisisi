@@ -20,7 +20,7 @@ namespace GUI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public ObservableCollection<Student> FilteredStudents { get; set; }
         public ObservableCollection<Profesor> FilteredProfesors { get; set; }
@@ -135,6 +135,12 @@ namespace GUI
             StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
             GridStudents.ItemsSource = FilteredStudents;
             //TxtSearch.Margin = TxtSearch.Margin with { Left = TTray.Width - 270 };
+            CommandManager.InvalidateRequerySuggested();
+
+            Tabs1.SelectionChanged += Tabs1_OnSelectionChanged;
+            GridStudents.SelectionChanged += GridStudents_SelectionChanged;
+            GridProfessors.SelectionChanged += GridProfessors_SelectionChanged;
+            GridSubjects.SelectionChanged += GridSubjects_SelectionChanged;
         }
 
         private void SetMenuIcons()
@@ -206,7 +212,7 @@ namespace GUI
             if (e.AddedItems.Count <= 0) return;
             var selectedLanguage = (e.AddedItems[0] as ComboBoxItem)?.Tag.ToString();
             if (selectedLanguage != null) SwitchLanguage(selectedLanguage);
-            
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -221,28 +227,45 @@ namespace GUI
             var text = StatusBarText.Content as String;
             text = text?[..text.LastIndexOf('-')];
             StatusBarText.Content = text + "- " + selected?.Header;
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void RefreshData(object? sender, EventArgs e)
         {
+            Students = new ObservableCollection<Student>(StudentService.GetStudents());
+            Profesors = new ObservableCollection<Profesor>(ProfesorService.GetProfesors());
+            Predmets = new ObservableCollection<Predmet>(PredmetService.GetPredmets());
+            FilteredStudents = new ObservableCollection<Student>(Students);
+            FilteredProfesors = new ObservableCollection<Profesor>(Profesors);
+            FilteredPredmets = new ObservableCollection<Predmet>(Predmets);
+            GridStudents.ItemsSource = FilteredStudents;
+            GridProfessors.ItemsSource = FilteredProfesors;
+            GridSubjects.ItemsSource = FilteredPredmets;
             CollectionViewSource.GetDefaultView(GridStudents.ItemsSource).Refresh();
             CollectionViewSource.GetDefaultView(GridProfessors.ItemsSource).Refresh();
             CollectionViewSource.GetDefaultView(GridSubjects.ItemsSource).Refresh();
-            students = new ObservableCollection<Student>(StudentService.GetStudents());
-            profesors = new ObservableCollection<Profesor>(ProfesorService.GetProfesors());
-            predmets = new ObservableCollection<Predmet>(PredmetService.GetPredmets());
-            Students = students;
-            Profesors = profesors;
-            Predmets = predmets;
+        }
+        private void GridStudents_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CommandManager.InvalidateRequerySuggested();
         }
 
+        private void GridProfessors_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        private void GridSubjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
         private void NewEntityBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            RefreshData(sender, e);
             switch (Selected?.Tag)
             {
                 case "Studenti":
                     DodajStudentaView dsv = new DodajStudentaView();
+                    dsv.OnFinish += RefreshData; // Subscribe to the OnFinish event
                     if (dsv.ShowDialog() == true)
                     {
                         RefreshData(sender, e);
@@ -250,6 +273,7 @@ namespace GUI
                     break;
                 case "Profesori":
                     DodajProfesoraView dpv = new DodajProfesoraView();
+                    dpv.OnFinish += RefreshData; // Subscribe to the OnFinish event
                     if (dpv.ShowDialog() == true)
                     {
                         RefreshData(sender, e);
@@ -257,8 +281,8 @@ namespace GUI
                     break;
                 case "Predmeti":
                     DodajPredmetView dprv = new DodajPredmetView();
-                    dprv.OnFinish += RefreshData;
-                    dprv.Show();
+                    dprv.OnFinish += RefreshData; // Subscribe to the OnFinish event
+                    dprv.ShowDialog(); // Use ShowDialog to ensure blocking behavior
                     break;
                 default:
                     MessageBox.Show("Greška", "Greška");
@@ -268,12 +292,11 @@ namespace GUI
 
         private void SaveBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void OpenBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            SelectTabByTag("Studenti"); // Ovo možete promeniti u zavisnosti od selektovanog entiteta
         }
 
         private void CloseBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -294,6 +317,7 @@ namespace GUI
                     else
                     {
                         EditStudentView esv = new EditStudentView(SelectedStudent);
+                        esv.OnFinish += RefreshData; // Subscribe to the OnFinish event
                         MessageBox.Show(esv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
@@ -306,6 +330,7 @@ namespace GUI
                     else
                     {
                         EditProfesorView epv = new EditProfesorView(SelectedProfesor);
+                        epv.OnFinish += RefreshData; // Subscribe to the OnFinish event
                         MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
@@ -318,6 +343,7 @@ namespace GUI
                     else
                     {
                         EditPredmetView epv = new EditPredmetView(SelectedPredmet);
+                        epv.OnFinish += RefreshData; // Subscribe to the OnFinish event
                         MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
                     }
                     break;
@@ -328,11 +354,138 @@ namespace GUI
             }
 
         }
+        private void MenuItem_Studenti_Click(object sender, RoutedEventArgs e)
+        {
+            SelectTabByTag("Studenti");
+        }
+
+        private void MenuItem_Predmeti_Click(object sender, RoutedEventArgs e)
+        {
+            SelectTabByTag("Predmeti");
+        }
+
+        private void MenuItem_Profesori_Click(object sender, RoutedEventArgs e)
+        {
+            SelectTabByTag("Profesori");
+        }
+
+        private void SelectTabByTag(string tag)
+        {
+            foreach (TabItem tabItem in Tabs1.Items)
+            {
+                if (tabItem.Tag != null && tabItem.Tag.ToString() == tag)
+                {
+                    Tabs1.SelectedItem = tabItem;
+                    break;
+                }
+            }
+        }
+        private void DeleteBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (Tabs1 == null || Tabs1.SelectedItem is not TabItem selectedTab)
+            {
+                e.CanExecute = false;
+                return;
+            }
+
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    e.CanExecute = SelectedStudent != null;
+                    break;
+                case "Profesori":
+                    e.CanExecute = SelectedProfesor != null;
+                    break;
+                case "Predmeti":
+                    e.CanExecute = SelectedPredmet != null;
+                    break;
+                default:
+                    e.CanExecute = false;
+                    break;
+            }
+        }
 
         private void DeleteBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    if (SelectedStudent == null)
+                    {
+                        MessageBox.Show("Nijedan student nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    var studentResult = MessageBox.Show("Da li ste sigurni da želite da obrišete selektovanog studenta?", "Potvrda brisanja", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (studentResult == MessageBoxResult.Yes)
+                    {
+                        if (StudentService.DeleteStudent(SelectedStudent.Id))
+                        {
+                            Students.Remove(SelectedStudent);
+                            FilteredStudents.Remove(SelectedStudent);
+                            MessageBox.Show("Student je uspešno obrisan.", "Brisanje studenta", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Greška prilikom brisanja studenta.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    break;
+
+                case "Profesori":
+                    if (SelectedProfesor == null)
+                    {
+                        MessageBox.Show("Nijedan profesor nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    var profesorResult = MessageBox.Show("Da li ste sigurni da želite da obrišete selektovanog profesora?", "Potvrda brisanja", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (profesorResult == MessageBoxResult.Yes)
+                    {
+                        if (ProfesorService.DeleteProfesor(SelectedProfesor.Id))
+                        {
+                            Profesors.Remove(SelectedProfesor);
+                            FilteredProfesors.Remove(SelectedProfesor);
+                            MessageBox.Show("Profesor je uspešno obrisan.", "Brisanje profesora", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Greška prilikom brisanja profesora.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    break;
+
+                case "Predmeti":
+                    if (SelectedPredmet == null)
+                    {
+                        MessageBox.Show("Nijedan predmet nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    var predmetResult = MessageBox.Show("Da li ste sigurni da želite da obrišete selektovani predmet?", "Potvrda brisanja", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (predmetResult == MessageBoxResult.Yes)
+                    {
+                        if (PredmetService.DeletePredmet(SelectedPredmet.SifraPredmeta))
+                        {
+                            Predmets.Remove(SelectedPredmet);
+                            FilteredPredmets.Remove(SelectedPredmet);
+                            MessageBox.Show("Predmet je uspešno obrisan.", "Brisanje predmeta", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Greška prilikom brisanja predmeta.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    break;
+
+                default:
+                    MessageBox.Show("Nepoznata opcija.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+            }
         }
+
 
         private void HelpBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -422,7 +575,7 @@ namespace GUI
 
         private void ShowKatedraInfo(object sender, ExecutedRoutedEventArgs e)
         {
-            
+
         }
     }
 }

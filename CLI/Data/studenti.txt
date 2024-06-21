@@ -1,2 +1,4 @@
-0,Student,Test,2002-12-06,0,ulica,0,,Srbija,0662233322,test@gmail.com,TE,0,2021,2,Budzet,0.00,SF1|Spredmer|Zimski|1|8|0,SF1|Spredmer|Zimski|1|8|0;SP2|sifra predmet|Zimski|2|1|0;SP3|Sifra pred 3|Letnji|2|1|0
-1,Test,Student,2002-12-02,1,Nova,0,,Srbija,0662233322,test@gmail.com,TE,1,2021,3,Budzet,0.00,,
+0,Student,Test,2002-12-06,0,Test test,3,test,test,0662233322,test@gmail.com,TE,0,2021,2,Budzet,0,00,,SF1|Spredmer|Zimski|1|8|0
+1,Test,Student,2002-12-02,0,Test test,3,test,test,0662233322,test@gmail.com,TE,1,2021,3,Budzet,0,00,,
+2,Test,Test,2002-05-04,2,Test test,3,test,test,21412412,asd@gmail.com,TE,2,2021,1,Budzet,0,00,,
+3,T,Test,2002-07-04,3,ulica,0,grad,drzava,123445,asda@gmail.com,TE,123,2021,2,Budzet,0,00,,

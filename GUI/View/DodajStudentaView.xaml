@@ -29,7 +29,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -79,14 +78,8 @@
             <Label x:Name="LblBrojIndeksaError" Foreground="Red"/>
         </StackPanel>
 
-        <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource EnrollmentYear}" VerticalAlignment="Center" Margin="5"/>
+        <Label Grid.Row="7" Grid.Column="0" Content="{DynamicResource CurrentYear}" VerticalAlignment="Center" Margin="5"/>
         <StackPanel Grid.Row="7" Grid.Column="1" Margin="5">
-            <TextBox x:Name="TxtGodinaUpisa" Margin="5" TextChanged="ValidateInputs"/>
-            <Label x:Name="LblGodinaUpisaError" Foreground="Red"/>
-        </StackPanel>
-
-        <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource CurrentYear}" VerticalAlignment="Center" Margin="5"/>
-        <StackPanel Grid.Row="8" Grid.Column="1" Margin="5">
             <ComboBox x:Name="CmbTrenutnaGodinaStudija" Margin="5" SelectionChanged="ValidateInputs">
                 <ComboBoxItem Content="I (prva)" Tag="1"/>
                 <ComboBoxItem Content="II (druga)" Tag="2"/>
@@ -96,8 +89,8 @@
             <Label x:Name="LblTrenutnaGodinaError" Foreground="Red"/>
         </StackPanel>
 
-        <Label Grid.Row="9" Grid.Column="0" Content="{DynamicResource FinancingMethod}" VerticalAlignment="Center" Margin="5"/>
-        <StackPanel Grid.Row="9" Grid.Column="1" Margin="5">
+        <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource FinancingMethod}" VerticalAlignment="Center" Margin="5"/>
+        <StackPanel Grid.Row="8" Grid.Column="1" Margin="5">
             <ComboBox x:Name="CmbNacinFinansiranja" Margin="5" SelectionChanged="ValidateInputs">
                 <ComboBoxItem Content="{DynamicResource Budget}">
                     <ComboBoxItem.Tag>
@@ -114,8 +107,8 @@
         </StackPanel>
 
         <!-- Buttons -->
-        <StackPanel Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Margin="5" Click="BtnPotvrdi_Action" IsEnabled="False"/>
+        <StackPanel Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+            <Button x:Name="BtnPotvrdi" Content="{DynamicResource Confirm}" Width="100" Height="45" Margin="5" Click="BtnPotvrdi_Action" IsEnabled="False"/>
             <Button Content="{DynamicResource Cancel}" Width="100" Margin="5" Click="BtnOdustani_Action"/>
         </StackPanel>
     </Grid>

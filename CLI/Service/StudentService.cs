@@ -12,5 +12,11 @@ namespace CLI.Service
         {
             return studentDAO.UzmiSveStudente();
         }
+        public static bool DeleteStudent(int studentId)
+        {
+            var student = studentDAO.UzmiStudentaPoID(studentId);
+            if (student == null) return false;
+            return studentDAO.IzbrisiStudenta(studentId) != null;
+        }
     }
 }

@@ -12,3 +12,17 @@ C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisis
 C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.pdb
 C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\CLI.genruntimeconfig.cache
 C:\Users\shomi\OneDrive\Desktop\New folder\oisisi-2023-group-8-team-7-main\oisisi-2023-group-8-team-7-main\CLI\obj\Debug\net6.0\ref\CLI.dll
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\bin\Debug\net6.0\CLI.exe
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\bin\Debug\net6.0\CLI.deps.json
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\bin\Debug\net6.0\CLI.runtimeconfig.json
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\bin\Debug\net6.0\CLI.dll
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\bin\Debug\net6.0\CLI.pdb
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\CLI.GeneratedMSBuildEditorConfig.editorconfig
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\CLI.AssemblyInfoInputs.cache
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\CLI.AssemblyInfo.cs
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\CLI.csproj.CoreCompileInputs.cache
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\CLI.dll
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\refint\CLI.dll
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\CLI.pdb
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\CLI.genruntimeconfig.cache
+D:\OISIS-i\oisisi-2023-group-8-team-7\CLI\obj\Debug\net6.0\ref\CLI.dll

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -22,7 +23,7 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
+    public event EventHandler? OnFinish;
     private Profesor? _profesor;
 
     public Profesor? SelectedProfesor
@@ -76,7 +77,15 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
 
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
-        this.DialogResult = CRUDEntitetaService.IzmeniPredmet(EditPredmet);
+        if (CRUDEntitetaService.IzmeniPredmet(EditPredmet))
+        {
+            OnFinish?.Invoke(this, EventArgs.Empty); // Poziv OnFinish događaja
+            this.DialogResult = true;
+        }
+        else
+        {
+            this.DialogResult = false;
+        }
         Close();
     }
 
@@ -113,10 +122,10 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
         }
 
         // Godina studija
-        if (string.IsNullOrWhiteSpace(TxtGodinaStudija.Text) || !int.TryParse(TxtGodinaStudija.Text, out int godinaStudija) || godinaStudija < 1 || godinaStudija > 4)
+        if (string.IsNullOrWhiteSpace(TxtGodinaStudija.Text) || !int.TryParse(TxtGodinaStudija.Text, out int godinaStudija) || godinaStudija < 1 || godinaStudija > 8)
         {
             isValid = false;
-            LblGodinaStudijaError.Content = "Godina studija mora biti između 1 i 4.";
+            LblGodinaStudijaError.Content = "Godina studija mora biti između 1 i 8.";
         }
         else
         {
