@@ -8,19 +8,21 @@ Datum polaganja ispita
 using System;
 
 namespace StudentskaSluzba.Model;
+
 using StudentskaSluzba.Serialization;
 using CLI.DAO;
 
 public class OcenaNaIspitu : ISerializable
 {
-    public Student StudentKojiJePolozio {get; set;}
-    public Predmet Predmet {get; set;}
-    public int BrojcanaVrednostOcene {get; set;}
-    public DateTime DatumPolaganjaIspita {get; set;}
+    public Student StudentKojiJePolozio { get; set; }
+    public Predmet Predmet { get; set; }
+    public int BrojcanaVrednostOcene { get; set; }
+    public DateTime DatumPolaganjaIspita { get; set; }
 
     public OcenaNaIspitu()
-    { 
+    {
     }
+
     public OcenaNaIspitu(Student student, Predmet predmet, int ocena, DateTime datum)
     {
         StudentKojiJePolozio = student;
@@ -31,8 +33,10 @@ public class OcenaNaIspitu : ISerializable
 
     public override string ToString()
     {
-        return $"ID {StudentKojiJePolozio.Id} | Student: {StudentKojiJePolozio.ToString()} | Predmet: {Predmet.ToString()} | Ocena: {BrojcanaVrednostOcene} | Datum polaganja: {DatumPolaganjaIspita.ToString("yyyy-MM-dd")}";
+        return
+            $"ID {StudentKojiJePolozio.Id} | Student: {StudentKojiJePolozio.ToString()} | Predmet: {Predmet.ToString()} | Ocena: {BrojcanaVrednostOcene} | Datum polaganja: {DatumPolaganjaIspita.ToString("yyyy-MM-dd")}";
     }
+
     public string[] ToCSV()
     {
         string[] csvValues =
@@ -44,6 +48,7 @@ public class OcenaNaIspitu : ISerializable
         };
         return csvValues;
     }
+
     public void FromCSV(string[] values)
     {
         // Očekujemo da CSV vrednosti imaju odgovarajući redosled
@@ -61,4 +66,15 @@ public class OcenaNaIspitu : ISerializable
         Predmet = predmetDAO.UzmiPredmetPoSifri(predmetSifra);
     }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (obj is not OcenaNaIspitu) return false;
+        var tmp = obj as OcenaNaIspitu;
+
+        if (tmp.Predmet.Equals(this.Predmet) && tmp.StudentKojiJePolozio.Equals(this.StudentKojiJePolozio) &&
+            tmp.DatumPolaganjaIspita.Equals(DatumPolaganjaIspita)) return true;
+
+        return false;
+    }
 }

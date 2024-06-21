@@ -120,4 +120,12 @@ public class Predmet : ISerializable
         SpisakStudenataNisuPolozili = tmp;
     }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj == null) return false;
+        if (obj is not Predmet) return false;
+        var tmp = obj as Predmet;
+        if (tmp.SifraPredmeta == this.SifraPredmeta) return true;
+        return false;
+    }
 }

@@ -18,5 +18,15 @@ namespace CLI.Service
             if (student == null) return false;
             return studentDAO.IzbrisiStudenta(studentId) != null;
         }
+
+        public static Student GetStudentById(int id)
+        {
+            return studentDAO.UzmiStudentaPoID(id);
+        }
+
+        public static void AzurirajStudenta(Student s)
+        {
+            studentDAO.AzurirajStudenta(s);
+        }
     }
 }

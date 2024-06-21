@@ -83,6 +83,29 @@ public class CRUDEntitetaService
     {
         try
         {
+            OcenaNaIspitu tmpOcena = Ocena.UzmiSveOceneNaIspitu().Find(o => o.Predmet.SifraPredmeta == predmet);
+            tmpOcena.BrojcanaVrednostOcene = 0;
+            Ocena.AzurirajOcenuNaIspitu(tmpOcena);
+            Student tmp = StudentDao.UzmiStudentaPoID(studentId);
+            tmp.SpisakPolozenihIspita.Remove(tmp.SpisakPolozenihIspita.Find(p => p.SifraPredmeta == predmet));
+            Predmet tmpP = PredmetService.GetByid(predmet);
+            tmp.SpisakNepolozenihPredmeta.Add(tmpP);
+            tmpP.SpisakStudenataPolozili.Remove(tmpP.SpisakStudenataPolozili.Find(s => s.Id==tmp.Id));
+            tmpP.SpisakStudenataNisuPolozili.Add(tmp);
+            PredmetDao.AzurirajPredmet(tmpP);
+            StudentDao.AzurirajStudenta(tmp);
+        }
+        catch (Exception e)
+        {   
+            
+            System.Console.WriteLine("Greška prilikom brisanja ocene!\n" + e.Message);
+        }
+    }
+
+    public static bool ObrisiOcenu(String predmet, int studentId)
+    {
+        try
+        {
             Ocena.IzbrisiOcenuNaIspitu(studentId, predmet);
             Student tmp = StudentDao.UzmiStudentaPoID(studentId);
             if (!tmp.SpisakPolozenihIspita.Remove(PredmetService.GetByid(predmet)))
@@ -92,10 +115,12 @@ public class CRUDEntitetaService
             if (!tmpP.SpisakStudenataPolozili.Remove(tmp))
                 tmpP.SpisakStudenataNisuPolozili.Remove(tmp);
             PredmetDao.AzurirajPredmet(tmpP);
+            return true;
         }
-        catch (Exception e)
-        {   
-            System.Console.WriteLine("Greška prilikom brisanja ocene!");
+        catch
+        {
+            System.Console.Error.WriteLine("Greška prilikom brisanja ocene");
+            return false;
         }
     }
 
@@ -103,20 +128,27 @@ public class CRUDEntitetaService
     {
         try
         {
-            System.Console.WriteLine("Adding subject to student: " + student.Id);
-
-            Ocena.DodajOcenuNaIspitu(new OcenaNaIspitu()
+            if (ocena < 5)
+                Ocena.DodajOcenuNaIspitu(new OcenaNaIspitu()
+                {
+                    StudentKojiJePolozio = student,
+                    Predmet = predmet,
+                    BrojcanaVrednostOcene = ocena,
+                    DatumPolaganjaIspita = datum
+                });
+            else
             {
-                StudentKojiJePolozio = student,
-                Predmet = predmet,
-                BrojcanaVrednostOcene = ocena,
-                DatumPolaganjaIspita = datum
-            });
-
+                OcenaNaIspitu tmpOcena = Ocena.UzmiSveOceneNaIspitu()
+                    .Find(o => o.Predmet.Equals(predmet) && o.StudentKojiJePolozio.Equals(student));
+                tmpOcena.BrojcanaVrednostOcene = ocena;
+                tmpOcena.DatumPolaganjaIspita = datum;
+                Ocena.AzurirajOcenuNaIspitu(tmpOcena);
+            }
             if (ocena > 5)
             {
                 student.SpisakPolozenihIspita.Add(predmet);
-                predmet.SpisakStudenataPolozili.Add(student);
+                student.SpisakNepolozenihPredmeta.Remove(predmet);
+                predmet.SpisakStudenataPolozili.Add(student);                
             }
             else
             {

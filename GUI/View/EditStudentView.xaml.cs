@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using CLI.Service;
 
 namespace GUI.View
 {
@@ -83,6 +84,17 @@ namespace GUI.View
             }
         }
 
+        private int totalESPB;
+        public int TotalESPB
+        {
+            get => totalESPB;
+            set
+            {
+                totalESPB = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -101,6 +113,7 @@ namespace GUI.View
             InitializeComponent();
             _student = selectedStud;
             EditStudent = _student;
+            TotalESPB = EditStudent.SpisakPolozenihIspita.Select(s => s.BrojESPB).Sum();
             DataContext = this;
             CmbTrenutnaGodinaStudija.SelectedIndex = EditStudent.TrenutnaGodinaStudija - 1;
             CmbNacinFinansiranja.SelectedIndex = EditStudent.Status.Equals(StatusEnum.Budzet) ? 0 : 1;
@@ -295,6 +308,9 @@ namespace GUI.View
             if (izaberiPredmetDialog.ShowDialog() == true)
             {
                 MessageBox.Show("Predmet uspešno dodat!");
+                EditStudent = StudentService.GetStudentById(EditStudent.Id);
+                PredmetsPolozeni = EditStudent.SpisakPolozenihIspita;
+                PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
             }
         }
 
@@ -305,6 +321,9 @@ namespace GUI.View
             if (res.Equals(MessageBoxResult.OK))
             {
                 CRUDEntitetaService.PonistiOcenu(SelectedPredmet.SifraPredmeta, EditStudent.Id);
+                EditStudent = StudentService.GetStudentById(EditStudent.Id);
+                PredmetsPolozeni = EditStudent.SpisakPolozenihIspita;
+                PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
             }
         }
 
@@ -315,6 +334,9 @@ namespace GUI.View
             if (gradeView.ShowDialog() == true)
             {
                 MessageBox.Show("Ocena uspešno upisana");
+                EditStudent = StudentService.GetStudentById(EditStudent.Id);
+                PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
+                PredmetsPolozeni = EditStudent.SpisakPolozenihIspita;
             }
         }
 
@@ -330,6 +352,9 @@ namespace GUI.View
             if (res.Equals(MessageBoxResult.OK))
             {
                 CRUDEntitetaService.PonistiOcenu(SelectedPredmet.SifraPredmeta, EditStudent.Id);
+                EditStudent = StudentService.GetStudentById(EditStudent.Id);
+                PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
+                PredmetsPolozeni = EditStudent.SpisakPolozenihIspita;
             }
         }
     }
