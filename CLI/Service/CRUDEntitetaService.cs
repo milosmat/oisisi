@@ -70,7 +70,9 @@ public class CRUDEntitetaService
     {
         try
         {
-            
+            var profesor = ProfesorDao.UzmiProfesoraPoID(predmet.PredmetniProfesor.Id);
+            profesor.SpisakPredmeta.Add(predmet);
+            ProfesorDao.AzurirajProfesora(profesor);
             PredmetDao.AzurirajPredmet(predmet);
             return true;
         }

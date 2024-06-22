@@ -96,6 +96,7 @@ namespace GUI.View
                 OnPropertyChanged();
             }
         }
+        
 
         private double _averageGrade;
         public double AverageGrade
@@ -139,7 +140,7 @@ namespace GUI.View
             var ocenaDAO = new OcenaNaIspituDAO();
             var oceneNaIspitu = ocenaDAO.UzmiSveOceneNaIspitu();
             TotalESPB = CalculateTotalESPB(PredmetsPolozeni.ToList());
-            EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni.ToList());
+            AverageGrade = CalculateAverageGrade(PredmetsPolozeni.ToList());
 
             ValidateInputs(null, null);
         }
@@ -176,7 +177,10 @@ namespace GUI.View
         {
             PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta);
             PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita);
-
+            EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni.ToList());
+            StudentService.AzurirajStudenta(EditStudent);
+            AverageGrade = EditStudent.ProsecnaOcena;
+            TotalESPB = CalculateTotalESPB(PredmetsPolozeni.ToList());
             OnPropertyChanged(nameof(PredmetsNePolozeni));
             OnPropertyChanged(nameof(PredmetsPolozeni));
         }
@@ -395,6 +399,17 @@ namespace GUI.View
         private void UndoPassedExam_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedPredmet == null) return;
+            var tmp = new Predmet()
+            {
+                SifraPredmeta = SelectedPredmet.SifraPredmeta,
+                BrojESPB = SelectedPredmet.BrojESPB,
+                Semestar = SelectedPredmet.Semestar,
+                SpisakStudenataPolozili = SelectedPredmet.SpisakStudenataPolozili,
+                SpisakStudenataNisuPolozili = SelectedPredmet.SpisakStudenataNisuPolozili,
+                GodinaStudija = SelectedPredmet.GodinaStudija,
+                NazivPredmeta = SelectedPredmet.NazivPredmeta,
+                PredmetniProfesor = SelectedPredmet.PredmetniProfesor,
+            };
             MessageBoxResult res = MessageBox.Show("Da li ste sigurni da hoćete da poništite ocenu?", "Upozorenje", MessageBoxButton.OKCancel);
             if (res.Equals(MessageBoxResult.OK))
             {
@@ -402,14 +417,20 @@ namespace GUI.View
                 CRUDEntitetaService.PonistiOcenu(SelectedPredmet.SifraPredmeta, EditStudent.Id);
 
                 // Premesti predmet iz položenih u nepoložene
-                EditStudent.SpisakPolozenihIspita.Remove(SelectedPredmet);
-                EditStudent.SpisakNepolozenihPredmeta.Add(SelectedPredmet);
-                SelectedPredmet.SpisakStudenataPolozili.Remove(EditStudent);
-                SelectedPredmet.SpisakStudenataNisuPolozili.Add(EditStudent);
+                EditStudent.SpisakPolozenihIspita.Remove(tmp);
+                EditStudent.SpisakNepolozenihPredmeta.Add(tmp);
+                tmp.SpisakStudenataPolozili.Remove(EditStudent);
+                tmp.SpisakStudenataNisuPolozili.Add(EditStudent);
 
+                PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita);
+                PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta);
+
+                TotalESPB = CalculateTotalESPB(PredmetsPolozeni.ToList());
+                EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni.ToList());
+                AverageGrade = EditStudent.ProsecnaOcena;
                 // Ažuriraj studenta
                 StudentService.AzurirajStudenta(EditStudent);
-                PredmetService.Azuriraj(SelectedPredmet);
+                PredmetService.Azuriraj(tmp);
 
                 // Osveži prikaz
                 OnPropertyChanged(nameof(PredmetsNePolozeni));
@@ -425,15 +446,27 @@ namespace GUI.View
         private void AddGrade_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedPredmet == null) return;
+            var tmp = new Predmet()
+            {
+                SifraPredmeta = SelectedPredmet.SifraPredmeta,
+                BrojESPB = SelectedPredmet.BrojESPB,
+                Semestar = SelectedPredmet.Semestar,
+                SpisakStudenataPolozili = SelectedPredmet.SpisakStudenataPolozili,
+                SpisakStudenataNisuPolozili = SelectedPredmet.SpisakStudenataNisuPolozili,
+                GodinaStudija = SelectedPredmet.GodinaStudija,
+                NazivPredmeta = SelectedPredmet.NazivPredmeta,
+                PredmetniProfesor = SelectedPredmet.PredmetniProfesor,
+            };
             AddGradeView gradeView = new AddGradeView(this, SelectedPredmet, _student);
             if (gradeView.ShowDialog() == true)
             {
                 MessageBox.Show("Ocena uspešno upisana");
-
+                
                 // Premesti predmet iz nepoloženih u položene
                 StudentService.AzurirajStudenta(EditStudent);
-                PredmetService.Azuriraj(SelectedPredmet);
+                PredmetService.Azuriraj(tmp);
 
+                
                 // Osveži prikaz
                 UpdatePassedAndFailedSubjects();
             }

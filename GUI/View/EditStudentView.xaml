@@ -167,7 +167,7 @@
                     </DataGrid>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
                         <TextBlock Text="{DynamicResource AverageGrade}" FontWeight="Bold" />
-                        <TextBlock Text="{Binding EditStudent.ProsecnaOcena}" Margin="10,0,0,0" />
+                        <TextBlock Text="{Binding AverageGrade}" Margin="10,0,0,0" />
                         <TextBlock Text="{DynamicResource TotalESPB}" FontWeight="Bold" Margin="20,0,0,0" />
                         <TextBlock Text="{Binding TotalESPB}" Margin="10,0,0,0" />
                     </StackPanel>

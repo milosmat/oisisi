@@ -1,2 +1,2 @@
-SP1,Predmet #1,Zimski,1,1,10,,
 SP2,Predmet #2,Zimski,1,1,8,,
+SP1,Predmet #1,Zimski,1,2,10,,

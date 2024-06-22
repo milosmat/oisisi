@@ -144,6 +144,7 @@ namespace GUI.View
         private void AddSubject_Click(object sender, RoutedEventArgs e)
         {
             var predmetDialog = new IzaberiPredmetDialog(EditProfesor);
+            EditProfesor = ProfesorService.GetById(EditProfesor.Id);
             if (predmetDialog.ShowDialog() == true)
             {
                 var selectedPredmet = predmetDialog.SelectedPredmet;
