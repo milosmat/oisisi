@@ -7,3 +7,4 @@
 7,Testa,Provera,2001-02-01,A,0,B,D,0662233322,a@gmail.com,0512,A,10,
 8,Prov,Provera#2,2001-01-01,A,1,B,C,0662233322,abc@gmail.com,01451,ABVC,10,
 9,Test,Test,1972-05-04,ulica,0,grad,drzava,1235467,123@gmail.com,1234567,DrMr,5,
+10,Jhon,Jhon,2002-05-04,ulica,0,grad,drzava,12355677,awd@gmail.com,1235677,Vanredni profesor,10,

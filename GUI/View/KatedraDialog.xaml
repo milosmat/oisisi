@@ -1,0 +1,41 @@
+﻿<Window x:Class="GUI.View.KatedraDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI.View"
+        mc:Ignorable="d"
+        Title="KatedraDialog" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ComboBox x:Name="CmbKatedre" Width="200" Margin="10" SelectionChanged="CmbKatedre_SelectionChanged"/>
+        <DataGrid x:Name="DgProfesori" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" SelectionChanged="DgProfesori_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ime" Binding="{Binding Ime}" Width="*"/>
+                <DataGridTextColumn Header="Prezime" Binding="{Binding Prezime}" Width="*"/>
+                <DataGridTextColumn Header="Zvanje" Binding="{Binding Zvanje}" Width="*"/>
+                <DataGridTextColumn Header="Godine Staza" Binding="{Binding GodineStaza}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Postavi za šefa katedre" Click="BtnPostaviSefa_Click" Margin="5"/>
+            <Button Content="Otkaži" Click="BtnOtkazi_Click" Margin="5"/>
+            <Button x:Name="BtnPrikaziPredmete" Content="Prikazi predmete" Click="BtnPrikaziPredmete_Click" Margin="5" IsEnabled="False"/>
+        </StackPanel>
+        <DataGrid x:Name="DgPredmeti" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Šifra Predmeta" Binding="{Binding SifraPredmeta}" Width="*"/>
+                <DataGridTextColumn Header="Naziv Predmeta" Binding="{Binding NazivPredmeta}" Width="*"/>
+                <DataGridTextColumn Header="Semestar" Binding="{Binding Semestar}" Width="*"/>
+                <DataGridTextColumn Header="Godina Studija" Binding="{Binding GodinaStudija}" Width="*"/>
+                <DataGridTextColumn Header="ESPB" Binding="{Binding BrojESPB}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

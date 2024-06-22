@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
@@ -83,6 +84,11 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
+        public ObservableCollection<Katedra> Katedre { get; set; }
+        public Katedra? SelectedKatedra { get; set; }
+
+        public static readonly RoutedUICommand PrikazKatedriCommand = new RoutedUICommand(
+            "PrikazKatedri", "PrikazKatedri", typeof(MainWindow));
         private DispatcherTimer timer;
         private Profesor? _profesor;
 
@@ -593,10 +599,69 @@ namespace GUI
             var dg = sender as DataGrid;
             var lcv = CollectionViewSource.GetDefaultView(dg.ItemsSource) as ListCollectionView;
         }
+        private void FilterStudents_Click(object sender, RoutedEventArgs e)
+        {
+            var filterDialog = new PredmetFilterDialog();
+            if (filterDialog.ShowDialog() == true)
+            {
+                var firstSubject = filterDialog.FirstSubject;
+                var secondSubject = filterDialog.SecondSubject;
+                var filterType = filterDialog.FilterType;
+
+                var filteredStudents = new ObservableCollection<Student>();
+
+                if (filterType == "AttendingBoth")
+                {
+                    foreach (var student in StudentService.GetStudents())
+                    {
+                        // Prikazujemo listu nepoloženih predmeta za svakog studenta
+                        var nepolozeniPredmeti = string.Join(", ", student.SpisakNepolozenihPredmeta.Select(p => p.SifraPredmeta));
+
+                        if (student.SpisakNepolozenihPredmeta.Any(p => p.SifraPredmeta == firstSubject.SifraPredmeta) &&
+                            student.SpisakNepolozenihPredmeta.Any(p => p.SifraPredmeta == secondSubject.SifraPredmeta))
+                        {
+                            filteredStudents.Add(student);
+                        }
+                    }
+                }
+                else if (filterType == "PassedFirstNotSecond")
+                {
+                    foreach (var student in StudentService.GetStudents())
+                    {
+                        var polozniPredmeti = string.Join(", ", student.SpisakPolozenihIspita.Select(p => p.SifraPredmeta));
+
+                        if (student.SpisakPolozenihIspita.Any(p => p.SifraPredmeta == firstSubject.SifraPredmeta) &&
+                            !student.SpisakPolozenihIspita.Any(p => p.SifraPredmeta == secondSubject.SifraPredmeta))
+                        {
+                            filteredStudents.Add(student);
+                        }
+                    }
+                }
+
+                GridStudents.ItemsSource = filteredStudents;
+            }
+        }
 
         private void ShowKatedraInfo(object sender, ExecutedRoutedEventArgs e)
         {
+            var katedraDialog = new KatedraDialog();
+            if (katedraDialog.ShowDialog() == true)
+            {
+                SelectedKatedra = katedraDialog.SelectedKatedra;
+                SelectedProfesor = katedraDialog.SelectedProfesor;
 
+                // Postavite šefa katedre ako su ispunjeni uslovi
+                if (SelectedProfesor != null && SelectedKatedra != null && katedraDialog.IsEligibleForHead())
+                {
+                    SelectedKatedra.SefKatedre = SelectedProfesor;
+                    MessageBox.Show($"{SelectedProfesor.Ime} {SelectedProfesor.Prezime} je postavljen za šefa katedre {SelectedKatedra.NazivKatedre}.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Odabrani profesor ne zadovoljava uslove za šefa katedre.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
+
     }
 }
