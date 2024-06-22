@@ -77,8 +77,11 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
 
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
+        MessageBox.Show(EditPredmet.ToString());
         if (CRUDEntitetaService.IzmeniPredmet(EditPredmet))
         {
+            MessageBox.Show(EditPredmet.ToString());
+            EditPredmet = PredmetService.GetByid(EditPredmet.SifraPredmeta);
             OnFinish?.Invoke(this, EventArgs.Empty); // Poziv OnFinish događaja
             this.DialogResult = true;
         }
@@ -152,17 +155,6 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
         else
         {
             LblSemestarError.Content = string.Empty;
-        }
-
-        // Profesor
-        if (CmbProfesor.SelectedItem == null)
-        {
-            isValid = false;
-            LblProfesorError.Content = "Profesor je obavezan.";
-        }
-        else
-        {
-            LblProfesorError.Content = string.Empty;
         }
 
         BtnPotvrdi.IsEnabled = isValid;

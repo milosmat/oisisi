@@ -14,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace GUI
 {
@@ -59,10 +60,8 @@ namespace GUI
             }
         }
 
-        private bool canExecute = false;
 
         private TabItem? selected;
-
         public TabItem? Selected
         {
             get => selected;
@@ -70,7 +69,6 @@ namespace GUI
             {
                 selected = value;
                 OnPropertyChanged();
-                DeleteBinding_CanExecute(this, null);
             }
         }
 
@@ -85,7 +83,7 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
-
+        private DispatcherTimer timer;
         private Profesor? _profesor;
 
         public Profesor? SelectedProfesor
@@ -97,7 +95,8 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
-
+        public static readonly RoutedUICommand BrisanjeCommand = new RoutedUICommand(
+                "Brisanje", "Brisanje", typeof(MainWindow));
         private Student? _student;
 
         public Student? SelectedStudent
@@ -134,16 +133,25 @@ namespace GUI
             DataContext = this;
             SetMenuIcons();
             selected = Tabs1.SelectedItem as TabItem;
-            StatusBarText.Content += " - " + selected?.Header;
-            StatusDateText.Content = DateTime.Now.ToString("hh:mm dd:MM:yyyy");
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+            UpdateStatusBar();
             GridStudents.ItemsSource = FilteredStudents;
-            //TxtSearch.Margin = TxtSearch.Margin with { Left = TTray.Width - 270 };
+
+            // Ovo će osigurati da se komande odmah osveže
             CommandManager.InvalidateRequerySuggested();
 
-            Tabs1.SelectionChanged += Tabs1_OnSelectionChanged;
+            // Dodajte SelectionChanged događaje za DataGrid
             GridStudents.SelectionChanged += GridStudents_SelectionChanged;
             GridProfessors.SelectionChanged += GridProfessors_SelectionChanged;
             GridSubjects.SelectionChanged += GridSubjects_SelectionChanged;
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            DateTimeTextBlock.Text = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy");
         }
 
         private void SetMenuIcons()
@@ -227,12 +235,20 @@ namespace GUI
         private void Tabs1_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selected = Tabs1.SelectedItem as TabItem;
-            var text = StatusBarText.Content as String;
-            text = text?[..text.LastIndexOf('-')];
-            StatusBarText.Content = text + "- " + selected?.Header;
             CommandManager.InvalidateRequerySuggested();
+            UpdateStatusBar();
         }
-
+        private void UpdateStatusBar()
+        {
+            if (selected != null)
+            {
+                TabNameTextBlock.Text = selected.Header.ToString();
+            }
+            else
+            {
+                TabNameTextBlock.Text = string.Empty;
+            }
+        }
         private void RefreshData(object? sender, EventArgs e)
         {
             Students = new ObservableCollection<Student>(StudentService.GetStudents());
@@ -250,21 +266,26 @@ namespace GUI
         }
         private void GridStudents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SelectedStudent = GridStudents.SelectedItem as Student;
             CommandManager.InvalidateRequerySuggested();
         }
 
         private void GridProfessors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SelectedProfesor = GridProfessors.SelectedItem as Profesor;
             CommandManager.InvalidateRequerySuggested();
         }
 
         private void GridSubjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SelectedPredmet = GridSubjects.SelectedItem as Predmet;
             CommandManager.InvalidateRequerySuggested();
         }
         private void NewEntityBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            switch (Selected?.Tag)
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+
+            switch (selectedTab.Tag.ToString())
             {
                 case "Studenti":
                     DodajStudentaView dsv = new DodajStudentaView();
@@ -293,6 +314,7 @@ namespace GUI
             }
         }
 
+
         private void SaveBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
         }
@@ -307,116 +329,11 @@ namespace GUI
             Close();
         }
 
-        private void EditBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
-            switch (selectedTab.Tag.ToString())
-            {
-                case "Studenti":
-                    if (SelectedStudent == null)
-                    {
-                        MessageBox.Show("Nijedan student nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-                    else
-                    {
-                        EditStudentView esv = new EditStudentView(SelectedStudent);
-                        esv.OnFinish += RefreshData; // Subscribe to the OnFinish event
-                        MessageBox.Show(esv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
-                    }
-                    break;
-
-                case "Profesori":
-                    if (SelectedProfesor == null)
-                    {
-                        MessageBox.Show("Nijedan profesor nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-                    else
-                    {
-                        EditProfesorView epv = new EditProfesorView(SelectedProfesor);
-                        epv.OnFinish += RefreshData; // Subscribe to the OnFinish event
-                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
-                    }
-                    break;
-
-                case "Predmeti":
-                    if (SelectedPredmet == null)
-                    {
-                        MessageBox.Show("Nijedan predmet nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-                    else
-                    {
-                        EditPredmetView epv = new EditPredmetView(SelectedPredmet);
-                        epv.OnFinish += RefreshData; // Subscribe to the OnFinish event
-                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
-                    }
-                    break;
-
-                default:
-                    MessageBox.Show("Nepoznata opcija.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
-                    break;
-            }
-
-        }
-        private void MenuItem_Studenti_Click(object sender, RoutedEventArgs e)
-        {
-            SelectTabByTag("Studenti");
-        }
-
-        private void MenuItem_Predmeti_Click(object sender, RoutedEventArgs e)
-        {
-            SelectTabByTag("Predmeti");
-        }
-
-        private void MenuItem_Profesori_Click(object sender, RoutedEventArgs e)
-        {
-            SelectTabByTag("Profesori");
-        }
-
-        private void SelectTabByTag(string tag)
-        {
-            foreach (TabItem tabItem in Tabs1.Items)
-            {
-                if (tabItem.Tag != null && tabItem.Tag.ToString() == tag)
-                {
-                    Tabs1.SelectedItem = tabItem;
-                    break;
-                }
-            }
-        }
-        private void DeleteBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (Tabs1 == null || Tabs1.SelectedItem is not TabItem selectedTab)
-            {
-                canExecute = false;
-                return;
-            }
-            Console.WriteLine("Ovde sam");
-            switch (selectedTab.Tag.ToString())
-            {
-                case "Studenti":
-                    canExecute = SelectedStudent != null;
-                    break;
-                case "Profesori":
-                    canExecute = SelectedProfesor != null;
-                    break;
-                case "Predmeti":
-                    canExecute = SelectedPredmet != null;
-                    break;
-                default:
-                    canExecute = false;
-                    break;
-            }
-        }
-
         private void DeleteBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+
             if (Tabs1.SelectedItem is not TabItem selectedTab) return;
 
-            if (!canExecute)
-            {
-                MessageBox.Show("Ne ne");
-                return;
-            }
             switch (selectedTab.Tag.ToString())
             {
                 case "Studenti":
@@ -494,6 +411,82 @@ namespace GUI
             }
         }
 
+        private void EditBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    if (SelectedStudent == null)
+                    {
+                        MessageBox.Show("Nijedan student nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        EditStudentView esv = new EditStudentView(SelectedStudent);
+                        esv.OnFinish += RefreshData; // Subscribe to the OnFinish event
+                        MessageBox.Show(esv.ShowDialog() == true ? "Uspesno izmenjen student!" : "Izmene nisu sacuvane!", "Izmena studenta");
+                    }
+                    break;
+
+                case "Profesori":
+                    if (SelectedProfesor == null)
+                    {
+                        MessageBox.Show("Nijedan profesor nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        EditProfesorView epv = new EditProfesorView(SelectedProfesor);
+                        epv.OnFinish += RefreshData; // Subscribe to the OnFinish event
+                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen profesor!" : "Izmene nisu sacuvane!", "Izmena profesora");
+                    }
+                    break;
+
+                case "Predmeti":
+                    if (SelectedPredmet == null)
+                    {
+                        MessageBox.Show("Nijedan predmet nije izabran.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    else
+                    {
+                        EditPredmetView epv = new EditPredmetView(SelectedPredmet);
+                        epv.OnFinish += RefreshData; // Subscribe to the OnFinish event
+                        MessageBox.Show(epv.ShowDialog() == true ? "Uspesno izmenjen predmet!" : "Izmene nisu sacuvane!", "Izmena predmeta");
+                    }
+                    break;
+
+                default:
+                    MessageBox.Show("Nepoznata opcija.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+            }
+
+        }
+        private void MenuItem_Studenti_Click(object sender, RoutedEventArgs e)
+        {
+            SelectTabByTag("Studenti");
+        }
+
+        private void MenuItem_Predmeti_Click(object sender, RoutedEventArgs e)
+        {
+            SelectTabByTag("Predmeti");
+        }
+
+        private void MenuItem_Profesori_Click(object sender, RoutedEventArgs e)
+        {
+            SelectTabByTag("Profesori");
+        }
+
+        private void SelectTabByTag(string tag)
+        {
+            foreach (TabItem tabItem in Tabs1.Items)
+            {
+                if (tabItem.Tag != null && tabItem.Tag.ToString() == tag)
+                {
+                    Tabs1.SelectedItem = tabItem;
+                    break;
+                }
+            }
+        }
 
         private void HelpBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -503,24 +496,19 @@ namespace GUI
         private void SearchBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+            string query = TxtSearch.Text;
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                RefreshData(sender, e);
+                return;
+            }
+
+            var parts = query.Split(',');
+
             switch (selectedTab.Tag.ToString())
             {
                 case "Studenti":
-                    string query = TxtSearch.Text;
                     FilteredStudents.Clear();
-
-                    if (string.IsNullOrWhiteSpace(query))
-                    {
-                        foreach (var student in Students)
-                        {
-                            FilteredStudents.Add(student);
-                        }
-
-                        return;
-                    }
-
-                    var parts = query.Split(',');
-
                     if (parts.Length == 1)
                     {
                         string lastNamePart = parts[0].Trim().ToLower();
@@ -561,12 +549,37 @@ namespace GUI
                         }
                     }
                     break;
-                case "Profesori":
 
+                case "Profesori":
+                    FilteredProfesors.Clear();
+                    if (parts.Length == 1)
+                    {
+                        string part = parts[0].Trim().ToLower();
+                        foreach (var profesor in Profesors)
+                        {
+                            if (profesor.Prezime.ToLower().Contains(part) ||
+                                profesor.Ime.ToLower().Contains(part))
+                            {
+                                FilteredProfesors.Add(profesor);
+                            }
+                        }
+                    }
                     break;
 
                 case "Predmeti":
-
+                    FilteredPredmets.Clear();
+                    if (parts.Length == 1)
+                    {
+                        string part = parts[0].Trim().ToLower();
+                        foreach (var predmet in Predmets)
+                        {
+                            if (predmet.SifraPredmeta.ToLower().Contains(part) ||
+                                predmet.NazivPredmeta.ToLower().Contains(part))
+                            {
+                                FilteredPredmets.Add(predmet);
+                            }
+                        }
+                    }
                     break;
 
                 default:

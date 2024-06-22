@@ -71,7 +71,12 @@ class StudentDAO
     public Student? UzmiStudentaPoID(int id)
     {
         studenti = skladiste.Load();
-        return studenti.Find(s => s.Id == id);
+        Student student = studenti.Find(s => s.Id == id);
+        if (student == null)
+        {
+            throw new NullReferenceException($"Student sa ID {id} nije pronađen.");
+        }
+        return student;
     }
 
     public List<Student> UzmiSveStudente()
