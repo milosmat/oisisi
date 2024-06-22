@@ -1,14 +1,10 @@
-/*Katedra (#katedra)
-Šifra katedre
-Naziv katedre
-Šef katedre
-Spisak profesora koji su na katedri
-*/
 
 using System.Collections.Generic;
 using System.Linq;
 
 namespace StudentskaSluzba.Model;
+
+using CLI.Service;
 using StudentskaSluzba.Serialization;
 public class Katedra : ISerializable
 {
@@ -19,6 +15,7 @@ public class Katedra : ISerializable
 
     public Katedra()
     {
+        SpisakProfesora = new List<Profesor>();
     }
     public Katedra(string sifra, string naziv, Profesor sef)
     {
@@ -30,8 +27,7 @@ public class Katedra : ISerializable
 
     public override string ToString()
     {
-        string sefImePrezime = $"{SefKatedre.Ime} {SefKatedre.Prezime}";
-
+        string sefImePrezime = SefKatedre != null ? $"{SefKatedre.Ime} {SefKatedre.Prezime}" : "Nema šefa";
         return $"Sifra: {SifraKatedre} | Naziv: {NazivKatedre} | Sef katedre: {sefImePrezime}";
     }
 
@@ -41,7 +37,8 @@ public class Katedra : ISerializable
         {
             SifraKatedre,
             NazivKatedre,
-            SefKatedre.Id.ToString()
+            SefKatedre != null ? SefKatedre.Id.ToString() : string.Empty,
+            string.Join(";", SpisakProfesora.Select(p => p.Id.ToString()))
         };
 
         return csvValues;
@@ -49,8 +46,14 @@ public class Katedra : ISerializable
 
     public void FromCSV(string[] values)
     {
+        List<Profesor> sviProfesori = ProfesorService.GetProfesors();
         SifraKatedre = values[0];
         NazivKatedre = values[1];
-        SefKatedre = SpisakProfesora.FirstOrDefault(p => p.Id == int.Parse(values[2]));
+        int sefId;
+        if (int.TryParse(values[2], out sefId))
+        {
+            SefKatedre = sviProfesori.FirstOrDefault(p => p.Id == sefId);
+        }
+        SpisakProfesora = values[3].Split(';').Select(id => sviProfesori.FirstOrDefault(p => p.Id == int.Parse(id))).Where(p => p != null).ToList();
     }
 }
