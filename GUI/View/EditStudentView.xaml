@@ -135,7 +135,7 @@
                     <Button Content="{DynamicResource UndoGrade}" Width="120" Margin="5" HorizontalAlignment="Left"
                             Click="UndoPassedExam_Click" />
                     <DataGrid Grid.Row="1" Margin="5" AutoGenerateColumns="False" IsReadOnly="True"
-                              ItemsSource="{Binding PredmetsPolozeni}"
+                              ItemsSource="{Binding PredmetsPolozeni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedPredmet}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
@@ -197,7 +197,7 @@
                             HorizontalAlignment="Left" />
                     <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="GridSubjects"
                               AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
-                              ItemsSource="{Binding PredmetsNePolozeni, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding PredmetsNePolozeni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">

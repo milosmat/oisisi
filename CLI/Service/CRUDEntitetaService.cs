@@ -183,7 +183,7 @@ public class CRUDEntitetaService
         try
         {
             // Provera da li predmet već postoji u listi nepoloženih predmeta
-            if (!student.SpisakNepolozenihPredmeta.Any(p => p.SifraPredmeta == predmet.SifraPredmeta))
+            if (student.SpisakNepolozenihPredmeta.All(p => p.SifraPredmeta != predmet.SifraPredmeta))
             {
                 student.SpisakNepolozenihPredmeta.Add(predmet);
                 predmet.SpisakStudenataNisuPolozili.Add(student);

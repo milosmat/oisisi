@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -28,25 +29,25 @@ namespace GUI.View
             }
         }
 
-        private List<Predmet> _predmets;
-        public List<Predmet> PredmetsNePolozeni
+        private ObservableCollection<Predmet> _predmets;
+        public ObservableCollection<Predmet> PredmetsNePolozeni
         {
             get => _predmets;
             set
             {
-                EditStudent.SpisakNepolozenihPredmeta = value;
+                EditStudent.SpisakNepolozenihPredmeta = value.ToList();
                 _predmets = value;
                 OnPropertyChanged();
             }
         }
 
-        private List<Predmet> _predmetsPolozeni;
-        public List<Predmet> PredmetsPolozeni
+        private ObservableCollection<Predmet> _predmetsPolozeni;
+        public ObservableCollection<Predmet> PredmetsPolozeni
         {
             get => _predmetsPolozeni;
             set
             {
-                EditStudent.SpisakPolozenihIspita = value;
+                EditStudent.SpisakPolozenihIspita = value.ToList();
                 _predmetsPolozeni = value;
                 OnPropertyChanged();
             }
@@ -129,16 +130,16 @@ namespace GUI.View
             DataContext = this;
             CmbTrenutnaGodinaStudija.SelectedIndex = EditStudent.TrenutnaGodinaStudija - 1;
             CmbNacinFinansiranja.SelectedIndex = EditStudent.Status.Equals(StatusEnum.Budzet) ? 0 : 1;
-            PredmetsNePolozeni = new List<Predmet>(EditStudent.SpisakNepolozenihPredmeta); // Inicijalizacija
-            PredmetsPolozeni = new List<Predmet>(EditStudent.SpisakPolozenihIspita); // Inicijalizacija
+            PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta); // Inicijalizacija
+            PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita); // Inicijalizacija
             Professori = UzmiProfesoreZaStudenta(selectedStud);
             NepolozeniProfesori = UzmiNepolozeneProfesore(selectedStud);
 
             // Dodaj kod za postavljanje vrednosti za prosečnu ocenu i ESPB
             var ocenaDAO = new OcenaNaIspituDAO();
             var oceneNaIspitu = ocenaDAO.UzmiSveOceneNaIspitu();
-            TotalESPB = CalculateTotalESPB(PredmetsPolozeni);
-            EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni);
+            TotalESPB = CalculateTotalESPB(PredmetsPolozeni.ToList());
+            EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni.ToList());
 
             ValidateInputs(null, null);
         }
@@ -173,8 +174,8 @@ namespace GUI.View
 
         public void UpdatePassedAndFailedSubjects()
         {
-            PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
-            PredmetsPolozeni = EditStudent.SpisakPolozenihIspita;
+            PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta);
+            PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita);
 
             OnPropertyChanged(nameof(PredmetsNePolozeni));
             OnPropertyChanged(nameof(PredmetsPolozeni));
@@ -238,12 +239,12 @@ namespace GUI.View
             };
 
             // Osvježi liste položenih i nepoloženih predmeta
-            PredmetsPolozeni = EditStudent.SpisakPolozenihIspita;
-            PredmetsNePolozeni = EditStudent.SpisakNepolozenihPredmeta;
+            PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita);
+            PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta);
 
             // Ažuriraj prosečnu ocenu i ukupne ESPB bodove
-            EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni);
-            TotalESPB = CalculateTotalESPB(PredmetsPolozeni);
+            EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni.ToList());
+            TotalESPB = CalculateTotalESPB(PredmetsPolozeni.ToList());
 
             if (CRUDEntitetaService.IzmeniStudenta(EditStudent))
             {
@@ -380,18 +381,10 @@ namespace GUI.View
                 MessageBox.Show("Predmet uspešno dodat!");
                 var noviPredmet = izaberiPredmetDialog.SelectedPredmet;
 
-                if (noviPredmet != null)
-                {
-                    if (!PredmetsNePolozeni.Any(p => p.SifraPredmeta == noviPredmet.SifraPredmeta))
-                    {
-                        PredmetsNePolozeni.Add(noviPredmet);
-                        EditStudent.SpisakNepolozenihPredmeta = PredmetsNePolozeni;
-                        StudentService.AzurirajStudenta(EditStudent);
-                        noviPredmet.SpisakStudenataNisuPolozili.Add(EditStudent);
-                        PredmetService.Azuriraj(noviPredmet);
-                        OnPropertyChanged(nameof(PredmetsNePolozeni));
-                    }
-                }
+                if (noviPredmet == null) return;
+                if (PredmetsNePolozeni.Any(p => p.SifraPredmeta == noviPredmet.SifraPredmeta)) return;
+                PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta);
+                OnPropertyChanged(nameof(PredmetsNePolozeni));
             }
         }
 
@@ -458,23 +451,34 @@ namespace GUI.View
             MessageBoxResult res = MessageBox.Show("Da li ste sigurni da hoćete da uklonite predmet?", "Upozorenje", MessageBoxButton.OKCancel);
             if (res.Equals(MessageBoxResult.OK))
             {
+                var tmp = new Predmet()
+                {
+                    SifraPredmeta = SelectedPredmet.SifraPredmeta,
+                    BrojESPB = SelectedPredmet.BrojESPB,
+                    Semestar = SelectedPredmet.Semestar,
+                    SpisakStudenataPolozili = SelectedPredmet.SpisakStudenataPolozili,
+                    SpisakStudenataNisuPolozili = SelectedPredmet.SpisakStudenataNisuPolozili,
+                    GodinaStudija = SelectedPredmet.GodinaStudija,
+                    NazivPredmeta = SelectedPredmet.NazivPredmeta,
+                    PredmetniProfesor = SelectedPredmet.PredmetniProfesor,
+                };
                 // Ukloni predmet iz nepoloženih ili položenih
                 if (PredmetsNePolozeni.Contains(SelectedPredmet))
                 {
-                    PredmetsNePolozeni.Remove(SelectedPredmet);
                     SelectedPredmet.SpisakStudenataNisuPolozili.Remove(EditStudent);
+                    PredmetsNePolozeni.Remove(tmp);
                 }
                 else if (PredmetsPolozeni.Contains(SelectedPredmet))
                 {
                     SelectedPredmet.SpisakStudenataPolozili.Remove(EditStudent);
-                    PredmetsPolozeni.Remove(SelectedPredmet);
+                    PredmetsPolozeni.Remove(tmp);
                 }
 
                 // Ažuriraj studenta
-                EditStudent.SpisakNepolozenihPredmeta = PredmetsNePolozeni;
-                EditStudent.SpisakPolozenihIspita = PredmetsPolozeni;
+                EditStudent.SpisakNepolozenihPredmeta = PredmetsNePolozeni.ToList();
+                EditStudent.SpisakPolozenihIspita = PredmetsPolozeni.ToList();
                 StudentService.AzurirajStudenta(EditStudent);
-                PredmetService.Azuriraj(SelectedPredmet);
+                PredmetService.Azuriraj(tmp);
 
                 // Osveži prikaz
                 OnPropertyChanged(nameof(PredmetsNePolozeni));
