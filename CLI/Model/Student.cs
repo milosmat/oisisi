@@ -64,7 +64,7 @@ namespace StudentskaSluzba.Model
 
         public override string ToString()
         {
-            return $"{Id,5}|{Prezime,-20}|{Ime,-20}|{TrenutnaGodinaStudija,3}|{Status}|{ProsecnaOcena,5:F2}";
+            return $"{Id}|{Prezime}|{Ime}|{TrenutnaGodinaStudija}|{Status}|{ProsecnaOcena}";
         }
 
         public string[] ToCSV()
@@ -87,7 +87,7 @@ namespace StudentskaSluzba.Model
                 BrojIndeksa.GodinaUpisa.ToString(),
                 TrenutnaGodinaStudija.ToString(),
                 Status.ToString(),
-                ProsecnaOcena.ToString("F2"),
+                ProsecnaOcena.ToString(),
                 string.Join(";", SpisakPolozenihIspita),
                 string.Join(";", SpisakNepolozenihPredmeta)
             };

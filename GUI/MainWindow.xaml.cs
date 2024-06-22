@@ -84,6 +84,11 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
+        public ObservableCollection<Katedra> Katedre { get; set; }
+        public Katedra? SelectedKatedra { get; set; }
+
+        public static readonly RoutedUICommand PrikazKatedriCommand = new RoutedUICommand(
+            "PrikazKatedri", "PrikazKatedri", typeof(MainWindow));
         private DispatcherTimer timer;
         private Profesor? _profesor;
 
@@ -639,7 +644,24 @@ namespace GUI
 
         private void ShowKatedraInfo(object sender, ExecutedRoutedEventArgs e)
         {
+            var katedraDialog = new KatedraDialog();
+            if (katedraDialog.ShowDialog() == true)
+            {
+                SelectedKatedra = katedraDialog.SelectedKatedra;
+                SelectedProfesor = katedraDialog.SelectedProfesor;
 
+                // Postavite šefa katedre ako su ispunjeni uslovi
+                if (SelectedProfesor != null && SelectedKatedra != null && katedraDialog.IsEligibleForHead())
+                {
+                    SelectedKatedra.SefKatedre = SelectedProfesor;
+                    MessageBox.Show($"{SelectedProfesor.Ime} {SelectedProfesor.Prezime} je postavljen za šefa katedre {SelectedKatedra.NazivKatedre}.", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Odabrani profesor ne zadovoljava uslove za šefa katedre.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
+
     }
 }
