@@ -119,33 +119,34 @@
                     <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="GridSubjects"
                               AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding EditProfesor.SpisakPredmeta, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                              SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">       
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="{DynamicResource SubjCode}" />
+                                    <TextBlock Text="Subject code" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding NazivPredmeta}" Width="*">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="{DynamicResource SubjName}" />
+                                    <TextBlock Text="Subject name" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding GodinaStudija}" Width="*">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="{DynamicResource SubjYear}" />
+                                    <TextBlock Text="Year" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding Semestar}" Width="*">
                                 <DataGridTextColumn.Header>
-                                    <TextBlock Text="{DynamicResource SubjSem}" />
+                                    <TextBlock Text="Semester" />
                                 </DataGridTextColumn.Header>
                             </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+
+
                 </Grid>
             </TabItem>
         </TabControl>
     </Grid>
 </Window>
-

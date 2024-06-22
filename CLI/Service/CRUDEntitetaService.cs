@@ -70,6 +70,7 @@ public class CRUDEntitetaService
     {
         try
         {
+            
             PredmetDao.AzurirajPredmet(predmet);
             return true;
         }
@@ -79,28 +80,51 @@ public class CRUDEntitetaService
         }
     }
 
-    public static void PonistiOcenu(String predmet, int studentId)
+    public static void PonistiOcenu(string predmet, int studentId)
     {
         try
         {
-            OcenaNaIspitu tmpOcena = Ocena.UzmiSveOceneNaIspitu().Find(o => o.Predmet.SifraPredmeta == predmet);
-            tmpOcena.BrojcanaVrednostOcene = 0;
-            Ocena.AzurirajOcenuNaIspitu(tmpOcena);
-            Student tmp = StudentDao.UzmiStudentaPoID(studentId);
-            tmp.SpisakPolozenihIspita.Remove(tmp.SpisakPolozenihIspita.Find(p => p.SifraPredmeta == predmet));
-            Predmet tmpP = PredmetService.GetByid(predmet);
-            tmp.SpisakNepolozenihPredmeta.Add(tmpP);
-            tmpP.SpisakStudenataPolozili.Remove(tmpP.SpisakStudenataPolozili.Find(s => s.Id==tmp.Id));
-            tmpP.SpisakStudenataNisuPolozili.Add(tmp);
-            PredmetDao.AzurirajPredmet(tmpP);
-            StudentDao.AzurirajStudenta(tmp);
+            // Pronađi ocenu koju treba poništiti
+            OcenaNaIspitu tmpOcena = Ocena.UzmiSveOceneNaIspitu().Find(o => o.Predmet.SifraPredmeta == predmet && o.StudentKojiJePolozio.Id == studentId);
+
+            if (tmpOcena != null)
+            {
+                // Izbriši ocenu iz baze podataka
+                Ocena.IzbrisiOcenuNaIspitu(studentId, predmet);
+
+                // Pronađi studenta i ažuriraj njegove liste položenih i nepoloženih predmeta
+                Student tmp = StudentDao.UzmiStudentaPoID(studentId);
+                if (tmp != null)
+                {
+                    // Ukloni predmet iz liste položenih ispita
+                    Predmet polozeniPredmet = tmp.SpisakPolozenihIspita.Find(p => p.SifraPredmeta == predmet);
+                    if (polozeniPredmet != null)
+                    {
+                        tmp.SpisakPolozenihIspita.Remove(polozeniPredmet);
+                        tmp.SpisakNepolozenihPredmeta.Add(polozeniPredmet);
+                    }
+
+                    // Ažuriraj predmete na osnovu promene statusa
+                    Predmet tmpP = PredmetService.GetByid(predmet);
+                    if (tmpP != null)
+                    {
+                        tmpP.SpisakStudenataPolozili.RemoveAll(s => s.Id == tmp.Id);
+                        tmpP.SpisakStudenataNisuPolozili.Add(tmp);
+
+                        PredmetDao.AzurirajPredmet(tmpP);
+                    }
+
+                    // Ažuriraj studenta u bazi podataka
+                    StudentDao.AzurirajStudenta(tmp);
+                }
+            }
         }
         catch (Exception e)
-        {   
-            
+        {
             System.Console.WriteLine("Greška prilikom brisanja ocene!\n" + e.Message);
         }
     }
+
 
     public static bool ObrisiOcenu(String predmet, int studentId)
     {
@@ -123,53 +147,65 @@ public class CRUDEntitetaService
             return false;
         }
     }
-
-    public static bool DodajPredmetStudentu(Predmet predmet, Student student, int ocena, DateTime datum)
+    public static bool DodajOcenuZaPredmet(Predmet predmet, Student student, int ocena, DateTime datum)
     {
         try
         {
-            if (ocena < 5)
-                Ocena.DodajOcenuNaIspitu(new OcenaNaIspitu()
-                {
-                    StudentKojiJePolozio = student,
-                    Predmet = predmet,
-                    BrojcanaVrednostOcene = ocena,
-                    DatumPolaganjaIspita = datum
-                });
-            else
+            var ocenaNaIspitu = new OcenaNaIspitu()
             {
-                OcenaNaIspitu tmpOcena = Ocena.UzmiSveOceneNaIspitu()
-                    .Find(o => o.Predmet.Equals(predmet) && o.StudentKojiJePolozio.Equals(student));
-                tmpOcena.BrojcanaVrednostOcene = ocena;
-                tmpOcena.DatumPolaganjaIspita = datum;
-                Ocena.AzurirajOcenuNaIspitu(tmpOcena);
-            }
-            if (ocena > 5)
-            {
-                student.SpisakPolozenihIspita.Add(predmet);
-                student.SpisakNepolozenihPredmeta.Remove(predmet);
-                predmet.SpisakStudenataPolozili.Add(student);                
-            }
-            else
-            {
-                student.SpisakNepolozenihPredmeta.Add(predmet);
-                predmet.SpisakStudenataNisuPolozili.Add(student);
-            }
+                StudentKojiJePolozio = student,
+                Predmet = predmet,
+                BrojcanaVrednostOcene = ocena,
+                DatumPolaganjaIspita = datum
+            };
 
+            student.SpisakPolozenihIspita.Add(predmet);
+            student.SpisakNepolozenihPredmeta.Remove(predmet);
+            predmet.SpisakStudenataPolozili.Add(student);
+            predmet.SpisakStudenataNisuPolozili.Remove(student);
+
+            var ocenaDao = new OcenaNaIspituDAO();
+            ocenaDao.DodajOcenuNaIspitu(ocenaNaIspitu);
             StudentDao.AzurirajStudenta(student);
             PredmetDao.AzurirajPredmet(predmet);
 
-            System.Console.WriteLine("Subject added successfully to student: " + student.Id);
-
+            System.Console.WriteLine("Ocena uspešno dodata za predmet: " + predmet.SifraPredmeta);
             return true;
         }
         catch (Exception e)
         {
-            System.Console.WriteLine("Error adding subject to student: " + e.Message);
+            System.Console.WriteLine("Greška prilikom dodavanja ocene za predmet: " + e.Message);
             return false;
         }
     }
+    public static bool DodajPredmetStudentu(Predmet predmet, Student student)
+    {
+        try
+        {
+            // Provera da li predmet već postoji u listi nepoloženih predmeta
+            if (!student.SpisakNepolozenihPredmeta.Any(p => p.SifraPredmeta == predmet.SifraPredmeta))
+            {
+                student.SpisakNepolozenihPredmeta.Add(predmet);
+                predmet.SpisakStudenataNisuPolozili.Add(student);
 
+                StudentDao.AzurirajStudenta(student);
+                PredmetDao.AzurirajPredmet(predmet);
+
+                System.Console.WriteLine("Predmet uspešno dodat studentu: " + student.Id);
+                return true;
+            }
+            else
+            {
+                System.Console.WriteLine("Predmet je već dodat studentu.");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine("Greška prilikom dodavanja predmeta studentu: " + e.Message);
+            return false;
+        }
+    }
 
 
 

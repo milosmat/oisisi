@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -39,6 +41,9 @@ namespace GUI.View
             }
         }
 
+        public List<Predmet> predmeti { get; set; } = new List<Predmet>();
+        public ObservableCollection<Predmet> PredmetDisplays { get; set; } = new ObservableCollection<Predmet>();
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -58,8 +63,33 @@ namespace GUI.View
             _profesor = selectedProf;
             EditProfesor = _profesor;
             DataContext = this;
+
+            // Convert SpisakPredmeta from List<Predmet> to ObservableCollection<Predmet>
+            if (EditProfesor.SpisakPredmeta != null)
+            {
+                // Log the subjects before filtering
+                var predmeti = new ObservableCollection<Predmet>();
+                foreach (var predmet in EditProfesor.SpisakPredmeta)
+                {
+                    predmeti.Add(PredmetService.GetByid(predmet.SifraPredmeta));
+                }
+
+                EditProfesor.SpisakPredmeta = predmeti
+                    .Where(p => !string.IsNullOrWhiteSpace(p.SifraPredmeta) && p.GodinaStudija > 0)
+                    .ToList();
+            }
+            else
+            {
+                EditProfesor.SpisakPredmeta = new List<Predmet>();
+            }
+
+            PredmetDisplays = new ObservableCollection<Predmet>(EditProfesor.SpisakPredmeta);
+            GridSubjects.ItemsSource = PredmetDisplays;
+
             ValidateInputs(null, null);
         }
+
+
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
@@ -95,11 +125,33 @@ namespace GUI.View
             var predmetDialog = new IzaberiPredmetDialog(EditProfesor);
             if (predmetDialog.ShowDialog() == true)
             {
+                var selectedPredmet = predmetDialog.SelectedPredmet;
+
+                if (EditProfesor.SpisakPredmeta.Any(p => p.SifraPredmeta == selectedPredmet.SifraPredmeta))
+                {
+                    MessageBox.Show("Profesor već predaje ovaj predmet.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 EditProfesor = ProfesorService.GetById(EditProfesor.Id);
-                
-                MessageBox.Show("Uspšeno dodat predmet!");
+
+                var predmeti = new ObservableCollection<Predmet>();
+                foreach (var predmet in EditProfesor.SpisakPredmeta)
+                {
+                    predmeti.Add(PredmetService.GetByid(predmet.SifraPredmeta));
+                }
+
+                EditProfesor.SpisakPredmeta = predmeti
+                    .Where(p => !string.IsNullOrWhiteSpace(p.SifraPredmeta) && p.GodinaStudija > 0)
+                    .ToList();
+
+                PredmetDisplays = new ObservableCollection<Predmet>(EditProfesor.SpisakPredmeta);
+                GridSubjects.ItemsSource = PredmetDisplays;
+
+                MessageBox.Show("Uspešno dodat predmet!");
             }
         }
+
 
         private void RemoveSubject_Click(object sender, RoutedEventArgs e)
         {
@@ -107,8 +159,21 @@ namespace GUI.View
             var dialogRes = MessageBox.Show("Da li ste sigurni?", "Ukloni predmet", MessageBoxButton.OKCancel);
             if (!dialogRes.Equals(MessageBoxResult.OK)) return;
             var res = CRUDEntitetaService.ObrisiPredmetProfesoru(EditProfesor, SelectedPredmet);
-            MessageBox.Show(res ? "Uspešno skinut profesor sa predmeta" : "Došlo je do greške prilikom birsanja!");
+            MessageBox.Show(res ? "Uspešno skinut profesor sa predmeta" : "Došlo je do greške prilikom brisanja!");
             EditProfesor = ProfesorService.GetById(EditProfesor.Id);
+
+            var predmeti = new ObservableCollection<Predmet>();
+            foreach (var predmet in EditProfesor.SpisakPredmeta)
+            {
+                predmeti.Add(PredmetService.GetByid(predmet.SifraPredmeta));
+            }
+
+            EditProfesor.SpisakPredmeta = predmeti
+                .Where(p => !string.IsNullOrWhiteSpace(p.SifraPredmeta) && p.GodinaStudija > 0)
+                .ToList();
+
+            PredmetDisplays = new ObservableCollection<Predmet>(EditProfesor.SpisakPredmeta);
+            GridSubjects.ItemsSource = PredmetDisplays;
         }
 
         private void ValidateInputs(object sender, TextChangedEventArgs e)
@@ -218,4 +283,5 @@ namespace GUI.View
             BtnPotvrdi.IsEnabled = isValid;
         }
     }
+
 }

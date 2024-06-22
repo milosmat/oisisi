@@ -22,4 +22,8 @@ public class PredmetService
         if (predmet == null) return false;
         return _predmetDao.IzbrisiPredmet(predmetSifra) != null;
     }
+    public static Predmet Azuriraj(Predmet p)
+    {
+        return _predmetDao.AzurirajPredmet(p);
+    }
 }

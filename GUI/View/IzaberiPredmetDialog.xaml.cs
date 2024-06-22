@@ -48,8 +48,13 @@ public partial class IzaberiPredmetDialog : Window
     {
         InitializeComponent();
         Predmets = PredmetService.GetPredmets();
+        DataContext = this;
+        if (Predmets == null || Predmets.Count == 0)
+        {
+            MessageBox.Show("Nema dostupnih predmeta.");
+        }
     }
-    
+
     public IzaberiPredmetDialog(Student student)
     {
         InitializeComponent();
@@ -71,13 +76,18 @@ public partial class IzaberiPredmetDialog : Window
 
     private void SelectionChangedEvent(object sender, SelectionChangedEventArgs e)
     {
+        if (SelectedPredmet == null)
+        {
+            MessageBox.Show("Niste odabrali predmet.");
+            return;
+        }
         MessageBoxResult dlgRes = MessageBox.Show("Da li želite da dodelite ovaj predmet?", "Obaveštenje",
             MessageBoxButton.YesNo);
 
         if (dlgRes.Equals(MessageBoxResult.Yes) && SelectedPredmet != null)
         {
             if (_profesor == null)
-                DialogResult = CRUDEntitetaService.DodajPredmetStudentu(SelectedPredmet, _student, 0, new DateTime());
+                DialogResult = CRUDEntitetaService.DodajPredmetStudentu(SelectedPredmet, _student);
             else
                 DialogResult = CRUDEntitetaService.DodajPredmetProfesoru(_profesor, SelectedPredmet);
             Close();

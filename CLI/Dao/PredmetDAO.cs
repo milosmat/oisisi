@@ -1,4 +1,5 @@
-﻿using StudentskaSluzba.Model;
+﻿using CLI.Service;
+using StudentskaSluzba.Model;
 using StudentskaSluzba.Storage;
 namespace CLI.DAO;
 class PredmetDAO
@@ -32,7 +33,13 @@ class PredmetDAO
         stariPredmet.BrojESPB = predmet.BrojESPB;
         stariPredmet.SpisakStudenataPolozili = predmet.SpisakStudenataPolozili;
         stariPredmet.SpisakStudenataNisuPolozili = predmet.SpisakStudenataNisuPolozili;
+        var predmetToRemove = predmeti.FirstOrDefault(p => p.SifraPredmeta == stariPredmet.SifraPredmeta);
+        if (predmetToRemove != null)
+        {
+            predmeti.Remove(predmetToRemove);
+        }
 
+        predmeti.Add(stariPredmet); // Dodajte ažurirani predmet
         skladiste.Save(predmeti);
         return stariPredmet;
     }
@@ -48,11 +55,20 @@ class PredmetDAO
         return predmet;
     }
 
-    public Predmet? UzmiPredmetPoSifri(string sifra)
+    public Predmet UzmiPredmetPoSifri(string sifraPredmeta)
     {
-        predmeti = skladiste.Load();
-        return predmeti.Find(p => p.SifraPredmeta == sifra);
+        var predmeti = PredmetService.GetPredmets(); // Pretpostavljam da ovde učitavaš predmete
+        var predmet = predmeti.FirstOrDefault(p => p.SifraPredmeta.Equals(sifraPredmeta, StringComparison.OrdinalIgnoreCase));
+
+        if (predmet == null)
+        {
+            Console.WriteLine($"Predmet sa šifrom {sifraPredmeta} nije pronađen.");
+            throw new NullReferenceException($"Predmet sa šifrom {sifraPredmeta} nije pronađen.");
+        }
+
+        return predmet;
     }
+
 
     public List<Predmet> UzmiSvePredmete()
     {

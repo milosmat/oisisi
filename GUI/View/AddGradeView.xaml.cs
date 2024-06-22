@@ -1,15 +1,15 @@
+﻿using StudentskaSluzba.Model;
+using StudentskaSluzba.Service;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using StudentskaSluzba.Model;
-using StudentskaSluzba.Service;
 
 namespace GUI.View;
 
-public partial class AddGradeView : Window
+public partial class AddGradeView : Window, INotifyPropertyChanged
 {
-    private int[] _grades = { 5, 6, 7, 8, 9, 10 };
+    private int[] _grades = { 6, 7, 8, 9, 10 };
 
     public int[] Grades
     {
@@ -57,6 +57,18 @@ public partial class AddGradeView : Window
         }
     }
 
+    private Student _student;
+    private EditStudentView _editStudentView;
+
+    public AddGradeView(EditStudentView editStudentView, Predmet predmet, Student student)
+    {
+        InitializeComponent();
+        Predmet = predmet;
+        _student = student;
+        _editStudentView = editStudentView;
+        DataContext = this;
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -64,28 +76,21 @@ public partial class AddGradeView : Window
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private Student _student;
-
-    public AddGradeView()
-    {
-        InitializeComponent();
-        DataContext = this;
-    }
-
-    public AddGradeView(Predmet predmet, Student student)
-    {
-        InitializeComponent();
-        Predmet = predmet;
-        _student = student;
-        DataContext = this;
-    }
-
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
-        this.DialogResult =
-            CRUDEntitetaService.DodajPredmetStudentu(Predmet!, _student, SelectedGrade ?? 0, DateTime.ParseExact(Datum, "yyyy-MM-dd", null));
-        Close();
+        if (SelectedGrade.HasValue && !string.IsNullOrEmpty(Datum))
+        {
+            var datumPolaganja = DateTime.ParseExact(Datum, "dd/MM/yyyy", null);
+            this.DialogResult = CRUDEntitetaService.DodajOcenuZaPredmet(Predmet!, _student, SelectedGrade.Value, datumPolaganja);
+            _editStudentView.UpdatePassedAndFailedSubjects();
+            Close();
+        }
+        else
+        {
+            MessageBox.Show("Molimo unesite ocenu i datum.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
+
 
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {

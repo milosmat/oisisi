@@ -24,9 +24,10 @@ namespace CLI.Service
             return studentDAO.UzmiStudentaPoID(id);
         }
 
-        public static void AzurirajStudenta(Student s)
+        public static Student AzurirajStudenta(Student s)
         {
-            studentDAO.AzurirajStudenta(s);
+            return studentDAO.AzurirajStudenta(s);
         }
+
     }
 }
