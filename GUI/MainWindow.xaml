@@ -53,6 +53,7 @@
                 <MenuItem x:Name="EditMenuItem" Header="{DynamicResource Edit}" InputGestureText="Ctrl+P" Command="Properties" />
                 <MenuItem x:Name="DeleteMenuItem" Header="{DynamicResource Delete}" InputGestureText="Ctrl+D" Command="{x:Static local:MainWindow.BrisanjeCommand}" />
                 <MenuItem x:Name="KatedraInfo" Header="{DynamicResource KatedraInfo}" InputGestureText="Ctrl+K" Command="Favorites"/>
+                <MenuItem x:Name="FilterStudentsMenuItem" Header="Filter Students by Subjects" Click="FilterStudents_Click"/>
             </MenuItem>
             <MenuItem Header="{DynamicResource Help}">
                 <MenuItem x:Name="AboutMenuItem" Header="{DynamicResource About}" InputGestureText="Ctrl+H" Command="Help" />

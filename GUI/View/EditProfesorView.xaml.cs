@@ -43,7 +43,7 @@ namespace GUI.View
 
         public List<Predmet> predmeti { get; set; } = new List<Predmet>();
         public ObservableCollection<Predmet> PredmetDisplays { get; set; } = new ObservableCollection<Predmet>();
-
+        public ObservableCollection<Student> StudentDisplays { get; set; } = new ObservableCollection<Student>();
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -63,11 +63,16 @@ namespace GUI.View
             _profesor = selectedProf;
             EditProfesor = _profesor;
             DataContext = this;
+            LoadPredmeti();
+            LoadStudents();
 
-            // Convert SpisakPredmeta from List<Predmet> to ObservableCollection<Predmet>
+            ValidateInputs(null, null);
+        }
+
+        private void LoadPredmeti()
+        {
             if (EditProfesor.SpisakPredmeta != null)
             {
-                // Log the subjects before filtering
                 var predmeti = new ObservableCollection<Predmet>();
                 foreach (var predmet in EditProfesor.SpisakPredmeta)
                 {
@@ -85,12 +90,28 @@ namespace GUI.View
 
             PredmetDisplays = new ObservableCollection<Predmet>(EditProfesor.SpisakPredmeta);
             GridSubjects.ItemsSource = PredmetDisplays;
-
-            ValidateInputs(null, null);
         }
 
+        private void LoadStudents()
+        {
+            var allStudents = StudentService.GetStudents();
+            var students = new HashSet<Student>();
 
+            foreach (var student in allStudents)
+            {
+                foreach (var predmet in EditProfesor.SpisakPredmeta)
+                {
+                    if (student.SpisakNepolozenihPredmeta.Any(p => p.SifraPredmeta == predmet.SifraPredmeta))
+                    {
+                        students.Add(student);
+                        break;
+                    }
+                }
+            }
 
+            StudentDisplays = new ObservableCollection<Student>(students);
+            GridStudents.ItemsSource = StudentDisplays;
+        }
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             var adrParts = TxtAdresaStanovanja.Text.Split(", ");
@@ -175,7 +196,61 @@ namespace GUI.View
             PredmetDisplays = new ObservableCollection<Predmet>(EditProfesor.SpisakPredmeta);
             GridSubjects.ItemsSource = PredmetDisplays;
         }
+        private void SearchStudent_Click(object sender, RoutedEventArgs e)
+        {
+            string query = TxtSearchStudent.Text;
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                LoadStudents();
+                return;
+            }
 
+            var parts = query.Split(',');
+
+            var filteredStudents = new List<Student>();
+
+            if (parts.Length == 1)
+            {
+                string lastNamePart = parts[0].Trim().ToLower();
+                foreach (var student in StudentDisplays)
+                {
+                    if (student.Prezime.ToLower().Contains(lastNamePart))
+                    {
+                        filteredStudents.Add(student);
+                    }
+                }
+            }
+            else if (parts.Length == 2)
+            {
+                string lastNamePart = parts[0].Trim().ToLower();
+                string firstNamePart = parts[1].Trim().ToLower();
+                foreach (var student in StudentDisplays)
+                {
+                    if (student.Prezime.ToLower().Contains(lastNamePart) &&
+                        student.Ime.ToLower().Contains(firstNamePart))
+                    {
+                        filteredStudents.Add(student);
+                    }
+                }
+            }
+            else if (parts.Length == 3)
+            {
+                string indexPart = parts[0].Trim().ToLower();
+                string firstNamePart = parts[1].Trim().ToLower();
+                string lastNamePart = parts[2].Trim().ToLower();
+                foreach (var student in StudentDisplays)
+                {
+                    if (student.BrojIndeksa.ToString().ToLower().Contains(indexPart) &&
+                        student.Ime.ToLower().Contains(firstNamePart) &&
+                        student.Prezime.ToLower().Contains(lastNamePart))
+                    {
+                        filteredStudents.Add(student);
+                    }
+                }
+            }
+
+            GridStudents.ItemsSource = new ObservableCollection<Student>(filteredStudents);
+        }
         private void ValidateInputs(object sender, TextChangedEventArgs e)
         {
             bool isValid = true;
