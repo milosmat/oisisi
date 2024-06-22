@@ -119,7 +119,7 @@
                     <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="GridSubjects"
                               AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding EditProfesor.SpisakPredmeta, UpdateSourceTrigger=PropertyChanged}"
-                              SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">       
+                              SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -143,8 +143,28 @@
                             </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-
-
+                </Grid>
+            </TabItem>
+            <TabItem Tag="Studenti" Header="Students">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+                        <TextBox x:Name="TxtSearchStudent" Width="200" Margin="5"/>
+                        <Button Content="Search" Width="100" Margin="5" Click="SearchStudent_Click"/>
+                    </StackPanel>
+                    <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="10"
+                              ItemsSource="{Binding StudentDisplays, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding SelectedStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Ime}" Width="*" Header="First Name" />
+                            <DataGridTextColumn Binding="{Binding Prezime}" Width="*" Header="Last Name" />
+                            <DataGridTextColumn Binding="{Binding BrojIndeksa}" Width="*" Header="Index Number" />
+                            <DataGridTextColumn Binding="{Binding TrenutnaGodinaStudija}" Width="*" Header="Year" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </TabItem>
         </TabControl>
