@@ -13,6 +13,7 @@ Spisak predmeta na kojima je profesor
 
 namespace StudentskaSluzba.Model;
 using StudentskaSluzba.Serialization;
+using System.Text;
 
 public class Profesor : ISerializable
 {
@@ -78,7 +79,16 @@ public class Profesor : ISerializable
 
     public string[] ToCSV()
     {
-        string predmetiInfo = string.Join(";", SpisakPredmeta.Select(predmet => predmet.SifraPredmeta));
+        string predmetiInfo = "";
+
+        foreach (var predmet in SpisakPredmeta)
+        {
+            if (!string.IsNullOrEmpty(predmetiInfo))
+            {
+                predmetiInfo += ";";
+            }
+            predmetiInfo += predmet.SifraPredmeta;
+        }
 
         string[] csvValues =
         {
@@ -141,7 +151,7 @@ public class Profesor : ISerializable
 
                 // Dodajte novi predmet i profesora u bazu ili na drugo odgovarajuće mesto
 
-                DodajNoviPredmet();
+                //DodajNoviPredmet();
                 System.Console.WriteLine($"Predmet '{unosPredmeta}' dodat profesoru.");
             }
             else
@@ -178,8 +188,8 @@ public class Profesor : ISerializable
             int bodovi = Convert.ToInt32(System.Console.ReadLine());
 
             // Ovde možete dodati proveru da li predmet već postoji negde
-            Predmet noviPredmet = new Predmet(sifra, naziv, semestar, godinaStudija, this, bodovi);
-            SpisakPredmeta.Add(noviPredmet);
+            //Predmet noviPredmet = new Predmet(sifra, naziv, semestar, godinaStudija, this, bodovi);
+            //SpisakPredmeta.Add(noviPredmet);
             System.Console.WriteLine($"Novi predmet '{naziv}' dodat profesoru.");
         }
         else

@@ -16,8 +16,8 @@ class Program
         OcenaNaIspituDAO ocenaNaIspitu = new OcenaNaIspituDAO();
         PredmetDAO predmet = new PredmetDAO();
         StudentDAO student = new StudentDAO();
-        StudentskaSluzbaConsoleView view = new StudentskaSluzbaConsoleView(adresa, indeks, katedra, ocenaNaIspitu, predmet, profesor, student);
-        view.RunMainMenu();
+        //StudentskaSluzbaConsoleView view = new StudentskaSluzbaConsoleView(adresa, indeks, katedra, ocenaNaIspitu, predmet, profesor, student);
+        //view.RunMainMenu();
         /*VehiclesDAO vehicles = new VehiclesDAO();
         VehicleConsoleView view = new VehicleConsoleView(vehicles);
         view.RunMenu();*/

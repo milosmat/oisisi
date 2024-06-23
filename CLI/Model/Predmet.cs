@@ -23,13 +23,15 @@ public class Predmet : ISerializable
     public int BrojESPB { get; set; }
     public List<Student> SpisakStudenataPolozili { get; set; }
     public List<Student> SpisakStudenataNisuPolozili { get; set; }
+    public int? BrojcanaVrednostOcene { get; set; }
+    public DateTime? DatumPolaganjaIspita { get; set; }
 
     public Predmet()
     {
         SpisakStudenataPolozili = new List<Student>();
         SpisakStudenataNisuPolozili = new List<Student>();
     }
-    public Predmet(string sifra, string naziv, SemestarEnum semestar, int godina, Profesor prof, int bodovi)
+    public Predmet(string sifra, string naziv, SemestarEnum semestar, int godina, Profesor prof, int bodovi,int ocena, DateTime datum)
     {
         SifraPredmeta = sifra;
         NazivPredmeta = naziv;
@@ -39,6 +41,8 @@ public class Predmet : ISerializable
         BrojESPB = bodovi;
         SpisakStudenataPolozili = new List<Student>();
         SpisakStudenataNisuPolozili = new List<Student>();
+        BrojcanaVrednostOcene = ocena;
+        DatumPolaganjaIspita = datum;
     }
 
     public override string ToString()

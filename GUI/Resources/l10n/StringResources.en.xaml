@@ -57,7 +57,7 @@
     <sys:String x:Key="AppTitleDPred">Add subject</sys:String>
     <sys:String x:Key="Summer">Summer</sys:String>
     <sys:String x:Key="Winter">Winter</sys:String>
-    
+    <sys:String x:Key="FilterStudentsbySubjects">Filter Students by Subjects</sys:String>
     <!-- EditStudenta -->
     <sys:String x:Key="AppTitleEStud">Edit student</sys:String>
     <sys:String x:Key="Information">Information</sys:String>
@@ -71,7 +71,7 @@
     <sys:String x:Key="Exam">Enter grade</sys:String>
     <sys:String x:Key="ProfessorName">Professor</sys:String>
     <sys:String x:Key="SubjectName">Subject</sys:String>
-
+    <sys:String x:Key="ExamDate">Passed on</sys:String>
     <!-- EditProfesora -->
     <sys:String x:Key="AppTitleEProf">Edit professor</sys:String>
     <sys:String x:Key="AddSubject">Add subject</sys:String>

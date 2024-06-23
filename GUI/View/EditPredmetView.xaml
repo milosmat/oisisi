@@ -41,37 +41,29 @@
 
         <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource SubjCode}" VerticalAlignment="Center" Margin="5" />
         <TextBox x:Name="TxtSifra" Grid.Row="0" Grid.Column="1" Margin="5"
-                 Text="{Binding EditPredmet.SifraPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                 Text="{Binding TempSifraPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
         <Label x:Name="LblSifraError" Grid.Row="1" Grid.Column="1" Margin="5" Foreground="Red"/>
 
         <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource SubjName}" VerticalAlignment="Center" Margin="5" />
         <TextBox x:Name="TxtNaziv" Grid.Row="2" Grid.Column="1" Margin="5"
-                 Text="{Binding EditPredmet.NazivPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                 Text="{Binding TempNazivPredmeta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
         <Label x:Name="LblNazivError" Grid.Row="3" Grid.Column="1" Margin="5" Foreground="Red"/>
 
         <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource SubjYear}" VerticalAlignment="Center" Margin="5" />
         <TextBox x:Name="TxtGodinaStudija" Grid.Row="4" Grid.Column="1" Margin="5"
-                 Text="{Binding EditPredmet.GodinaStudija, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                 Text="{Binding TempGodinaStudija, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
         <Label x:Name="LblGodinaStudijaError" Grid.Row="5" Grid.Column="1" Margin="5" Foreground="Red"/>
 
         <Label Grid.Row="6" Grid.Column="0" Content="{DynamicResource SubjESPB}" VerticalAlignment="Center" Margin="5" />
         <TextBox x:Name="TxtEspb" Grid.Row="6" Grid.Column="1" Margin="5"
-                 Text="{Binding EditPredmet.BrojESPB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
+                 Text="{Binding TempBrojESPB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ValidateInputs"/>
         <Label x:Name="LblEspbError" Grid.Row="7" Grid.Column="1" Margin="5" Foreground="Red"/>
 
         <Label Grid.Row="8" Grid.Column="0" Content="{DynamicResource SubjSem}" VerticalAlignment="Center" Margin="5" />
         <ComboBox x:Name="CmbSemestar" Grid.Row="8" Grid.Column="1" Margin="5"
-                  SelectedItem="{Binding EditPredmet.Semestar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ValidateInputs">
-            <ComboBoxItem Content="{DynamicResource Summer}">
-                <ComboBoxItem.Tag>
-                    <model:SemestarEnum>Letnji</model:SemestarEnum>
-                </ComboBoxItem.Tag>
-            </ComboBoxItem>
-            <ComboBoxItem Content="{DynamicResource Winter}">
-                <ComboBoxItem.Tag>
-                    <model:SemestarEnum>Zimski</model:SemestarEnum>
-                </ComboBoxItem.Tag>
-            </ComboBoxItem>
+                  SelectedValue="{Binding TempSemestar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" SelectionChanged="ValidateInputs">
+            <ComboBoxItem Content="{DynamicResource Summer}" Tag="{x:Static model:SemestarEnum.Letnji}" />
+            <ComboBoxItem Content="{DynamicResource Winter}" Tag="{x:Static model:SemestarEnum.Zimski}" />
         </ComboBox>
         <Label x:Name="LblSemestarError" Grid.Row="9" Grid.Column="1" Margin="5" Foreground="Red"/>
 

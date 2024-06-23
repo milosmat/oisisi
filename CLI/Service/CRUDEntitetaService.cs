@@ -70,9 +70,46 @@ public class CRUDEntitetaService
     {
         try
         {
+            // Ako predmet nema dodeljenog profesora, samo ažuriraj predmet
+            if (predmet.PredmetniProfesor == null)
+            {
+                PredmetDao.AzurirajPredmet(predmet);
+                return true;
+            }
+
+            // Pronađi novog profesora
             var profesor = ProfesorDao.UzmiProfesoraPoID(predmet.PredmetniProfesor.Id);
-            profesor.SpisakPredmeta.Add(predmet);
-            ProfesorDao.AzurirajProfesora(profesor);
+            if (profesor == null)
+            {
+                // Ako novi profesor ne postoji, samo ažuriraj predmet
+                PredmetDao.AzurirajPredmet(predmet);
+                return true;
+            }
+
+            // Pronađi starog profesora i ukloni predmet iz njegove liste
+            var stariProfesori = ProfesorDao.UzmiSveProfesore();
+            foreach (var prof in stariProfesori)
+            {
+                if (prof.SpisakPredmeta.Any(p => p.SifraPredmeta == predmet.SifraPredmeta))
+                {
+                    var predmetToRemove = prof.SpisakPredmeta.FirstOrDefault(p => p.SifraPredmeta == predmet.SifraPredmeta);
+                    if (predmetToRemove != null)
+                    {
+                        prof.SpisakPredmeta.Remove(predmetToRemove);
+                        ProfesorDao.AzurirajProfesora(prof);
+                    }
+                    break;
+                }
+            }
+
+            // Dodaj predmet u listu predmeta novog profesora
+            if (!profesor.SpisakPredmeta.Contains(predmet))
+            {
+                profesor.SpisakPredmeta.Add(predmet);
+                ProfesorDao.AzurirajProfesora(profesor);
+            }
+
+            // Ažuriraj predmet
             PredmetDao.AzurirajPredmet(predmet);
             return true;
         }
@@ -81,6 +118,7 @@ public class CRUDEntitetaService
             return false;
         }
     }
+
 
     public static void PonistiOcenu(string predmet, int studentId)
     {

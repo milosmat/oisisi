@@ -60,12 +60,6 @@ class PredmetDAO
         var predmeti = PredmetService.GetPredmets(); // Pretpostavljam da ovde učitavaš predmete
         var predmet = predmeti.FirstOrDefault(p => p.SifraPredmeta.Equals(sifraPredmeta, StringComparison.OrdinalIgnoreCase));
 
-        if (predmet == null)
-        {
-            Console.WriteLine($"Predmet sa šifrom {sifraPredmeta} nije pronađen.");
-            throw new NullReferenceException($"Predmet sa šifrom {sifraPredmeta} nije pronađen.");
-        }
-
         return predmet;
     }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -74,7 +75,8 @@ namespace GUI.View
                 OnPropertyChanged();
             }
         }
-
+        public int BrojcanaVrednostOcene { get; set; }
+        public DateTime DatumPolaganjaIspita { get; set; }
         private List<Profesor> _professori;
         public List<Profesor> Professori
         {
@@ -109,6 +111,15 @@ namespace GUI.View
             }
         }
 
+            public string TempIme { get; set; }
+            public string TempPrezime { get; set; }
+            public DateTime TempDatumRodjenja { get; set; }
+            public string TempAdresa { get; set; }
+            public string TempTelefon { get; set; }
+            public string TempEmail { get; set; }
+            public string TempIndeks { get; set; }
+            public int TempTrenutnaGodinaStudija { get; set; }
+            public StatusEnum TempStatus { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -129,19 +140,38 @@ namespace GUI.View
             _student = selectedStud;
             EditStudent = _student;
             DataContext = this;
-            CmbTrenutnaGodinaStudija.SelectedIndex = EditStudent.TrenutnaGodinaStudija - 1;
-            CmbNacinFinansiranja.SelectedIndex = EditStudent.Status.Equals(StatusEnum.Budzet) ? 0 : 1;
+
+            TempIme = EditStudent.Ime;
+            TempPrezime = EditStudent.Prezime;
+            TempDatumRodjenja = EditStudent.DatumRodjenja;
+            TempAdresa = $"{EditStudent.AdresaStanovanja.Ulica}, {EditStudent.AdresaStanovanja.Broj}, {EditStudent.AdresaStanovanja.Grad}, {EditStudent.AdresaStanovanja.Drzava}";
+            TempTelefon = EditStudent.KontaktTelefon;
+            TempEmail = EditStudent.EmailAdresa;
+            TempIndeks = $"{EditStudent.BrojIndeksa.OznakaSmera} {EditStudent.BrojIndeksa.BrojUpisa}/{EditStudent.BrojIndeksa.GodinaUpisa}";
+            TempTrenutnaGodinaStudija = EditStudent.TrenutnaGodinaStudija;
+            TempStatus = EditStudent.Status;
+
+            CmbTrenutnaGodinaStudija.SelectedIndex = TempTrenutnaGodinaStudija - 1;
+            CmbNacinFinansiranja.SelectedIndex = TempStatus.Equals(StatusEnum.Budzet) ? 0 : 1;
+
             PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta); // Inicijalizacija
             PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita); // Inicijalizacija
             Professori = UzmiProfesoreZaStudenta(selectedStud);
             NepolozeniProfesori = UzmiNepolozeneProfesore(selectedStud);
 
             // Dodaj kod za postavljanje vrednosti za prosečnu ocenu i ESPB
-            var ocenaDAO = new OcenaNaIspituDAO();
-            var oceneNaIspitu = ocenaDAO.UzmiSveOceneNaIspitu();
             TotalESPB = CalculateTotalESPB(PredmetsPolozeni.ToList());
             AverageGrade = CalculateAverageGrade(PredmetsPolozeni.ToList());
-
+            var dao = new OcenaNaIspituDAO();
+            foreach (var ocena in dao.UzmiSveOceneNaIspitu())
+            {
+                if (ocena.StudentKojiJePolozio.Id == EditStudent.Id && PredmetsPolozeni.Any(p => p.SifraPredmeta.Equals(ocena.Predmet.SifraPredmeta)))
+                {
+                    var predmet = PredmetsPolozeni.First(p => p.SifraPredmeta.Equals(ocena.Predmet.SifraPredmeta));
+                    predmet.BrojcanaVrednostOcene = ocena.BrojcanaVrednostOcene;
+                    predmet.DatumPolaganjaIspita = ocena.DatumPolaganjaIspita;
+                }
+            }
             ValidateInputs(null, null);
         }
 
@@ -175,6 +205,16 @@ namespace GUI.View
 
         public void UpdatePassedAndFailedSubjects()
         {
+            var dao = new OcenaNaIspituDAO();
+            foreach (var ocena in dao.UzmiSveOceneNaIspitu())
+            {
+                if (ocena.StudentKojiJePolozio.Id == EditStudent.Id && PredmetsPolozeni.Any(p => p.SifraPredmeta.Equals(ocena.Predmet.SifraPredmeta)))
+                {
+                    // Pronađite predmet u kolekciji položenih predmeta i ažurirajte vrednosti
+                    BrojcanaVrednostOcene = ocena.BrojcanaVrednostOcene;
+                    DatumPolaganjaIspita = ocena.DatumPolaganjaIspita;
+                }
+            }
             PredmetsNePolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakNepolozenihPredmeta);
             PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita);
             EditStudent.ProsecnaOcena = CalculateAverageGrade(PredmetsPolozeni.ToList());
@@ -225,7 +265,12 @@ namespace GUI.View
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            var adrParts = AddressTextBox.Text.Split(", ");
+            // Ažurirajte model sa privremenim vrednostima kada korisnik potvrdi izmene
+            EditStudent.Ime = TempIme;
+            EditStudent.Prezime = TempPrezime;
+            EditStudent.DatumRodjenja = TempDatumRodjenja;
+
+            var adrParts = TempAdresa.Split(", ");
             EditStudent.AdresaStanovanja = new Adresa
             {
                 Ulica = adrParts.Length > 0 ? adrParts[0] : string.Empty,
@@ -234,13 +279,18 @@ namespace GUI.View
                 Drzava = adrParts.Length > 3 ? adrParts[3] : string.Empty
             };
 
-            var indeksParts = IndexNumberTextBox.Text.Split(' ', '/');
+            var indeksParts = TempIndeks.Split(' ', '/');
             EditStudent.BrojIndeksa = new Indeks
             {
                 OznakaSmera = indeksParts.Length > 0 ? indeksParts[0] : string.Empty,
                 BrojUpisa = indeksParts.Length > 1 && int.TryParse(indeksParts[1], out int brojUpisa) ? brojUpisa : 0,
                 GodinaUpisa = indeksParts.Length > 2 && int.TryParse(indeksParts[2], out int godinaUpisa) ? godinaUpisa : 0
             };
+
+            EditStudent.KontaktTelefon = TempTelefon;
+            EditStudent.EmailAdresa = TempEmail;
+            EditStudent.TrenutnaGodinaStudija = TempTrenutnaGodinaStudija;
+            EditStudent.Status = TempStatus;
 
             // Osvježi liste položenih i nepoloženih predmeta
             PredmetsPolozeni = new ObservableCollection<Predmet>(EditStudent.SpisakPolozenihIspita);
@@ -392,10 +442,6 @@ namespace GUI.View
             }
         }
 
-
-
-
-
         private void UndoPassedExam_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedPredmet == null) return;
@@ -461,7 +507,7 @@ namespace GUI.View
             if (gradeView.ShowDialog() == true)
             {
                 MessageBox.Show("Ocena uspešno upisana");
-                
+
                 // Premesti predmet iz nepoloženih u položene
                 StudentService.AzurirajStudenta(EditStudent);
                 PredmetService.Azuriraj(tmp);
@@ -476,6 +522,7 @@ namespace GUI.View
         private void TabChangedEvent(object sender, RoutedEventArgs e)
         {
             SelectedPredmet = null;
+
         }
 
         private void RemoveSubject_Click(object sender, RoutedEventArgs e)

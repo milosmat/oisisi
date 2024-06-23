@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using CLI.DAO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -400,6 +401,16 @@ namespace GUI
                     {
                         if (PredmetService.DeletePredmet(SelectedPredmet.SifraPredmeta))
                         {
+                            var dao = new ProfesorDAO();
+                            var stariProfesor = dao.UzmiSveProfesore();
+                            foreach (var prof in stariProfesor)
+                            {
+                                if (prof.SpisakPredmeta.Any(p => p.SifraPredmeta == SelectedPredmet.SifraPredmeta))
+                                {
+                                    prof.SpisakPredmeta.Remove(SelectedPredmet);
+                                    dao.AzurirajProfesora(prof);
+                                }
+                            }
                             Predmets.Remove(SelectedPredmet);
                             FilteredPredmets.Remove(SelectedPredmet);
                             MessageBox.Show("Predmet je uspešno obrisan.", "Brisanje predmeta", MessageBoxButton.OK, MessageBoxImage.Information);

@@ -28,6 +28,15 @@ namespace GUI.View
                 OnPropertyChanged();
             }
         }
+        public string TempIme { get; set; }
+        public string TempPrezime { get; set; }
+        public DateTime TempDatumRodjenja { get; set; }
+        public string TempAdresa { get; set; }
+        public string TempTelefon { get; set; }
+        public string TempEmail { get; set; }
+        public string TempZvanje { get; set; }
+        public string TempLicnaKarta { get; set; }
+        public int TempGodineStaza { get; set; }
 
         private Predmet? _selectedPredmet;
 
@@ -41,7 +50,6 @@ namespace GUI.View
             }
         }
 
-        public List<Predmet> predmeti { get; set; } = new List<Predmet>();
         public ObservableCollection<Predmet> PredmetDisplays { get; set; } = new ObservableCollection<Predmet>();
         public ObservableCollection<Student> StudentDisplays { get; set; } = new ObservableCollection<Student>();
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -63,6 +71,15 @@ namespace GUI.View
             _profesor = selectedProf;
             EditProfesor = _profesor;
             DataContext = this;
+            TempIme = EditProfesor.Ime;
+            TempPrezime = EditProfesor.Prezime;
+            TempDatumRodjenja = EditProfesor.DatumRodjenja;
+            TempAdresa = $"{EditProfesor.AdresaStanovanja.Ulica}, {EditProfesor.AdresaStanovanja.Broj}, {EditProfesor.AdresaStanovanja.Grad}, {EditProfesor.AdresaStanovanja.Drzava}";
+            TempTelefon = EditProfesor.KontaktTelefon;
+            TempEmail = EditProfesor.EmailAdresa;
+            TempZvanje = EditProfesor.Zvanje;
+            TempLicnaKarta = EditProfesor.BrojLicneKarte;
+            TempGodineStaza = EditProfesor.GodineStaza;
             LoadPredmeti();
             LoadStudents();
 
@@ -71,12 +88,17 @@ namespace GUI.View
 
         private void LoadPredmeti()
         {
-            if (EditProfesor.SpisakPredmeta != null)
+            // Proveri da li profesor ima predmete pre nego što pokušaš da ih učitaš
+            if (EditProfesor.SpisakPredmeta != null && EditProfesor.SpisakPredmeta.Count > 0)
             {
                 var predmeti = new ObservableCollection<Predmet>();
                 foreach (var predmet in EditProfesor.SpisakPredmeta)
                 {
-                    predmeti.Add(PredmetService.GetByid(predmet.SifraPredmeta));
+                    var ucitaniPredmet = PredmetService.GetByid(predmet.SifraPredmeta);
+                    if (ucitaniPredmet != null) // Proveri da li je predmet uspešno učitan
+                    {
+                        predmeti.Add(ucitaniPredmet);
+                    }
                 }
 
                 EditProfesor.SpisakPredmeta = predmeti
@@ -114,7 +136,12 @@ namespace GUI.View
         }
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            var adrParts = TxtAdresaStanovanja.Text.Split(", ");
+            // Ažurirajte model sa privremenim vrednostima kada korisnik potvrdi izmene
+            EditProfesor.Ime = TempIme;
+            EditProfesor.Prezime = TempPrezime;
+            EditProfesor.DatumRodjenja = TempDatumRodjenja;
+
+            var adrParts = TempAdresa.Split(", ");
             EditProfesor.AdresaStanovanja = new Adresa
             {
                 Ulica = adrParts.Length > 0 ? adrParts[0] : string.Empty,
@@ -122,6 +149,12 @@ namespace GUI.View
                 Grad = adrParts.Length > 2 ? adrParts[2] : string.Empty,
                 Drzava = adrParts.Length > 3 ? adrParts[3] : string.Empty
             };
+
+            EditProfesor.KontaktTelefon = TempTelefon;
+            EditProfesor.EmailAdresa = TempEmail;
+            EditProfesor.Zvanje = TempZvanje;
+            EditProfesor.BrojLicneKarte = TempLicnaKarta;
+            EditProfesor.GodineStaza = TempGodineStaza;
 
             if (CRUDEntitetaService.IzmeniProfesora(EditProfesor))
             {

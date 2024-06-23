@@ -1,7 +1,7 @@
 ﻿using StudentskaSluzba.Model;
 using StudentskaSluzba.Storage;
 namespace CLI.DAO;
-class ProfesorDAO
+public class ProfesorDAO
 {
     private List<Profesor> profesori;
     private readonly Storage<Profesor> skladiste;

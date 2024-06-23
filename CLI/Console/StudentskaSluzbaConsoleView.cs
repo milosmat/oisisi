@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using CLI.DAO;
@@ -6,7 +6,7 @@ using StudentskaSluzba.Model;
 
 namespace StudentskaSluzba.Console;
 
-/*
+
  * Klasa koju koristimo za interakciju sa korisnikom.
  * Ova klasa sadrži glavnu petlju programa, i učitava
  * i ispisuje podatke korisniku.
@@ -14,7 +14,7 @@ namespace StudentskaSluzba.Console;
  * Sva poslovna logika se nalazu u DAO klasi i ova
  * klasa delegira DAO klasi svu poslovnu logiku i
  * prosleđuje joj sve potrebne podatke.
- */
+ 
 class StudentskaSluzbaConsoleView
 {
     private readonly AdresaDAO _adresaDao;
@@ -58,7 +58,7 @@ class StudentskaSluzbaConsoleView
         /*
         System.Console.WriteLine("4: Remove vehicle");
         System.Console.WriteLine("5: Show and sort vehicles");
-        System.Console.WriteLine("0: Close");*/
+        System.Console.WriteLine("0: Close");
     }
 
     private void HandleMainMenuInput(string input)
@@ -451,7 +451,7 @@ class StudentskaSluzbaConsoleView
         int brojESPB = Convert.ToInt32(System.Console.ReadLine());
 
         // Kreirajte objekat predmeta koristeći konstruktor
-        Predmet noviPredmet = new Predmet(sifra, naziv, semestar, godinaStudija, predmetniProfesor, brojESPB);
+        //Predmet noviPredmet = new Predmet(sifra, naziv, semestar, godinaStudija, predmetniProfesor, brojESPB);
 
         PrikaziSveStud();
         System.Console.WriteLine("Unesite studente koji su položili predmet (odvojene tačkom-zarez, završite unos enterom): ");
@@ -645,3 +645,4 @@ class StudentskaSluzbaConsoleView
     }
 
 }
+*/

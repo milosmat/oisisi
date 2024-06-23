@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using CLI.DAO;
 using CLI.Service;
 using StudentskaSluzba.Model;
 using StudentskaSluzba.Service;
@@ -79,7 +80,9 @@ public partial class DodajPredmetView : Window, INotifyPropertyChanged
         string? title = FindResource("AddTitle") as string;
         string? success = FindResource("AddSuccess") as string;
         string? fail = this.FindResource("AddFail") as string;
-
+        SelectedProfesor.SpisakPredmeta.Add(p);
+        var dao = new ProfesorDAO();
+        dao.AzurirajProfesora(SelectedProfesor);
         MessageBox.Show(CRUDEntitetaService.DodajPredmet(p) ? success : fail, title);
         OnFinish?.Invoke(sender, e);
         Close();

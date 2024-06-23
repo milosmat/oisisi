@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using CLI.DAO;
 using CLI.Service;
 using StudentskaSluzba.Model;
 using StudentskaSluzba.Service;
@@ -23,6 +25,13 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public string TempSifraPredmeta { get; set; }
+    public string TempNazivPredmeta { get; set; }
+    public int TempGodinaStudija { get; set; }
+    public int TempBrojESPB { get; set; }
+    public SemestarEnum TempSemestar { get; set; }
+
     public event EventHandler? OnFinish;
     private Profesor? _profesor;
 
@@ -71,16 +80,26 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
         _profesor = EditPredmet.PredmetniProfesor;
         Profesors = _profesors;
         SelectedProfesor = Profesors.Find(p => p.Id == _profesor?.Id);
+        TempSifraPredmeta = EditPredmet.SifraPredmeta;
+        TempNazivPredmeta = EditPredmet.NazivPredmeta;
+        TempGodinaStudija = EditPredmet.GodinaStudija;
+        TempBrojESPB = EditPredmet.BrojESPB;
+        TempSemestar = EditPredmet.Semestar;
         DataContext = this;
         ValidateInputs(null, null);
     }
 
     private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show(EditPredmet.ToString());
+        // Ažuriraj EditPredmet objekt sa privremenim promenljivama
+        EditPredmet.SifraPredmeta = TempSifraPredmeta;
+        EditPredmet.NazivPredmeta = TempNazivPredmeta;
+        EditPredmet.GodinaStudija = TempGodinaStudija;
+        EditPredmet.BrojESPB = TempBrojESPB;
+        EditPredmet.Semestar = TempSemestar;
+        EditPredmet.PredmetniProfesor = SelectedProfesor;
         if (CRUDEntitetaService.IzmeniPredmet(EditPredmet))
         {
-            MessageBox.Show(EditPredmet.ToString());
             EditPredmet = PredmetService.GetByid(EditPredmet.SifraPredmeta);
             OnFinish?.Invoke(this, EventArgs.Empty); // Poziv OnFinish događaja
             this.DialogResult = true;
@@ -162,7 +181,30 @@ public partial class EditPredmetView : Window, INotifyPropertyChanged
 
     private void RemoveProfessor_Click(object sender, RoutedEventArgs e)
     {
-        if(SelectedProfesor == null) return;
+        if (SelectedProfesor == null || EditPredmet == null) return;
+
+        // Pronađi profesora kojem je dodeljen ovaj predmet
+        var profesor = ProfesorService.GetProfesors().FirstOrDefault(p => p.SpisakPredmeta.Any(pred => pred.SifraPredmeta == EditPredmet.SifraPredmeta));
+
+        if (profesor != null)
+        {
+            // Ukloni predmet iz liste predmeta profesora
+            var predmetToRemove = profesor.SpisakPredmeta.FirstOrDefault(pred => pred.SifraPredmeta == EditPredmet.SifraPredmeta);
+            if (predmetToRemove != null)
+            {
+                profesor.SpisakPredmeta.Remove(predmetToRemove);
+
+                // Ažuriraj profesora u bazi podataka ili u memoriji
+                var dao = new ProfesorDAO();
+                dao.AzurirajProfesora(profesor);
+            }
+        }
+
+        // Postavi SelectedProfesor na null i ukloni profesora sa predmeta
         SelectedProfesor = null;
+        EditPredmet.PredmetniProfesor = null;
+
+        MessageBox.Show("Profesor uspešno uklonjen sa predmeta.", "Informacija", MessageBoxButton.OK, MessageBoxImage.Information);
     }
+
 }

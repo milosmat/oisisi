@@ -57,7 +57,7 @@
     <sys:String x:Key="AppTitleDPred">Dodaj predmet</sys:String>
     <sys:String x:Key="Summer">Letnji</sys:String>
     <sys:String x:Key="Winter">Zimski</sys:String>
-    
+    <sys:String x:Key="FilterStudentsbySubjects">Filter studenata po predmetima</sys:String>
     <!-- EditStudenta -->
     <sys:String x:Key="AppTitleEStud">Izmeni studenta</sys:String>
     <sys:String x:Key="Information">Informacije</sys:String>
@@ -71,7 +71,7 @@
     <sys:String x:Key="Exam">Polaganje</sys:String>
     <sys:String x:Key="ProfessorName">Ime profesora</sys:String>
     <sys:String x:Key="SubjectName">Predmet</sys:String>
-
+    <sys:String x:Key="ExamDate">Polozio na</sys:String>
     <!-- EditProfesor -->
     <sys:String x:Key="AppTitleEProf">Izmeni profesora</sys:String>
     <sys:String x:Key="AddSubject">Dodaj predmet</sys:String>

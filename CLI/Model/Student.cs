@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace StudentskaSluzba.Model
 {
@@ -87,7 +88,7 @@ namespace StudentskaSluzba.Model
                 BrojIndeksa.GodinaUpisa.ToString(),
                 TrenutnaGodinaStudija.ToString(),
                 Status.ToString(),
-                ProsecnaOcena.ToString(),
+                ProsecnaOcena.ToString(CultureInfo.InvariantCulture),
                 string.Join(";", SpisakPolozenihIspita),
                 string.Join(";", SpisakNepolozenihPredmeta)
             };
@@ -123,7 +124,7 @@ namespace StudentskaSluzba.Model
             };
             TrenutnaGodinaStudija = int.Parse(values[14]);
             Status = (StatusEnum)Enum.Parse(typeof(StatusEnum), values[15]);
-            ProsecnaOcena = double.Parse(values[16], null);
+            ProsecnaOcena = double.Parse(values[16], CultureInfo.InvariantCulture);
             Debug.WriteLine($"{values[16]}");
             SpisakPolozenihIspita = new List<Predmet>();
             if (!string.IsNullOrWhiteSpace(values[17]))
