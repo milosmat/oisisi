@@ -13,18 +13,61 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Windows.Forms;
 
 namespace GUI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private string _currentSortField = "";
+        private ListSortDirection _currentSortDirection = ListSortDirection.Ascending;
+
+        private const int ItemsPerPage = 16;
+
+        private int _currentStudentPage = 1;
+        private int _currentProfesorPage = 1;
+        private int _currentPredmetPage = 1;
+
+        public int CurrentStudentPage
+        {
+            get => _currentStudentPage;
+            set
+            {
+                _currentStudentPage = value;
+                OnPropertyChanged();
+                UpdateFilteredStudents();
+            }
+        }
+
+        public int CurrentProfesorPage
+        {
+            get => _currentProfesorPage;
+            set
+            {
+                _currentProfesorPage = value;
+                OnPropertyChanged();
+                UpdateFilteredProfesors();
+            }
+        }
+
+        public int CurrentPredmetPage
+        {
+            get => _currentPredmetPage;
+            set
+            {
+                _currentPredmetPage = value;
+                OnPropertyChanged();
+                UpdateFilteredPredmets();
+            }
+        }
+
+        public int TotalStudentPages => (int)Math.Ceiling((double)Students.Count / ItemsPerPage);
+        public int TotalProfesorPages => (int)Math.Ceiling((double)Profesors.Count / ItemsPerPage);
+        public int TotalPredmetPages => (int)Math.Ceiling((double)Predmets.Count / ItemsPerPage);
+
         public ObservableCollection<Student> FilteredStudents { get; set; }
         public ObservableCollection<Profesor> FilteredProfesors { get; set; }
         public ObservableCollection<Predmet> FilteredPredmets { get; set; }
@@ -61,7 +104,6 @@ namespace GUI
                 OnPropertyChanged();
             }
         }
-
 
         private TabItem? selected;
         public TabItem? Selected
@@ -134,9 +176,12 @@ namespace GUI
             Students = students;
             Profesors = profesors;
             Predmets = predmets;
-            FilteredStudents = new ObservableCollection<Student>(Students);
-            FilteredProfesors = new ObservableCollection<Profesor>(Profesors);
-            FilteredPredmets = new ObservableCollection<Predmet>(Predmets);
+            FilteredStudents = new ObservableCollection<Student>();
+            FilteredProfesors = new ObservableCollection<Profesor>();
+            FilteredPredmets = new ObservableCollection<Predmet>();
+            UpdateFilteredStudents();
+            UpdateFilteredProfesors();
+            UpdateFilteredPredmets();
             DataContext = this;
             SetMenuIcons();
             selected = Tabs1.SelectedItem as TabItem;
@@ -261,9 +306,9 @@ namespace GUI
             Students = new ObservableCollection<Student>(StudentService.GetStudents());
             Profesors = new ObservableCollection<Profesor>(ProfesorService.GetProfesors());
             Predmets = new ObservableCollection<Predmet>(PredmetService.GetPredmets());
-            FilteredStudents = new ObservableCollection<Student>(Students);
-            FilteredProfesors = new ObservableCollection<Profesor>(Profesors);
-            FilteredPredmets = new ObservableCollection<Predmet>(Predmets);
+            UpdateFilteredStudents();
+            UpdateFilteredProfesors();
+            UpdateFilteredPredmets();
             GridStudents.ItemsSource = FilteredStudents;
             GridProfessors.ItemsSource = FilteredProfesors;
             GridSubjects.ItemsSource = FilteredPredmets;
@@ -271,6 +316,125 @@ namespace GUI
             CollectionViewSource.GetDefaultView(GridProfessors.ItemsSource).Refresh();
             CollectionViewSource.GetDefaultView(GridSubjects.ItemsSource).Refresh();
         }
+
+        private void UpdateFilteredStudents(string searchQuery = "")
+        {
+            var studentsToShow = Students.AsEnumerable();
+
+            // Primeni pretragu
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                var parts = searchQuery.Split(',');
+                if (parts.Length == 1)
+                {
+                    string lastNamePart = parts[0].Trim().ToLower();
+                    studentsToShow = studentsToShow.Where(s => s.Prezime.ToLower().Contains(lastNamePart));
+                }
+                else if (parts.Length == 2)
+                {
+                    string lastNamePart = parts[0].Trim().ToLower();
+                    string firstNamePart = parts[1].Trim().ToLower();
+                    studentsToShow = studentsToShow.Where(s => s.Prezime.ToLower().Contains(lastNamePart) &&
+                                                               s.Ime.ToLower().Contains(firstNamePart));
+                }
+                else if (parts.Length == 3)
+                {
+                    string indexPart = parts[0].Trim().ToLower();
+                    string firstNamePart = parts[1].Trim().ToLower();
+                    string lastNamePart = parts[2].Trim().ToLower();
+                    studentsToShow = studentsToShow.Where(s => s.BrojIndeksa.ToString().ToLower().Contains(indexPart) &&
+                                                               s.Ime.ToLower().Contains(firstNamePart) &&
+                                                               s.Prezime.ToLower().Contains(lastNamePart));
+                }
+            }
+
+            // Sortiranje
+            if (!string.IsNullOrWhiteSpace(_currentSortField))
+            {
+                studentsToShow = _currentSortDirection == ListSortDirection.Ascending
+                    ? studentsToShow.OrderBy(s => s.GetType().GetProperty(_currentSortField).GetValue(s, null))
+                    : studentsToShow.OrderByDescending(s => s.GetType().GetProperty(_currentSortField).GetValue(s, null));
+            }
+
+            // Paginacija
+            studentsToShow = studentsToShow.Skip((CurrentStudentPage - 1) * ItemsPerPage).Take(ItemsPerPage);
+
+            FilteredStudents.Clear();
+            foreach (var student in studentsToShow)
+            {
+                FilteredStudents.Add(student);
+            }
+        }
+
+        // Ponovi za profesore i predmete
+        private void UpdateFilteredProfesors(string searchQuery = "")
+        {
+            var profesorsToShow = Profesors.AsEnumerable();
+
+            // Primeni pretragu
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                var parts = searchQuery.Split(',');
+                if (parts.Length == 1)
+                {
+                    string part = parts[0].Trim().ToLower();
+                    profesorsToShow = profesorsToShow.Where(p => p.Prezime.ToLower().Contains(part) || p.Ime.ToLower().Contains(part));
+                }
+            }
+
+            // Sortiranje
+            if (!string.IsNullOrWhiteSpace(_currentSortField))
+            {
+                profesorsToShow = _currentSortDirection == ListSortDirection.Ascending
+                    ? profesorsToShow.OrderBy(p => p.GetType().GetProperty(_currentSortField).GetValue(p, null))
+                    : profesorsToShow.OrderByDescending(p => p.GetType().GetProperty(_currentSortField).GetValue(p, null));
+            }
+
+            // Paginacija
+            profesorsToShow = profesorsToShow.Skip((CurrentProfesorPage - 1) * ItemsPerPage).Take(ItemsPerPage);
+
+            FilteredProfesors.Clear();
+            foreach (var profesor in profesorsToShow)
+            {
+                FilteredProfesors.Add(profesor);
+            }
+        }
+
+        private void UpdateFilteredPredmets(string searchQuery = "")
+        {
+            var predmetsToShow = Predmets.AsEnumerable();
+
+            // Primeni pretragu
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                var parts = searchQuery.Split(',');
+                if (parts.Length == 1)
+                {
+                    string part = parts[0].Trim().ToLower();
+                    predmetsToShow = predmetsToShow.Where(p => p.SifraPredmeta.ToLower().Contains(part) || p.NazivPredmeta.ToLower().Contains(part));
+                }
+            }
+
+            // Sortiranje
+            if (!string.IsNullOrWhiteSpace(_currentSortField))
+            {
+                predmetsToShow = _currentSortDirection == ListSortDirection.Ascending
+                    ? predmetsToShow.OrderBy(p => p.GetType().GetProperty(_currentSortField).GetValue(p, null))
+                    : predmetsToShow.OrderByDescending(p => p.GetType().GetProperty(_currentSortField).GetValue(p, null));
+            }
+
+            // Paginacija
+            predmetsToShow = predmetsToShow.Skip((CurrentPredmetPage - 1) * ItemsPerPage).Take(ItemsPerPage);
+
+            FilteredPredmets.Clear();
+            foreach (var predmet in predmetsToShow)
+            {
+                FilteredPredmets.Add(predmet);
+            }
+        }
+
+
+
         private void GridStudents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedStudent = GridStudents.SelectedItem as Student;
@@ -288,6 +452,7 @@ namespace GUI
             SelectedPredmet = GridSubjects.SelectedItem as Predmet;
             CommandManager.InvalidateRequerySuggested();
         }
+
         private void NewEntityBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (Tabs1.SelectedItem is not TabItem selectedTab) return;
@@ -514,96 +679,27 @@ namespace GUI
         {
             if (Tabs1.SelectedItem is not TabItem selectedTab) return;
             string query = TxtSearch.Text;
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                RefreshData(sender, e);
-                return;
-            }
-
-            var parts = query.Split(',');
 
             switch (selectedTab.Tag.ToString())
             {
                 case "Studenti":
-                    FilteredStudents.Clear();
-                    if (parts.Length == 1)
-                    {
-                        string lastNamePart = parts[0].Trim().ToLower();
-                        foreach (var student in Students)
-                        {
-                            if (student.Prezime.ToLower().Contains(lastNamePart))
-                            {
-                                FilteredStudents.Add(student);
-                            }
-                        }
-                    }
-                    else if (parts.Length == 2)
-                    {
-                        string lastNamePart = parts[0].Trim().ToLower();
-                        string firstNamePart = parts[1].Trim().ToLower();
-                        foreach (var student in Students)
-                        {
-                            if (student.Prezime.ToLower().Contains(lastNamePart) &&
-                                student.Ime.ToLower().Contains(firstNamePart))
-                            {
-                                FilteredStudents.Add(student);
-                            }
-                        }
-                    }
-                    else if (parts.Length == 3)
-                    {
-                        string indexPart = parts[0].Trim().ToLower();
-                        string firstNamePart = parts[1].Trim().ToLower();
-                        string lastNamePart = parts[2].Trim().ToLower();
-                        foreach (var student in Students)
-                        {
-                            if (student.BrojIndeksa.ToString().ToLower().Contains(indexPart) &&
-                                student.Ime.ToLower().Contains(firstNamePart) &&
-                                student.Prezime.ToLower().Contains(lastNamePart))
-                            {
-                                FilteredStudents.Add(student);
-                            }
-                        }
-                    }
+                    CurrentStudentPage = 1;
+                    UpdateFilteredStudents(query);
                     break;
 
                 case "Profesori":
-                    FilteredProfesors.Clear();
-                    if (parts.Length == 1)
-                    {
-                        string part = parts[0].Trim().ToLower();
-                        foreach (var profesor in Profesors)
-                        {
-                            if (profesor.Prezime.ToLower().Contains(part) ||
-                                profesor.Ime.ToLower().Contains(part))
-                            {
-                                FilteredProfesors.Add(profesor);
-                            }
-                        }
-                    }
+                    CurrentProfesorPage = 1;
+                    UpdateFilteredProfesors(query);
                     break;
 
                 case "Predmeti":
-                    FilteredPredmets.Clear();
-                    if (parts.Length == 1)
-                    {
-                        string part = parts[0].Trim().ToLower();
-                        foreach (var predmet in Predmets)
-                        {
-                            if (predmet.SifraPredmeta.ToLower().Contains(part) ||
-                                predmet.NazivPredmeta.ToLower().Contains(part))
-                            {
-                                FilteredPredmets.Add(predmet);
-                            }
-                        }
-                    }
-                    break;
-
-                default:
-                    MessageBox.Show("Nepoznata opcija.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    CurrentPredmetPage = 1;
+                    UpdateFilteredPredmets(query);
                     break;
             }
         }
+
+
 
         private void OnDataGridSort_Executed(object sender, DataGridSortingEventArgs e)
         {
@@ -673,6 +769,95 @@ namespace GUI
                 }
             }
         }
+
+        private void NextPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    if (CurrentStudentPage < TotalStudentPages)
+                    {
+                        CurrentStudentPage++;
+                        UpdateFilteredStudents(TxtSearch.Text);
+                    }
+                    break;
+                case "Profesori":
+                    if (CurrentProfesorPage < TotalProfesorPages)
+                    {
+                        CurrentProfesorPage++;
+                        UpdateFilteredProfesors(TxtSearch.Text);
+                    }
+                    break;
+                case "Predmeti":
+                    if (CurrentPredmetPage < TotalPredmetPages)
+                    {
+                        CurrentPredmetPage++;
+                        UpdateFilteredPredmets(TxtSearch.Text);
+                    }
+                    break;
+            }
+        }
+
+        private void PreviousPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    if (CurrentStudentPage > 1)
+                    {
+                        CurrentStudentPage--;
+                        UpdateFilteredStudents(TxtSearch.Text);
+                    }
+                    break;
+                case "Profesori":
+                    if (CurrentProfesorPage > 1)
+                    {
+                        CurrentProfesorPage--;
+                        UpdateFilteredProfesors(TxtSearch.Text);
+                    }
+                    break;
+                case "Predmeti":
+                    if (CurrentPredmetPage > 1)
+                    {
+                        CurrentPredmetPage--;
+                        UpdateFilteredPredmets(TxtSearch.Text);
+                    }
+                    break;
+            }
+        }
+        private void DataGrid_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            if (Tabs1.SelectedItem is not TabItem selectedTab) return;
+
+            var dataGrid = sender as DataGrid;
+            if (dataGrid == null) return;
+
+            var column = e.Column;
+            _currentSortDirection = column.SortDirection == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+            column.SortDirection = _currentSortDirection;
+
+            _currentSortField = column.SortMemberPath;
+
+            switch (selectedTab.Tag.ToString())
+            {
+                case "Studenti":
+                    UpdateFilteredStudents(TxtSearch.Text);
+                    break;
+                case "Profesori":
+                    UpdateFilteredProfesors(TxtSearch.Text);
+                    break;
+                case "Predmeti":
+                    UpdateFilteredPredmets(TxtSearch.Text);
+                    break;
+            }
+
+            e.Handled = true;
+        }
+
 
     }
 }

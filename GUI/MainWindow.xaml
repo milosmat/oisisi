@@ -97,14 +97,14 @@
                 <Button x:Name="BtnSearch" Command="Search" Width="30" Height="30" HorizontalAlignment="Right" ToolTip="Pretraga"  />
             </ToolBar>
         </ToolBarTray>
-        <TabControl x:Name="Tabs1" Margin="10,80,10,10" SelectionChanged="Tabs1_OnSelectionChanged"
+        <TabControl x:Name="Tabs1" Margin="10,80,10,80" SelectionChanged="Tabs1_OnSelectionChanged"
                     SelectedItem="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <TabItem Tag="Studenti" Header="{DynamicResource Students}">
                 <Grid>
                     <DataGrid x:Name="GridStudents" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding FilteredStudents, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              SelectionChanged="GridStudents_SelectionChanged">
+                              SelectionChanged="GridStudents_SelectionChanged" Sorting="DataGrid_Sorting">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding BrojIndeksa}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -145,7 +145,7 @@
                     <DataGrid x:Name="GridProfessors" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding FilteredProfesors, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedProfesor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              SelectionChanged="GridProfessors_SelectionChanged">
+                              SelectionChanged="GridProfessors_SelectionChanged" Sorting="DataGrid_Sorting">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Ime}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -176,7 +176,7 @@
                     <DataGrid x:Name="GridSubjects" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,2,0,0"
                               ItemsSource="{Binding FilteredPredmets, UpdateSourceTrigger=PropertyChanged}"
                               SelectedItem="{Binding SelectedPredmet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              SelectionChanged="GridSubjects_SelectionChanged">
+                              SelectionChanged="GridSubjects_SelectionChanged" Sorting="DataGrid_Sorting">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding SifraPredmeta}" Width="*">
                                 <DataGridTextColumn.Header>
@@ -208,6 +208,11 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,40">
+            <Button Content="Previous" Click="PreviousPage_Click" />
+            <TextBlock Text="{Binding CurrentStudentPage}" Margin="10,0" VerticalAlignment="Center" />
+            <Button Content="Next" Click="NextPage_Click" />
+        </StackPanel>
         <StatusBar VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
             <StatusBarItem>
                 <TextBlock x:Name="AppNameTextBlock" Text="Studentska služba" />
