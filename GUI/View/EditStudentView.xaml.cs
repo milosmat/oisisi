@@ -249,14 +249,16 @@ namespace GUI.View
         {
             var predmeti = selectedStud.SpisakNepolozenihPredmeta;
             var profesori = new List<Profesor>();
+            var uniqueProfesorIds = new HashSet<int>();
 
             foreach (var predmet in predmeti)
             {
                 var profesor = predmet.PredmetniProfesor;
-                if (profesor != null && !profesori.Contains(profesor))
+                if (profesor != null && !uniqueProfesorIds.Contains(profesor.Id))
                 {
                     profesor = ProfesorService.GetById(profesor.Id);
                     profesori.Add(profesor);
+                    uniqueProfesorIds.Add(profesor.Id);
                 }
             }
 

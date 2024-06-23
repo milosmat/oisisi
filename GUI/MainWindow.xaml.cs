@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace GUI
 {
@@ -342,7 +343,7 @@ namespace GUI
                     string indexPart = parts[0].Trim().ToLower();
                     string firstNamePart = parts[1].Trim().ToLower();
                     string lastNamePart = parts[2].Trim().ToLower();
-                    studentsToShow = studentsToShow.Where(s => s.BrojIndeksa.ToString().ToLower().Contains(indexPart) &&
+                    studentsToShow = studentsToShow.Where(s => s.BrojIndeksa.OznakaSmera.ToLower().Contains(indexPart) &&
                                                                s.Ime.ToLower().Contains(firstNamePart) &&
                                                                s.Prezime.ToLower().Contains(lastNamePart));
                 }
@@ -351,9 +352,7 @@ namespace GUI
             // Sortiranje
             if (!string.IsNullOrWhiteSpace(_currentSortField))
             {
-                studentsToShow = _currentSortDirection == ListSortDirection.Ascending
-                    ? studentsToShow.OrderBy(s => s.GetType().GetProperty(_currentSortField).GetValue(s, null))
-                    : studentsToShow.OrderByDescending(s => s.GetType().GetProperty(_currentSortField).GetValue(s, null));
+                studentsToShow = SortByPropertyName(studentsToShow, _currentSortField, _currentSortDirection);
             }
 
             // Paginacija
@@ -365,6 +364,23 @@ namespace GUI
                 FilteredStudents.Add(student);
             }
         }
+
+        private IEnumerable<Student> SortByPropertyName(IEnumerable<Student> students, string propertyName, ListSortDirection direction)
+        {
+            var propertyInfo = typeof(Student).GetProperty(propertyName);
+
+            if (propertyName == "BrojIndeksa")
+            {
+                return direction == ListSortDirection.Ascending
+                    ? students.OrderBy(s => s.BrojIndeksa)
+                    : students.OrderByDescending(s => s.BrojIndeksa);
+            }
+
+            return direction == ListSortDirection.Ascending
+                ? students.OrderBy(s => propertyInfo.GetValue(s, null))
+                : students.OrderByDescending(s => propertyInfo.GetValue(s, null));
+        }
+
 
         // Ponovi za profesore i predmete
         private void UpdateFilteredProfesors(string searchQuery = "")

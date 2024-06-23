@@ -58,6 +58,7 @@
     <sys:String x:Key="Summer">Letnji</sys:String>
     <sys:String x:Key="Winter">Zimski</sys:String>
     <sys:String x:Key="FilterStudentsbySubjects">Filter studenata po predmetima</sys:String>
+    <sys:String x:Key="SSluzba">Studentska sluzba </sys:String>
     <!-- EditStudenta -->
     <sys:String x:Key="AppTitleEStud">Izmeni studenta</sys:String>
     <sys:String x:Key="Information">Informacije</sys:String>

@@ -215,7 +215,7 @@
         </StackPanel>
         <StatusBar VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
             <StatusBarItem>
-                <TextBlock x:Name="AppNameTextBlock" Text="Studentska služba" />
+                <TextBlock x:Name="AppNameTextBlock" Text="{DynamicResource SSluzba}" />
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock Text=" - " />

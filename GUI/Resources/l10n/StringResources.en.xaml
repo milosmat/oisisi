@@ -58,6 +58,7 @@
     <sys:String x:Key="Summer">Summer</sys:String>
     <sys:String x:Key="Winter">Winter</sys:String>
     <sys:String x:Key="FilterStudentsbySubjects">Filter Students by Subjects</sys:String>
+    <sys:String x:Key="SSluzba">Student service</sys:String>
     <!-- EditStudenta -->
     <sys:String x:Key="AppTitleEStud">Edit student</sys:String>
     <sys:String x:Key="Information">Information</sys:String>

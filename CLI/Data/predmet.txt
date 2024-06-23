@@ -1,4 +1,5 @@
-SP1,Predmet #1,Zimski,1,-1,10,0|Student|Test|2|Budzet|9;1|Test|Student|3|Budzet|10;1|Test|Student|3|Budzet|10;2|Test|Test|1|Budzet|7,0|Student|Test|2|Budzet|9;1|Test|Student|3|Budzet|10;1|Test|Student|3|Budzet|10;2|Test|Test|1|Budzet|7
-SP2,Predmet #2,Zimski,1,1,8,0|Student|Test|2|Budzet|9;2|Test|Test|1|Budzet|8,0|Student|Test|2|Budzet|9;2|Test|Test|1|Budzet|8
 SP3,Predmet #3,Zimski,1,8,8,,
-SP4,Predmet #4,Zimski,3,-1,6,,1|Test|Student|3|Budzet|0
+SP4,Predmet #4,Letnji,3,9,6,,
+SP1,Predmet #1,Zimski,1,5,10,0|Student|Test|2|Budzet|10,0|Student|Test|2|Budzet|10
+SP2,Predmet #2,Zimski,1,1,8,0|Student|Test|2|Budzet|9;2|Test|Test|1|Budzet|8,0|Student|Test|2|Budzet|9;2|Test|Test|1|Budzet|8
+SP5,Predmet #5,Letnji,1,1,6,,6|asd|asd|1|Samofinansiranje|0

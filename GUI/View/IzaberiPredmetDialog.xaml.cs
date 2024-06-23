@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +24,7 @@ public partial class IzaberiPredmetDialog : Window
             OnPropertyChanged();
         }
     }
-    
+
     private List<Predmet> _predmets;
     public List<Predmet> Predmets
     {
@@ -34,7 +35,7 @@ public partial class IzaberiPredmetDialog : Window
             OnPropertyChanged();
         }
     }
-    
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -87,9 +88,32 @@ public partial class IzaberiPredmetDialog : Window
         if (dlgRes.Equals(MessageBoxResult.Yes) && SelectedPredmet != null)
         {
             if (_profesor == null)
+            {
+                if (_student.SpisakPolozenihIspita.Any(p => p.SifraPredmeta == SelectedPredmet.SifraPredmeta))
+                {
+                    MessageBox.Show("Predmet već postoji u listi položenih predmeta!");
+                    return;
+                }
+
+                if (_student.SpisakNepolozenihPredmeta.Any(p => p.SifraPredmeta == SelectedPredmet.SifraPredmeta))
+                {
+                    MessageBox.Show("Predmet već postoji u listi nepoloženih predmeta!");
+                    return;
+                }
+
+                // Provera da li je student na odgovarajućoj godini studija
+                if (_student.TrenutnaGodinaStudija != SelectedPredmet.GodinaStudija)
+                {
+                    MessageBox.Show("Student nije na odgovarajućoj godini studija za ovaj predmet!");
+                    return;
+                }
+
                 DialogResult = CRUDEntitetaService.DodajPredmetStudentu(SelectedPredmet, _student);
+            }
             else
+            {
                 DialogResult = CRUDEntitetaService.DodajPredmetProfesoru(_profesor, SelectedPredmet);
+            }
             Close();
         }
     }
